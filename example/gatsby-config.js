@@ -5,7 +5,7 @@ require("dotenv").config({
 });
 
 module.exports = {
-  pathPrefix: `/gatsby-source-roamresearch`
+  pathPrefix: `/gatsby-source-roamresearch`,
   siteMetadata: {
     title: `Gatsby with Roam Research`,
   },
