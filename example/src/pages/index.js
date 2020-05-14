@@ -1,33 +1,13 @@
 import React from "react";
-import { Link, graphql } from "gatsby";
+import { graphql } from "gatsby";
 import * as PropTypes from "prop-types";
 import { rhythm } from "../utils/typography";
 import Layout from "../layouts";
+import Reference from "../components/Reference";
 
 const propTypes = {
   data: PropTypes.object.isRequired,
 };
-
-const Note = ({ node }) => (
-  <div>
-    <Link
-      style={{ color: `inherit`, textDecoration: `none` }}
-      to={`${node.fields.slug}/`}
-    >
-      <div
-        style={{
-          display: `flex`,
-          alignItems: `center`,
-          borderBottom: `1px solid lightgray`,
-          paddingBottom: rhythm(1 / 2),
-          marginBottom: rhythm(1 / 2),
-        }}
-      >
-        <div style={{ flex: 1 }}>{node.title}</div>
-      </div>
-    </Link>
-  </div>
-);
 
 class IndexPage extends React.Component {
   render() {
@@ -37,7 +17,7 @@ class IndexPage extends React.Component {
         <div style={{ marginBottom: rhythm(2) }}>
           <h3>Notes</h3>
           {roamPages.map((node) => (
-            <Note node={node} key={node.id} />
+            <Reference node={node} key={node.id} />
           ))}
         </div>
       </Layout>

@@ -1,3 +1,5 @@
+const path = require("path");
+
 require("dotenv").config({
   path: `.env`,
 });
@@ -8,7 +10,7 @@ module.exports = {
   },
   plugins: [
     {
-      resolve: `gatsby-source-roamresearch`,
+      resolve: path.join(__dirname, ".."),
       options: {
         url: process.env.ROAM_URL,
         email: process.env.ROAM_EMAIL,

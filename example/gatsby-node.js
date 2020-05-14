@@ -8,7 +8,17 @@ exports.onCreateNode = ({ node, actions }) => {
     createNodeField({
       node,
       name: `slug`,
-      value: slugify(node.title),
+      value: `/${slugify(node.title)}`,
+    });
+  }
+  if (node.internal.type === `RoamBlock`) {
+    if (!node.uid) {
+      return;
+    }
+    createNodeField({
+      node,
+      name: `slug`,
+      value: `/${slugify(node.uid)}`,
     });
   }
 };
@@ -27,6 +37,14 @@ exports.createPages = async ({ graphql, actions }) => {
             }
           }
         }
+        allRoamBlock(limit: 1000) {
+          nodes {
+            id
+            fields {
+              slug
+            }
+          }
+        }
       }
     `
   );
@@ -35,12 +53,22 @@ exports.createPages = async ({ graphql, actions }) => {
     throw result.errors;
   }
 
-  const component = path.join(__dirname, "./src/templates/note.js");
+  const componentPage = path.join(__dirname, "./src/templates/page.js");
+  const componentBlock = path.join(__dirname, "./src/templates/block.js");
 
   result.data.allRoamPage.nodes.forEach((node) => {
     createPage({
       path: node.fields.slug,
-      component,
+      component: componentPage,
+      context: {
+        id: node.id,
+      },
+    });
+  });
+  result.data.allRoamBlock.nodes.forEach((node) => {
+    createPage({
+      path: node.fields.slug,
+      component: componentBlock,
       context: {
         id: node.id,
       },

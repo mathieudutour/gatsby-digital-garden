@@ -1,10 +1,11 @@
 {
   "name": "gatsby-source-roamresearch",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "build": "npm run clean && tsc -p tsconfig.json",
+    "watch": "tsc -p tsconfig.json --watch",
     "clean": "rm -rf lib",
     "prepublishOnly": "npm run build",
     "test": "jest"

@@ -1,27 +1,41 @@
 import { RoamPage, RoamBlock } from "./roam-schema";
 
+export type References = { blocks: string[]; pages: string[] };
+
 // Find matches for content between double brackets
 // e.g. [[Example]] -> Example
 const bracketRegexExclusive = /(?<=\[\[).*?(?=\]\])/g;
+
+// Find matches for content between double parenthesis
+// e.g. ((Example)) -> Example
+const parenthesisRegexExclusive = /(?<=\(\().*?(?=\(\()/g;
 
 // Find matches for content after hashtag
 // e.g. #Example -> Example
 const hashtagRegexExclusive = /(?<=(^|\s)#)\w*\b/g;
 
 const getReferences = (string: string) => {
-  const links = [];
+  const references: References = {
+    blocks: [],
+    pages: [],
+  };
 
   const bracketMatches = string.match(bracketRegexExclusive);
   if (bracketMatches !== null) {
-    links.push(...bracketMatches);
+    references.pages.push(...bracketMatches);
+  }
+
+  const parenthesisMatches = string.match(parenthesisRegexExclusive);
+  if (parenthesisMatches !== null) {
+    references.blocks.push(...parenthesisMatches);
   }
 
   const hashtagMatches = string.match(hashtagRegexExclusive);
   if (hashtagMatches !== null) {
-    links.push(...hashtagMatches);
+    references.pages.push(...hashtagMatches);
   }
 
-  return links;
+  return references;
 };
 
 export const makeMarkdownForBlock = (block: RoamBlock, indent: string = "") => {
@@ -30,20 +44,19 @@ export const makeMarkdownForBlock = (block: RoamBlock, indent: string = "") => {
 
   block.children?.forEach((child) => {
     const resForBlock = makeMarkdownForBlock(child, `${indent}  `);
-    outboundReferences.push(...resForBlock.outboundReferences);
     res += `\n${indent}- ${resForBlock.string}`;
   });
 
   return { string: res, outboundReferences };
 };
 
-export const makeMarkdown = (page: RoamPage) => {
-  const outboundReferences = getReferences(page.title);
-  let res = `# ${page.title}`;
+export const makeMarkdown = (page: RoamPage | RoamBlock) => {
+  const string = "title" in page ? page.title : page.string;
+  const outboundReferences = getReferences(string);
+  let res = `# ${string}`;
 
   page.children?.forEach((block) => {
     const resForBlock = makeMarkdownForBlock(block);
-    outboundReferences.push(...resForBlock.outboundReferences);
     res += `\n- ${resForBlock.string}`;
   });
 
