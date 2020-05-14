@@ -52,15 +52,13 @@ Email used to sign into Roam Research
 
 Password used to sign into Roam Research
 
-<!-- ## How to query for nodes
+## How to query for nodes
 
 Two standard node types are available from Roam Research: `Page` and `Block`.
 
-`Asset` nodes will be created in your site's GraphQL schema under `contentfulAsset` and `allContentfulAsset`.
+The nodes will be created in your site's GraphQL schema under `roam${entryTypeName}` and `allRoam${entryTypeName}`.
 
-`ContentType` nodes are a little different - their exact name depends on what you called them in your Contentful data models. The nodes will be created in your site's GraphQL schema under `contentful${entryTypeName}` and `allContentful${entryTypeName}`.
-
-In all cases querying for nodes like `contentfulX` will return a single node, and nodes like `allContentfulX` will return all nodes of that type.
+In all cases querying for nodes like `roamX` will return a single node, and nodes like `allRoamX` will return all nodes of that type.
 
 ### Query for all nodes
 
@@ -68,14 +66,10 @@ You might query for **all** of a type of node:
 
 ```graphql
 {
-  allContentfulAsset {
-    edges {
-      node {
-        id
-        file {
-          url
-        }
-      }
+  allRoamPage {
+    nodes {
+      id
+      title
     }
   }
 }
@@ -85,18 +79,16 @@ You might do this in your `gatsby-node.js` using Gatsby's [`createPages`](https:
 
 ### Query for a single node
 
-To query for a single `image` asset with the title 'foo' and a width of 1600px:
+To query for a single `block` with the id 'foo':
 
 ```javascript
-export const assetQuery = graphql`
+export const blockQuery = graphql`
   {
-    contentfulAsset(filter: { title: { eq: 'foo' } }) {
-      image {
-        resolutions(width: 1600) {
-          width
-          height
-          src
-          srcSet
+    roamBlock(id: "foo") {
+      string
+      fields {
+        inboundReferences {
+          id
         }
       }
     }
@@ -104,43 +96,34 @@ export const assetQuery = graphql`
 `;
 ```
 
-To query for a single `CaseStudy` node with the short text properties `title` and `subtitle`:
-
-```graphql
-  {
-    contentfulCaseStudy(filter: { title: { eq: 'bar' } })  {
-      title
-      subtitle
-    }
-  }
-```
-
-> Note the use of [GraphQL arguments](https://graphql.org/learn/queries/#arguments) on the `contentfulAsset` and `resolutions` fields. See [Gatsby's GraphQL reference docs for more info](https://www.gatsbyjs.org/docs/graphql-reference/).
-
 You might query for a **single** node inside a component in your `src/components` folder, using [Gatsby's `StaticQuery` component](https://www.gatsbyjs.org/docs/static-query/).
 
-#### A note about LongText fields
+#### A note about markdown fields
 
-On Contentful, a "Long text" field uses Markdown by default. The field is exposed as an object, while the raw Markdown is exposed as a child node.
+Roam Research uses Markdown for its formatting. The content is exposed as a node under `fields.markdown` (in addition to `string` or `title`).
 
 ```graphql
 {
-  contentfulCaseStudy {
-    body {
-      body
+  roamBlock {
+    fields {
+      markdown {
+        id
+      }
     }
   }
 }
 ```
 
-Unless the text is Markdown-free, you cannot use the returned value directly. In order to handle the Markdown content, you must use a transformer plugin such as [gatsby-transformer-remark](https://www.gatsbyjs.org/packages/gatsby-transformer-remark/). The transformer will create a childMarkdownRemark on the "Long text" field and expose the generated html as a child node:
+In order to handle the Markdown content, you must use a transformer plugin such as [gatsby-transformer-remark](https://www.gatsbyjs.org/packages/gatsby-transformer-remark/). The transformer will create a childMarkdownRemark on the "markdown" field and expose the generated html as a child node:
 
 ```graphql
 {
-  contentfulCaseStudy {
-    body {
-      childMarkdownRemark {
-        html
+  roamBlock {
+    fields {
+      markdown {
+        childMarkdownRemark {
+          html
+        }
       }
     }
   }
@@ -153,10 +136,12 @@ You can then insert the returned HTML inline in your JSX:
 <div
   className="body"
   dangerouslySetInnerHTML={{
-    __html: data.contentfulCaseStudy.body.childMarkdownRemark.html,
+    __html: data.roamBlock.fields.markdown.childMarkdownRemark.html,
   }}
 />
-``` -->
+```
+
+> Note that Roam Research uses some non-standard syntax for its internal links, so you will need some additional plugins to handle them.
 
 ## Sourcing From Multiple Roam Research databases
 
