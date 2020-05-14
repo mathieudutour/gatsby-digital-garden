@@ -1,0 +1,27 @@
+name: Deploy website example
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  landing-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+
+      - run: npm ci
+      - run: npm run build
+
+      - run: npm ci
+        working-directory: example
+      - run: npm run build
+        working-directory: example
+
+      - name: Deploy to the gh-pages branch
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./example/public
