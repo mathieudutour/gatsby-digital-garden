@@ -17,7 +17,7 @@ jobs:
 
       - run: npm ci
         working-directory: example
-      - run: npm run build
+      - run: npm run build -- --prefix-paths
         working-directory: example
         env:
           ROAM_URL: ${{ secrets.ROAM_URL }}
