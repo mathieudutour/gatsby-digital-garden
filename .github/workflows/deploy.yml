@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  landing-build:
+  example-build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -19,6 +19,10 @@ jobs:
         working-directory: example
       - run: npm run build
         working-directory: example
+        env:
+          ROAM_URL: ${{ secrets.ROAM_URL }}
+          ROAM_EMAIL: ${{ secrets.ROAM_EMAIL }}
+          ROAM_PASSWORD: ${{ secrets.ROAM_PASSWORD }}
 
       - name: Deploy to the gh-pages branch
         uses: peaceiris/actions-gh-pages@v3

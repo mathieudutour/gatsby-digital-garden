@@ -7,7 +7,7 @@ on:
       - master
 
 jobs:
-  landing-build:
+  test-plugin:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -15,4 +15,13 @@ jobs:
 
       - run: npm ci
       - run: npm run build
+
+      - run: npm ci
+        working-directory: example
+      - run: npm run build
+        working-directory: example
+        env:
+          ROAM_URL: ${{ secrets.ROAM_URL }}
+          ROAM_EMAIL: ${{ secrets.ROAM_EMAIL }}
+          ROAM_PASSWORD: ${{ secrets.ROAM_PASSWORD }}
       # - run: npm run test
