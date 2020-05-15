@@ -29,8 +29,8 @@ const DefaultLayout = ({ children }) => (
     <p>
       The src for this website is at
       {` `}
-      <a href="https://github.com/mathieudutour/gatsby-source-roamresearch/tree/master/example">
-        https://github.com/mathieudutour/gatsby-source-roamresearch/tree/master/example
+      <a href="https://github.com/mathieudutour/gatsby-n-roamresearch/tree/master/example">
+        https://github.com/mathieudutour/gatsby-n-roamresearch/tree/master/example
       </a>
     </p>
   </div>

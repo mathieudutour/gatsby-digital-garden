@@ -2,14 +2,19 @@ import puppeteer from "puppeteer";
 import * as path from "path";
 import * as fs from "fs";
 import watch from "node-watch";
-import { Reporter } from "gatsby";
 import * as JSZip from "jszip";
-import { RoamPage } from "./roam-schema";
+import { RoamPage, RoamBlock } from "./roam-schema";
+
+export { RoamPage, RoamBlock };
 
 enum LOGIN_STATE {
   NEED,
   IN,
 }
+
+type Reporter = {
+  info(log: string): void;
+};
 
 const topBarMoreSelector = `.roam-topbar .bp3-icon-more`;
 
@@ -23,14 +28,16 @@ async function click(page: puppeteer.Page, xpath: string) {
   await button.click();
 }
 
-export const downloadRoam = async (
+const downloadRoam = async (
   url: string,
-  {
-    email,
-    password,
-    reporter,
-    headless = true,
-  }: { email: string; password: string; reporter: Reporter; headless?: boolean }
+  auth: {
+    email: string;
+    password: string;
+  },
+  options?: {
+    reporter?: Reporter;
+    puppeteer?: puppeteer.LaunchOptions;
+  }
 ): Promise<RoamPage[] | undefined> => {
   const downloadPath = path.join(__dirname, `${Date.now()}`);
   await fs.promises.mkdir(downloadPath, { recursive: true });
@@ -50,8 +57,8 @@ export const downloadRoam = async (
 
   // disable sandbox in production
   const browser = await puppeteer.launch({
-    headless,
     args: process.env.NODE_ENV === "production" ? ["--no-sandbox"] : [],
+    ...(options?.puppeteer || {}),
   });
 
   try {
@@ -76,9 +83,9 @@ export const downloadRoam = async (
     ]);
 
     if (state === LOGIN_STATE.NEED) {
-      reporter.info("Login into Roam Research...");
-      await page.type('input[name="email"]', email);
-      await page.type('input[name="password"]', password);
+      options?.reporter?.info("Login into Roam Research...");
+      await page.type('input[name="email"]', auth.email);
+      await page.type('input[name="password"]', auth.password);
       const [loginButton] = await page.$x("//button[text()='Sign In']");
       if (!loginButton) {
         throw new Error("Login Button not found");
@@ -93,7 +100,7 @@ export const downloadRoam = async (
     await click(page, "//span[text()='Markdown']");
     await click(page, "//div[text()='JSON']");
 
-    reporter.info("Downloading Roam Research database...");
+    options?.reporter?.info("Downloading Roam Research database...");
 
     await click(page, "//button[text()='Export All']");
     const zipPath = await zipCreationPromise;
@@ -121,3 +128,5 @@ export const downloadRoam = async (
     return undefined;
   }
 };
+
+export default downloadRoam;

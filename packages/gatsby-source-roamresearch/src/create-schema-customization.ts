@@ -1,4 +1,4 @@
-import { CreateSchemaCustomizationArgs, CreateResolversArgs } from "gatsby";
+import { CreateSchemaCustomizationArgs } from "gatsby";
 
 export const createSchemaCustomization = ({
   actions,

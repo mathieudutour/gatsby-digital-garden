@@ -1,39 +1,14 @@
 {
-  "name": "gatsby-source-roamresearch",
-  "version": "0.2.0",
-  "description": "",
-  "main": "index.js",
+  "private": true,
   "scripts": {
-    "build": "npm run clean && tsc -p tsconfig.json",
-    "watch": "tsc -p tsconfig.json --watch",
-    "clean": "rm -rf lib",
-    "prepublishOnly": "npm run build",
+    "postinstall": "cd packages/gatsby-source-roamresearch && npm install && cd../download-roamresearch && npm install",
     "test": "jest"
   },
-  "keywords": [
-    "gatsby",
-    "source",
-    "roam",
-    "roamresearch"
-  ],
-  "files": [
-    "index.js",
-    "gatsby-node.js",
-    "lib"
-  ],
   "author": "Mathieu Dutour <mathieu@dutour.me>",
   "license": "MIT",
-  "dependencies": {
-    "jszip": "^3.4.0",
-    "node-watch": "^0.6.4",
-    "puppeteer": "^3.0.4"
-  },
   "devDependencies": {
     "@types/jest": "^25.2.2",
     "@types/node": "^14.0.1",
-    "@types/puppeteer": "^2.1.0",
-    "@types/react-dom": "^16.9.8",
-    "gatsby": "^2.21.26",
     "jest": "^26.0.1",
     "jest-cli": "^26.0.1",
     "prettier": "^2.0.5",

@@ -1,0 +1,37 @@
+{
+  "name": "gatsby-source-roamresearch",
+  "version": "0.2.0",
+  "description": "Source plugin for pulling data into Gatsby from Roam Research",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run clean && ../../node_modules/.bin/tsc -p ./tsconfig.json",
+    "watch": "npm run build -- --watch",
+    "clean": "rm -rf lib",
+    "prepublishOnly": "npm run build",
+    "test": "jest"
+  },
+  "keywords": [
+    "gatsby",
+    "source",
+    "roam",
+    "roamresearch"
+  ],
+  "files": [
+    "index.js",
+    "gatsby-node.js",
+    "lib"
+  ],
+  "author": "Mathieu Dutour <mathieu@dutour.me>",
+  "repository": {
+    "url": "https://github.com/mathieudutour/gatsby-n-roamresearch",
+    "directory": "packages/gatsby-source-roamresearch"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "fetch-roamresearch": "^0.1.0"
+  },
+  "devDependencies": {
+    "@types/react-dom": "^16.9.8",
+    "gatsby": "^2.21.26"
+  }
+}

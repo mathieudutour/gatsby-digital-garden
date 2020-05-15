@@ -1,0 +1,35 @@
+{
+  "name": "fetch-roamresearch",
+  "version": "0.1.1",
+  "description": "Download a Roam Research database",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "npm run clean && ../../node_modules/.bin/tsc -p ./tsconfig.json",
+    "watch": "npm run build -- --watch",
+    "clean": "rm -rf lib",
+    "prepublishOnly": "npm run build",
+    "test": "jest"
+  },
+  "keywords": [
+    "download",
+    "roam",
+    "roamresearch"
+  ],
+  "files": [
+    "lib"
+  ],
+  "author": "Mathieu Dutour <mathieu@dutour.me>",
+  "repository": {
+    "url": "https://github.com/mathieudutour/gatsby-n-roamresearch",
+    "directory": "packages/fetch-roamresearch"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "jszip": "^3.4.0",
+    "node-watch": "^0.6.4",
+    "puppeteer": "^3.0.4"
+  },
+  "devDependencies": {
+    "@types/puppeteer": "^2.1.0"
+  }
+}

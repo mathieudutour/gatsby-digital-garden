@@ -1,7 +1,6 @@
 import { SourceNodesArgs, Node } from "gatsby";
-import { downloadRoam } from "./download-roam";
-import { RoamBlock, RoamPage } from "./roam-schema";
-import { makeMarkdown, makeMarkdownForBlock } from "./make-markdown";
+import downloadRoam, { RoamBlock, RoamPage } from "fetch-roamresearch";
+import { makeMarkdown } from "./make-markdown";
 
 export const sourceNodes = async (
   {
@@ -16,12 +15,14 @@ export const sourceNodes = async (
   const { url, email, password, headless } = options;
   const { createNode, createNodeField } = actions;
 
-  const pages = await downloadRoam(url, {
-    email,
-    password,
-    reporter,
-    headless,
-  });
+  const pages = await downloadRoam(
+    url,
+    {
+      email,
+      password,
+    },
+    { reporter, puppeteer: { headless } }
+  );
 
   if (!pages) {
     reporter.error("Could not download the Roam Research data");

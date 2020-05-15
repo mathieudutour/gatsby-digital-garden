@@ -1,4 +1,4 @@
-import { RoamPage, RoamBlock } from "./roam-schema";
+import { RoamPage, RoamBlock } from "fetch-roamresearch";
 
 export type References = { blocks: string[]; pages: string[] };
 

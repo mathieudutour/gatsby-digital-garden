@@ -11,7 +11,7 @@ module.exports = {
   },
   plugins: [
     {
-      resolve: path.join(__dirname, ".."),
+      resolve: path.join(__dirname, "../packages/gatsby-source-roamresearch"),
       options: {
         url: process.env.ROAM_URL,
         email: process.env.ROAM_EMAIL,
