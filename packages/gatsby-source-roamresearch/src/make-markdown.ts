@@ -38,9 +38,13 @@ const getReferences = (string: string) => {
   return references;
 };
 
+function replaceSpecialCharacter(string: string) {
+  return string.replace(/</g, "&#x3C;").replace(/>/g, "&#x3E;");
+}
+
 export const makeMarkdownForBlock = (block: RoamBlock, indent: string = "") => {
   const outboundReferences = getReferences(block.string);
-  let res = block.string;
+  let res = replaceSpecialCharacter(block.string);
 
   block.children?.forEach((child) => {
     const resForBlock = makeMarkdownForBlock(child, `${indent}  `);
@@ -53,7 +57,7 @@ export const makeMarkdownForBlock = (block: RoamBlock, indent: string = "") => {
 export const makeMarkdown = (page: RoamPage | RoamBlock) => {
   const string = "title" in page ? page.title : page.string;
   const outboundReferences = getReferences(string);
-  let res = `# ${string}`;
+  let res = `# ${replaceSpecialCharacter(string)}`;
 
   page.children?.forEach((block) => {
     const resForBlock = makeMarkdownForBlock(block);
