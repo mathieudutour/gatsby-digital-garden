@@ -43,6 +43,7 @@ export const createSchemaCustomization = ({
     type RoamFields {
       inboundReferences: [RoamPageOrBlock!]!
       outboundReferences: [RoamPageOrBlock!]!
+      slug: String
     }
   `);
 };

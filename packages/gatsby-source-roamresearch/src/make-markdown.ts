@@ -8,7 +8,7 @@ const bracketRegexExclusive = /(?<=\[\[).*?(?=\]\])/g;
 
 // Find matches for content between double parenthesis
 // e.g. ((Example)) -> Example
-const parenthesisRegexExclusive = /(?<=\(\().*?(?=\(\()/g;
+const parenthesisRegexExclusive = /(?<=\(\().*?(?=\)\))/g;
 
 // Find matches for content after hashtag
 // e.g. #Example -> Example

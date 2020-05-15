@@ -1,6 +1,6 @@
 {
   "name": "gatsby-source-roamresearch",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Source plugin for pulling data into Gatsby from Roam Research",
   "main": "index.js",
   "scripts": {
