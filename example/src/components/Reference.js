@@ -1,26 +1,32 @@
 import React from "react";
 import { Link } from "gatsby";
-import { rhythm } from "../utils/typography";
 
-const Reference = ({ node, withoutSeparation }) => (
-  <div>
-    <Link
-      style={{ color: `inherit`, textDecoration: `none` }}
-      to={`${node.fields.slug}/`}
-    >
-      <div
-        style={{
-          display: `flex`,
-          alignItems: `center`,
-          borderBottom: withoutSeparation ? `0` : `1px solid lightgray`,
-          paddingBottom: rhythm(1 / 2),
-          marginBottom: rhythm(1 / 2),
-        }}
-      >
-        <div style={{ flex: 1 }}>{node.title || node.string}</div>
+import "./Reference.css";
+
+const Reference = ({ node }) => {
+  if (node.title) {
+    return (
+      <div>
+        <Link to={node.fields.slug} className="reference">
+          <div>
+            <h5>{node.title}</h5>
+          </div>
+        </Link>
       </div>
-    </Link>
-  </div>
-);
+    );
+  }
+  return (
+    <div>
+      <Link to={node.fields.slug} className="reference">
+        <div>
+          <h5>{node.fields.parentPage.title}</h5>
+          <ul>
+            <li>{node.string}</li>
+          </ul>
+        </div>
+      </Link>
+    </div>
+  );
+};
 
 export default Reference;

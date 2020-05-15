@@ -1,0 +1,21 @@
+.references-block {
+  color: #718096;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 0.5rem;
+  background-color: #ebf4ff;
+}
+
+.references-block > div {
+  margin-bottom: 1rem;
+}
+
+.references-block > hr {
+  margin-left: auto;
+  margin-right: auto;
+  width: 8rem;
+}
+
+.references-block a {
+  color: #718096;
+}

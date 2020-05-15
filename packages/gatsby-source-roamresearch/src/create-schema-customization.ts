@@ -25,6 +25,10 @@ export const createSchemaCustomization = ({
           type: "[RoamPageOrBlock!]!",
           resolve,
         },
+        allOutboundReferences: {
+          type: "[RoamPageOrBlock!]!",
+          resolve,
+        },
       },
     })
   );
@@ -43,6 +47,7 @@ export const createSchemaCustomization = ({
     type RoamFields {
       inboundReferences: [RoamPageOrBlock!]!
       outboundReferences: [RoamPageOrBlock!]!
+      allOutboundReferences: [RoamPageOrBlock!]!
       slug: String
     }
   `);

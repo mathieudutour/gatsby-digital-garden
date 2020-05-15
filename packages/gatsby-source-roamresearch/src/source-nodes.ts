@@ -44,7 +44,9 @@ export const sourceNodes = async (
   createNode(dbMeta);
 
   const makeMarkdownNode = (data: RoamPage | RoamBlock, node: Node) => {
-    const { string, outboundReferences } = makeMarkdown(data);
+    const { string, outboundReferences, allOutboundReferences } = makeMarkdown(
+      data
+    );
 
     const textNode = {
       id: `${node.id}-Markdown`,
@@ -64,12 +66,13 @@ export const sourceNodes = async (
       value: textNode.id,
     });
 
-    return outboundReferences;
+    return { outboundReferences, allOutboundReferences };
   };
 
   const nodes: {
     node: Node;
     outboundReferences: { blocks: string[]; pages: string[] };
+    allOutboundReferences: { blocks: string[]; pages: string[] };
   }[] = [];
 
   const makeBlockNode = (block: RoamBlock, parent: Node, page: Node) => {
@@ -100,9 +103,12 @@ export const sourceNodes = async (
     );
 
     node = getNode(nodeData.id);
-    const outboundReferences = makeMarkdownNode(block, node);
+    const { outboundReferences, allOutboundReferences } = makeMarkdownNode(
+      block,
+      node
+    );
 
-    nodes.push({ node, outboundReferences });
+    nodes.push({ node, outboundReferences, allOutboundReferences });
   };
 
   pages.forEach((page) => {
@@ -124,25 +130,28 @@ export const sourceNodes = async (
     page.children?.forEach((child) => makeBlockNode(child, node, node));
 
     node = getNode(nodeData.id);
-    const outboundReferences = makeMarkdownNode(page, node);
+    const { outboundReferences, allOutboundReferences } = makeMarkdownNode(
+      page,
+      node
+    );
 
-    nodes.push({ node, outboundReferences });
+    nodes.push({ node, outboundReferences, allOutboundReferences });
   });
 
   const inboundReferences: { [id: string]: string[] } = {};
 
+  function refsToId(refs: { blocks: string[]; pages: string[] }) {
+    return refs.pages
+      .map((ref) => createNodeId(`roam-page-${ref}`))
+      .concat(refs.blocks.map((ref) => createNodeId(`roam-block-${ref}`)))
+      .map((id) => getNode(id))
+      .filter((x) => !!x)
+      .map((x) => x.id as string);
+  }
+
   nodes
-    .map(({ node, outboundReferences }) => {
-      const mapped = outboundReferences.pages
-        .map((ref) => createNodeId(`roam-page-${ref}`))
-        .concat(
-          outboundReferences.blocks.map((ref) =>
-            createNodeId(`roam-block-${ref}`)
-          )
-        )
-        .map((id) => getNode(id))
-        .filter((x) => !!x)
-        .map((x) => x.id as string);
+    .map(({ node, outboundReferences, allOutboundReferences }) => {
+      const mapped = refsToId(outboundReferences);
 
       mapped.forEach((x) => {
         if (!inboundReferences[x]) {
@@ -151,14 +160,25 @@ export const sourceNodes = async (
         inboundReferences[x].push(node.id);
       });
 
-      return { node, outboundReferences: mapped };
+      return {
+        node,
+        outboundReferences: mapped,
+        allOutboundReferences: refsToId(allOutboundReferences),
+      };
     })
-    .forEach(({ node, outboundReferences }) => {
+    .forEach(({ node, outboundReferences, allOutboundReferences }) => {
       let refreshedNode = getNode(node.id);
       createNodeField({
         node: refreshedNode,
         name: "outboundReferences___NODE",
         value: outboundReferences,
+      });
+
+      refreshedNode = getNode(node.id);
+      createNodeField({
+        node: refreshedNode,
+        name: "allOutboundReferences___NODE",
+        value: allOutboundReferences,
       });
 
       refreshedNode = getNode(node.id);

@@ -2,32 +2,34 @@ import React from "react";
 import { graphql } from "gatsby";
 import * as PropTypes from "prop-types";
 import { MDXRenderer } from "gatsby-plugin-mdx";
+import { MDXProvider } from "@mdx-js/react";
+import components from "../components/MdxComponents";
 import Layout from "../layouts";
-import Reference from "../components/Reference";
+import ReferencesBlock from "../components/ReferencesBlock";
 
 const propTypes = {
   data: PropTypes.object.isRequired,
 };
 
-class PageTemplate extends React.Component {
-  render() {
-    const roamPage = this.props.data.roamPage;
-    return (
-      <Layout>
+const PageTemplate = ({ data }) => {
+  const roamPage = data.roamPage;
+
+  const AnchorTag = (props) => (
+    <components.a
+      {...props}
+      references={roamPage.fields.allOutboundReferences}
+    />
+  );
+
+  return (
+    <Layout>
+      <MDXProvider components={{ ...components, a: AnchorTag }}>
         <MDXRenderer>{roamPage.fields.markdown.childMdx.body}</MDXRenderer>
-        {roamPage.fields.inboundReferences.length ? (
-          <div>
-            <hr />
-            <h3>References to this note</h3>
-            {roamPage.fields.inboundReferences.map((node) => (
-              <Reference node={node} key={node.id} />
-            ))}
-          </div>
-        ) : null}
-      </Layout>
-    );
-  }
-}
+      </MDXProvider>
+      <ReferencesBlock references={roamPage.fields.inboundReferences} />
+    </Layout>
+  );
+};
 
 PageTemplate.propTypes = propTypes;
 
@@ -42,6 +44,36 @@ export const pageQuery = graphql`
             body
           }
         }
+        allOutboundReferences {
+          ... on RoamBlock {
+            id
+            uid
+            string
+            fields {
+              parentPage {
+                title
+              }
+              slug
+              markdown {
+                childMdx {
+                  excerpt
+                }
+              }
+            }
+          }
+          ... on RoamPage {
+            id
+            title
+            fields {
+              slug
+              markdown {
+                childMdx {
+                  excerpt
+                }
+              }
+            }
+          }
+        }
         inboundReferences {
           ... on RoamBlock {
             id
@@ -51,6 +83,11 @@ export const pageQuery = graphql`
                 title
               }
               slug
+              markdown {
+                childMdx {
+                  excerpt
+                }
+              }
             }
           }
           ... on RoamPage {
@@ -58,6 +95,11 @@ export const pageQuery = graphql`
             title
             fields {
               slug
+              markdown {
+                childMdx {
+                  excerpt
+                }
+              }
             }
           }
         }
