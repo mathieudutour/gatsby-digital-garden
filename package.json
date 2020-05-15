@@ -1,7 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "postinstall": "cd packages/gatsby-source-roamresearch && npm install && cd../download-roamresearch && npm install",
+    "postinstall": "cd packages/gatsby-source-roamresearch && npm install && cd../fetch-roamresearch && npm install",
+    "build": "cd packages/gatsby-source-roamresearch && npm run build && cd../fetch-roamresearch && npm run build",
     "test": "jest"
   },
   "author": "Mathieu Dutour <mathieu@dutour.me>",
