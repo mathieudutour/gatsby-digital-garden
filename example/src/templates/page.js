@@ -1,6 +1,7 @@
 import React from "react";
 import { graphql } from "gatsby";
 import * as PropTypes from "prop-types";
+import { MDXRenderer } from "gatsby-plugin-mdx";
 import Layout from "../layouts";
 import Reference from "../components/Reference";
 
@@ -13,11 +14,7 @@ class PageTemplate extends React.Component {
     const roamPage = this.props.data.roamPage;
     return (
       <Layout>
-        <div
-          dangerouslySetInnerHTML={{
-            __html: roamPage.fields.markdown.childMarkdownRemark.html,
-          }}
-        />
+        <MDXRenderer>{roamPage.fields.markdown.childMdx.body}</MDXRenderer>
         {roamPage.fields.inboundReferences.length ? (
           <div>
             <hr />
@@ -41,8 +38,8 @@ export const pageQuery = graphql`
     roamPage(id: { eq: $id }) {
       fields {
         markdown {
-          childMarkdownRemark {
-            html
+          childMdx {
+            body
           }
         }
         inboundReferences {

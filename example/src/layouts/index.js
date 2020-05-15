@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "gatsby";
+import { MDXProvider } from "@mdx-js/react";
 import * as PropTypes from "prop-types";
 
 import { rhythm } from "../utils/typography";
@@ -24,7 +25,7 @@ const DefaultLayout = ({ children }) => (
         Example of using Roam Research as a data source for a Gatsby site
       </h3>
     </Link>
-    {children}
+    <MDXProvider>{children}</MDXProvider>
     <hr style={{ marginTop: rhythm(3) }} />
     <p>
       The src for this website is at
