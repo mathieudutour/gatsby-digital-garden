@@ -28,7 +28,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "fetch-roamresearch": "^0.1.0"
+    "fetch-roamresearch": "^0.1.2"
   },
   "devDependencies": {
     "@types/react-dom": "^16.9.8",

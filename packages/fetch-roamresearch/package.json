@@ -1,6 +1,6 @@
 {
   "name": "fetch-roamresearch",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Download a Roam Research database",
   "main": "lib/index.js",
   "scripts": {
@@ -25,11 +25,10 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@types/puppeteer": "^2.1.0",
     "jszip": "^3.4.0",
     "node-watch": "^0.6.4",
     "puppeteer": "^3.0.4"
   },
-  "devDependencies": {
-    "@types/puppeteer": "^2.1.0"
-  }
+  "devDependencies": {}
 }
