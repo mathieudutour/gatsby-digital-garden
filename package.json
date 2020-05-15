@@ -1,4 +1,5 @@
 {
+  "name": "gatsby-n-roamresearch",
   "private": true,
   "scripts": {
     "postinstall": "cd packages/gatsby-source-roamresearch && npm install && cd../fetch-roamresearch && npm install",
