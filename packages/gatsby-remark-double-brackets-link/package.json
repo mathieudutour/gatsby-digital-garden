@@ -1,0 +1,32 @@
+{
+  "name": "gatsby-remark-double-brackets-link",
+  "version": "0.1.1",
+  "description": "Parse double brackets link in markdown",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "npm run clean && ../../node_modules/.bin/tsc -p ./tsconfig.json",
+    "watch": "npm run build -- --watch",
+    "clean": "rm -rf lib",
+    "prepublishOnly": "npm run build",
+    "test": "jest"
+  },
+  "keywords": [
+    "gatsby",
+    "remark",
+    "double brackets"
+  ],
+  "files": [
+    "lib"
+  ],
+  "author": "Mathieu Dutour <mathieu@dutour.me>",
+  "repository": {
+    "url": "https://github.com/mathieudutour/gatsby-n-roamresearch",
+    "directory": "packages/gatsby-remark-double-brackets-link"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "slugify": "^1.4.0",
+    "unist-util-visit": "^2.0.2"
+  },
+  "devDependencies": {}
+}
