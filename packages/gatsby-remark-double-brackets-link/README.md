@@ -32,3 +32,5 @@ By default, the plugin will resolve the url with:
 ```
 
 You can override this behavior by passing a `titleToURL` option.
+
+By default, the plugin will keep the brackets in the link name. You can change this behavior by passing a `stripBrackets` options.

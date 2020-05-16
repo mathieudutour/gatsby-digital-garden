@@ -8,7 +8,7 @@ const parenthesisRegexExclusive = /(?<=\(\().*?(?=\)\))/g;
 
 const addDoubleParenthesisLinks = (
   { markdownAST }: { markdownAST: Node },
-  options?: { idToURL: (title: string) => string }
+  options?: { idToURL?: (title: string) => string }
 ) => {
   const idToURL = options?.idToURL || ((title: string) => `/${slugify(title)}`);
 

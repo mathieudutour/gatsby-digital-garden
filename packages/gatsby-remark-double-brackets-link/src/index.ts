@@ -4,7 +4,7 @@ import slugify from "slugify";
 
 const addDoubleBracketsLinks = (
   { markdownAST }: { markdownAST: Node },
-  options?: { titleToURL: (title: string) => string }
+  options?: { titleToURL?: (title: string) => string; stripBrackets?: boolean }
 ) => {
   const titleToURL =
     options?.titleToURL || ((title: string) => `/${slugify(title)}`);
@@ -39,7 +39,7 @@ const addDoubleBracketsLinks = (
     node.type = "link";
     node.url = titleToURL(node.label as string);
     node.title = node.label;
-    if (Array.isArray(node.children)) {
+    if (options?.stripBrackets && Array.isArray(node.children)) {
       node.children[0].value = `[[${node.children[0].value}]]`;
     }
     delete node.label;
