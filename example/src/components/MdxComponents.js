@@ -1,10 +1,18 @@
 import React from "react";
 import { Link } from "gatsby";
 import Tippy from "@tippyjs/react";
+import { MDXProvider } from "@mdx-js/react";
+import { MDXRenderer } from "gatsby-plugin-mdx";
 
 import "./MdxComponents.css";
 
-const AnchorTag = ({ href, title, references = [], ...restProps }) => {
+const AnchorTag = ({
+  href,
+  title,
+  references = [],
+  withoutLink,
+  ...restProps
+}) => {
   const ref = references.find(
     (x) =>
       x.uid === (title || "").replace("__roam_block_", "") ||
@@ -12,6 +20,24 @@ const AnchorTag = ({ href, title, references = [], ...restProps }) => {
   );
 
   if (ref) {
+    const nestedComponents = {
+      a(props) {
+        return <AnchorTag {...props} references={references} withoutLink />;
+      },
+      p(props) {
+        return <span {...props} />;
+      },
+    };
+    const content = ref.title ? (
+      restProps.children
+    ) : (
+      <MDXProvider components={nestedComponents}>
+        <MDXRenderer>{ref.fields.markdown.childMdx.body}</MDXRenderer>
+      </MDXProvider>
+    );
+    if (withoutLink) {
+      return <span>{content}</span>;
+    }
     return (
       <Tippy
         content={
@@ -19,13 +45,25 @@ const AnchorTag = ({ href, title, references = [], ...restProps }) => {
             {ref.title ? (
               <React.Fragment>
                 <h5>{ref.title}</h5>
-                <p>{ref.fields.markdown.childMdx.excerpt}</p>
+                <p>
+                  <MDXProvider components={nestedComponents}>
+                    <MDXRenderer>
+                      {ref.fields.markdown.childMdx.body}
+                    </MDXRenderer>
+                  </MDXProvider>
+                </p>
               </React.Fragment>
             ) : (
               <React.Fragment>
                 <h5>{ref.fields.parentPage.title}</h5>
                 <ul>
-                  <li>{ref.string}</li>
+                  <li>
+                    <MDXProvider components={nestedComponents}>
+                      <MDXRenderer>
+                        {ref.fields.markdown.childMdx.body}
+                      </MDXRenderer>
+                    </MDXProvider>
+                  </li>
                 </ul>
               </React.Fragment>
             )}
@@ -33,14 +71,13 @@ const AnchorTag = ({ href, title, references = [], ...restProps }) => {
         }
         animation="shift-away"
       >
-        <Link
-          {...restProps}
-          to={href}
-          title={title}
-          children={ref.title ? restProps.children : ref.string}
-        />
+        <Link {...restProps} to={href} title={title} children={content} />
       </Tippy>
     );
+  }
+
+  if (withoutLink) {
+    return <span>{restProps.children}</span>;
   }
 
   return (

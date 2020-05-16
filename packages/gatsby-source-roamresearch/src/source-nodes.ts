@@ -44,9 +44,12 @@ export const sourceNodes = async (
   createNode(dbMeta);
 
   const makeMarkdownNode = (data: RoamPage | RoamBlock, node: Node) => {
-    const { string, outboundReferences, allOutboundReferences } = makeMarkdown(
-      data
-    );
+    const {
+      allString,
+      string,
+      outboundReferences,
+      allOutboundReferences,
+    } = makeMarkdown(data);
 
     const textNode = {
       id: `${node.id}-Markdown`,
@@ -64,6 +67,24 @@ export const sourceNodes = async (
       node,
       name: "markdown___NODE",
       value: textNode.id,
+    });
+
+    const allTextNode = {
+      id: `${node.id}-AllMarkdown`,
+      parent: node.id,
+      internal: {
+        type: `RoamMarkdownRepresentation`,
+        mediaType: "text/markdown",
+        content: allString,
+        contentDigest: createContentDigest(allString),
+      },
+    };
+    createNode(allTextNode);
+
+    createNodeField({
+      node,
+      name: "allMarkdown___NODE",
+      value: allTextNode.id,
     });
 
     return { outboundReferences, allOutboundReferences };

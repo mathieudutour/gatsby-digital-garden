@@ -39,7 +39,7 @@ const addDoubleBracketsLinks = (
     node.type = "link";
     node.url = titleToURL(node.label as string);
     node.title = node.label;
-    if (options?.stripBrackets && Array.isArray(node.children)) {
+    if (!options?.stripBrackets && Array.isArray(node.children)) {
       node.children[0].value = `[[${node.children[0].value}]]`;
     }
     delete node.label;

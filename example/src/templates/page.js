@@ -24,7 +24,7 @@ const PageTemplate = ({ data }) => {
   return (
     <Layout>
       <MDXProvider components={{ ...components, a: AnchorTag }}>
-        <MDXRenderer>{roamPage.fields.markdown.childMdx.body}</MDXRenderer>
+        <MDXRenderer>{roamPage.fields.allMarkdown.childMdx.body}</MDXRenderer>
       </MDXProvider>
       <ReferencesBlock references={roamPage.fields.inboundReferences} />
     </Layout>
@@ -39,7 +39,7 @@ export const pageQuery = graphql`
   query($id: String!) {
     roamPage(id: { eq: $id }) {
       fields {
-        markdown {
+        allMarkdown {
           childMdx {
             body
           }
@@ -56,7 +56,7 @@ export const pageQuery = graphql`
               slug
               markdown {
                 childMdx {
-                  excerpt
+                  body
                 }
               }
             }
@@ -68,7 +68,7 @@ export const pageQuery = graphql`
               slug
               markdown {
                 childMdx {
-                  excerpt
+                  body
                 }
               }
             }
@@ -85,7 +85,7 @@ export const pageQuery = graphql`
               slug
               markdown {
                 childMdx {
-                  excerpt
+                  body
                 }
               }
             }
@@ -97,7 +97,7 @@ export const pageQuery = graphql`
               slug
               markdown {
                 childMdx {
-                  excerpt
+                  body
                 }
               }
             }

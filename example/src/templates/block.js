@@ -30,7 +30,7 @@ const BlockTemplate = ({ data }) => {
         </Link>
       </div>
       <MDXProvider components={{ ...components, a: AnchorTag }}>
-        <MDXRenderer>{roamBlock.fields.markdown.childMdx.body}</MDXRenderer>
+        <MDXRenderer>{roamBlock.fields.allMarkdown.childMdx.body}</MDXRenderer>
       </MDXProvider>
       <ReferencesBlock references={roamBlock.fields.inboundReferences} />
     </Layout>
@@ -51,7 +51,7 @@ export const pageQuery = graphql`
             slug
           }
         }
-        markdown {
+        allMarkdown {
           childMdx {
             body
           }
@@ -68,7 +68,7 @@ export const pageQuery = graphql`
               slug
               markdown {
                 childMdx {
-                  excerpt
+                  body
                 }
               }
             }
@@ -80,7 +80,7 @@ export const pageQuery = graphql`
               slug
               markdown {
                 childMdx {
-                  excerpt
+                  body
                 }
               }
             }
@@ -97,7 +97,7 @@ export const pageQuery = graphql`
               slug
               markdown {
                 childMdx {
-                  excerpt
+                  body
                 }
               }
             }
@@ -109,7 +109,7 @@ export const pageQuery = graphql`
               slug
               markdown {
                 childMdx {
-                  excerpt
+                  body
                 }
               }
             }
