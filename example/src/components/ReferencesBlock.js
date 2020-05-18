@@ -8,7 +8,7 @@ const ReferencesBlock = ({ references }) => {
     return (
       <div className="references-block">
         <p>
-          If you think this note resonated, be it positive or negative,
+          If you think this note resonated, be it positive or negative,{" "}
           <a href="https://twitter.com/mathieudutour">ping me</a> on Twitter.
         </p>
       </div>

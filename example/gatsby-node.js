@@ -24,7 +24,7 @@ exports.onCreateNode = ({ node, actions }) => {
 };
 
 exports.createPages = async ({ graphql, actions }) => {
-  const { createPage } = actions;
+  const { createPage, createRedirect } = actions;
 
   const result = await graphql(
     `
@@ -73,5 +73,11 @@ exports.createPages = async ({ graphql, actions }) => {
         id: node.id,
       },
     });
+  });
+
+  createRedirect({
+    fromPath: "/",
+    toPath: "/About-this-notes",
+    redirectInBrowser: true,
   });
 };

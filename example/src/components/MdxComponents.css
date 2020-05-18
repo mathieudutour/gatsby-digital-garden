@@ -8,6 +8,10 @@
   background-color: #f7fafc;
 }
 
+.popover.no-max-width {
+  max-width: 90vw;
+}
+
 .popover > ul,
 .popover > p {
   margin: 0;

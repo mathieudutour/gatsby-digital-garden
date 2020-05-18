@@ -84,7 +84,7 @@ const AnchorTag = ({
     <Tippy
       animation="shift-away"
       maxWidth="none"
-      content={<div className="popover">{href}</div>}
+      content={<div className="popover no-max-width">{href}</div>}
     >
       <a {...restProps} href={href} title={title} />
     </Tippy>
