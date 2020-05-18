@@ -8,7 +8,7 @@ const propTypes = {
 };
 
 const IndexPage = ({ data }) => {
-  return <Page data={{data.roamPage}} />;
+  return <Page data={data} />;
 };
 
 IndexPage.propTypes = propTypes;
