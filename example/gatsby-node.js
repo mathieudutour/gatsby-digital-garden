@@ -74,10 +74,4 @@ exports.createPages = async ({ graphql, actions }) => {
       },
     });
   });
-
-  createRedirect({
-    fromPath: "/",
-    toPath: "/About-this-notes",
-    redirectInBrowser: true,
-  });
 };
