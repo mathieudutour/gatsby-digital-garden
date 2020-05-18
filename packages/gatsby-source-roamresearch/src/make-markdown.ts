@@ -49,13 +49,17 @@ export const makeMarkdownForBlock = (block: RoamBlock, indent: string = "") => {
     blocks: [...outboundReferences.blocks],
   };
   const string = replaceSpecialCharacter(block.string);
-  let res = `# ${string}`;
+  let res = string;
 
   block.children?.forEach((child) => {
     const resForBlock = makeMarkdownForBlock(child, `${indent}  `);
-    allOutboundReferences.blocks.push(...resForBlock.outboundReferences.blocks);
-    allOutboundReferences.pages.push(...resForBlock.outboundReferences.pages);
-    res += `\n${indent}- ${resForBlock.string}`;
+    allOutboundReferences.blocks.push(
+      ...resForBlock.allOutboundReferences.blocks
+    );
+    allOutboundReferences.pages.push(
+      ...resForBlock.allOutboundReferences.pages
+    );
+    res += `\n${indent}  - ${resForBlock.allString}`;
   });
 
   return { string, allString: res, outboundReferences, allOutboundReferences };
@@ -73,9 +77,13 @@ export const makeMarkdown = (page: RoamPage | RoamBlock) => {
 
   page.children?.forEach((block) => {
     const resForBlock = makeMarkdownForBlock(block);
-    allOutboundReferences.blocks.push(...resForBlock.outboundReferences.blocks);
-    allOutboundReferences.pages.push(...resForBlock.outboundReferences.pages);
-    res += `\n- ${resForBlock.string}`;
+    allOutboundReferences.blocks.push(
+      ...resForBlock.allOutboundReferences.blocks
+    );
+    allOutboundReferences.pages.push(
+      ...resForBlock.allOutboundReferences.pages
+    );
+    res += `\n- ${resForBlock.allString}`;
   });
 
   return { string, allString: res, outboundReferences, allOutboundReferences };
