@@ -1,12 +1,11 @@
 name: Deploy website example
 
 on:
+  pull_request:
   push:
-    branches:
-      - master
 
 jobs:
-  example-build:
+  test-and-deploy-example:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -14,6 +13,8 @@ jobs:
 
       - run: npm ci
       - run: npm run build
+
+      # - run: npm run test
 
       - run: npm ci
         working-directory: example
@@ -25,6 +26,7 @@ jobs:
           ROAM_PASSWORD: ${{ secrets.ROAM_PASSWORD }}
 
       - name: Deploy to the gh-pages branch
+        if: github.ref == 'refs/heads/master'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
