@@ -2,8 +2,8 @@
   "name": "gatsby-n-roamresearch",
   "private": true,
   "scripts": {
-    "postinstall": "cd packages/gatsby-source-roamresearch && npm install && cd ../fetch-roamresearch && npm install && cd ../gatsby-remark-double-brackets-link && npm install && cd ../gatsby-remark-double-parenthesis-link && npm install && cd ../react-stacked-pagees-hook && npm install",
-    "build": "cd packages/gatsby-source-roamresearch && npm run build && cd ../fetch-roamresearch && npm run build && cd ../gatsby-remark-double-brackets-link && npm run build && cd ../gatsby-remark-double-parenthesis-link && npm run build && cd ../react-stacked-pagees-hook && npm run build",
+    "postinstall": "cd packages/gatsby-source-roamresearch && npm install && cd ../fetch-roamresearch && npm install && cd ../gatsby-remark-double-brackets-link && npm install && cd ../gatsby-remark-double-parenthesis-link && npm install && cd ../react-stacked-pages-hook && npm install",
+    "build": "cd packages/gatsby-source-roamresearch && npm run build && cd ../fetch-roamresearch && npm run build && cd ../gatsby-remark-double-brackets-link && npm run build && cd ../gatsby-remark-double-parenthesis-link && npm run build && cd ../react-stacked-pages-hook && npm run build",
     "test": "jest"
   },
   "author": "Mathieu Dutour <mathieu@dutour.me>",
