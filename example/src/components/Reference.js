@@ -4,7 +4,7 @@ import { MagicLink } from "./MagicLink";
 import "./Reference.css";
 
 const Reference = ({ node, index }) => {
-  if (node.title) {
+  if (!node.fields.parentPage) {
     return (
       <div>
         <MagicLink to={node.fields.slug} index={index} className="reference">
@@ -15,9 +15,14 @@ const Reference = ({ node, index }) => {
       </div>
     );
   }
+
   return (
     <div>
-      <MagicLink to={node.fields.slug} index={index} className="reference">
+      <MagicLink
+        to={node.fields.parentPage.fields.slug}
+        index={index}
+        className="reference"
+      >
         <div>
           <h5>{node.fields.parentPage.title}</h5>
           <ul>

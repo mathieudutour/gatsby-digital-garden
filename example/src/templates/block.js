@@ -82,6 +82,9 @@ export const pageQuery = graphql`
             fields {
               parentPage {
                 title
+                fields {
+                  slug
+                }
               }
               slug
               markdown {

@@ -1,27 +1,20 @@
 import React from "react";
-import { Link, navigate, withPrefix } from "gatsby";
-import qs from "querystring";
+import { Link } from "gatsby";
+import { useStackedNotes } from "../hooks/use-stacked-notes";
 
-export const MagicLink = ({ to, index, ...restProps }) => {
-  return (
-    <Link
-      {...restProps}
-      onClick={(ev) => {
-        ev.preventDefault();
-        const search = qs.parse(window.location.search.replace(/^\?/, ""));
-        let stackedNotes = search.stackedNotes || [];
-        if (typeof stackedNotes === "string") {
-          stackedNotes = [stackedNotes];
-        }
-        stackedNotes.splice(index, stackedNotes.length - index, to);
-        search.stackedNotes = stackedNotes;
-        navigate(
-          `${window.location.pathname.replace(
-            withPrefix(""),
-            ""
-          )}?${qs.stringify(search)}`
-        );
-      }}
-    />
-  );
-};
+export const MagicLink = React.forwardRef(
+  ({ to, index, ...restProps }, ref) => {
+    const [, navigateToNote] = useStackedNotes();
+    return (
+      <Link
+        {...restProps}
+        to={to}
+        ref={ref}
+        onClick={(ev) => {
+          ev.preventDefault();
+          navigateToNote(to, index);
+        }}
+      />
+    );
+  }
+);
