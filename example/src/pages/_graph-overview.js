@@ -12,9 +12,9 @@ const propTypes = {
   data: PropTypes.object.isRequired,
 };
 
-const GraphOverview = ({ data }) => {
+const GraphOverview = ({ data, location }) => {
   return (
-    <Layout>
+    <Layout location={location}>
       <InteractiveForceGraph
         onSelectNode={(ev) => console.log(ev)}
         zoom
