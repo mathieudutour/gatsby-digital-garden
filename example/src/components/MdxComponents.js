@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, navigate } from "gatsby";
+import { Link, navigate, withPrefix } from "gatsby";
 import Tippy from "@tippyjs/react";
 import { MDXProvider } from "@mdx-js/react";
 import { MDXRenderer } from "gatsby-plugin-mdx";
@@ -87,7 +87,12 @@ const AnchorTag = ({
             }
             stackedNotes.splice(index, stackedNotes.length - index, href);
             search.stackedNotes = stackedNotes;
-            navigate(`${window.location.pathname}?${qs.stringify(search)}`);
+            navigate(
+              `${window.location.pathname.replace(
+                withPrefix(""),
+                ""
+              )}?${qs.stringify(search)}`
+            );
           }}
         />
       </Tippy>
