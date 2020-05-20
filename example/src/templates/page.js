@@ -1,32 +1,23 @@
 import React from "react";
 import { graphql } from "gatsby";
 import * as PropTypes from "prop-types";
-import { MDXRenderer } from "gatsby-plugin-mdx";
-import { MDXProvider } from "@mdx-js/react";
-import components from "../components/MdxComponents";
 import Layout from "../layouts";
-import ReferencesBlock from "../components/ReferencesBlock";
+import Note from "../components/Note";
 
 const propTypes = {
   data: PropTypes.object.isRequired,
 };
 
-const PageTemplate = ({ data }) => {
+const PageTemplate = ({ data, location }) => {
   const roamPage = data.roamPage;
 
-  const AnchorTag = (props) => (
-    <components.a
-      {...props}
-      references={roamPage.fields.allOutboundReferences}
-    />
-  );
-
   return (
-    <Layout>
-      <MDXProvider components={{ ...components, a: AnchorTag }}>
-        <MDXRenderer>{roamPage.fields.allMarkdown.childMdx.body}</MDXRenderer>
-      </MDXProvider>
-      <ReferencesBlock references={roamPage.fields.inboundReferences} />
+    <Layout location={location}>
+      <Note
+        mdx={roamPage.fields.allMarkdown.childMdx.body}
+        outboundReferences={roamPage.fields.allOutboundReferences}
+        inboundReferences={roamPage.fields.inboundReferences}
+      />
     </Layout>
   );
 };

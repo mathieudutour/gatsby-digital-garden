@@ -1,38 +1,27 @@
 import React from "react";
-import { graphql, Link } from "gatsby";
+import { graphql } from "gatsby";
 import * as PropTypes from "prop-types";
-import { MDXRenderer } from "gatsby-plugin-mdx";
-import { MDXProvider } from "@mdx-js/react";
-import components from "../components/MdxComponents";
 import Layout from "../layouts";
-import ReferencesBlock from "../components/ReferencesBlock";
+import Note from "../components/Note";
 
 const propTypes = {
   data: PropTypes.object.isRequired,
 };
 
-const BlockTemplate = ({ data }) => {
+const BlockTemplate = ({ data, location }) => {
   const roamBlock = data.roamBlock;
 
-  const AnchorTag = (props) => (
-    <components.a
-      {...props}
-      references={roamBlock.fields.allOutboundReferences}
-    />
-  );
-
   return (
-    <Layout>
-      <div>
-        Part of{" "}
-        <Link to={roamBlock.fields.parentPage.fields.slug}>
-          {roamBlock.fields.parentPage.title}
-        </Link>
-      </div>
-      <MDXProvider components={{ ...components, a: AnchorTag }}>
-        <MDXRenderer>{roamBlock.fields.allMarkdown.childMdx.body}</MDXRenderer>
-      </MDXProvider>
-      <ReferencesBlock references={roamBlock.fields.inboundReferences} />
+    <Layout location={location}>
+      <Note
+        partOf={{
+          slug: roamBlock.fields.parentPage.fields.slug,
+          title: roamBlock.fields.parentPage.title,
+        }}
+        mdx={roamBlock.fields.allMarkdown.childMdx.body}
+        outboundReferences={roamBlock.fields.allOutboundReferences}
+        inboundReferences={roamBlock.fields.inboundReferences}
+      />
     </Layout>
   );
 };

@@ -74,4 +74,10 @@ exports.createPages = async ({ graphql, actions }) => {
       },
     });
   });
+
+  createPage({
+    path: "/_graph-overview",
+    component: path.join(__dirname, "./src/pages/_graph-overview.js"),
+    context: {},
+  });
 };

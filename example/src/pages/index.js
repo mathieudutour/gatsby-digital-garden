@@ -7,8 +7,8 @@ const propTypes = {
   data: PropTypes.object.isRequired,
 };
 
-const IndexPage = ({ data }) => {
-  return <Page data={data} />;
+const IndexPage = ({ data, location }) => {
+  return <Page data={data} location={location} />;
 };
 
 IndexPage.propTypes = propTypes;

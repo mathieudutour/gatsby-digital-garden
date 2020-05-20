@@ -1,8 +1,9 @@
 import React from "react";
-import { Link } from "gatsby";
+import { Link, navigate } from "gatsby";
 import Tippy from "@tippyjs/react";
 import { MDXProvider } from "@mdx-js/react";
 import { MDXRenderer } from "gatsby-plugin-mdx";
+import qs from "querystring";
 
 import "./MdxComponents.css";
 
@@ -11,6 +12,7 @@ const AnchorTag = ({
   title,
   references = [],
   withoutLink,
+  index,
   ...restProps
 }) => {
   const ref = references.find(
@@ -71,7 +73,23 @@ const AnchorTag = ({
         }
         animation="shift-away"
       >
-        <Link {...restProps} to={href} title={title} children={content} />
+        <Link
+          {...restProps}
+          to={href}
+          title={title}
+          children={content}
+          onClick={(ev) => {
+            ev.preventDefault();
+            const search = qs.parse(window.location.search.replace(/^\?/, ""));
+            let stackedNotes = search.stackedNotes || [];
+            if (typeof stackedNotes === "string") {
+              stackedNotes = [stackedNotes];
+            }
+            stackedNotes.splice(index, stackedNotes.length - index, href);
+            search.stackedNotes = stackedNotes;
+            navigate(`${window.location.pathname}?${qs.stringify(search)}`);
+          }}
+        />
       </Tippy>
     );
   }
