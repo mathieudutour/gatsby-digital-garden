@@ -2,7 +2,7 @@ import React from "react";
 import Tippy from "@tippyjs/react";
 import { MDXProvider } from "@mdx-js/react";
 import { MDXRenderer } from "gatsby-plugin-mdx";
-import { MagicLink } from "./MagicLink";
+import { LinkToStacked } from "react-stacked-pages-hook";
 
 import "./MdxComponents.css";
 
@@ -71,9 +71,9 @@ const AnchorTag = ({
         }
         animation="shift-away"
       >
-        <MagicLink {...restProps} to={href} title={title}>
+        <LinkToStacked {...restProps} to={href} title={title}>
           {content}
-        </MagicLink>
+        </LinkToStacked>
       </Tippy>
     );
   }

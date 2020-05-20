@@ -3,17 +3,11 @@ import { MDXRenderer } from "gatsby-plugin-mdx";
 import { MDXProvider } from "@mdx-js/react";
 import components from "./MdxComponents";
 import ReferencesBlock from "./ReferencesBlock";
-import { MagicLink } from "./MagicLink";
+import { LinkToStacked } from "react-stacked-pages-hook";
 
 const Note = (data) => {
-  const index = data.index || 0;
-
   const AnchorTag = (props) => (
-    <components.a
-      {...props}
-      references={data.outboundReferences}
-      index={index}
-    />
+    <components.a {...props} references={data.outboundReferences} />
   );
 
   return (
@@ -21,15 +15,15 @@ const Note = (data) => {
       {data.partOf ? (
         <div>
           Part of{" "}
-          <MagicLink to={data.partOf.slug} index={index - 1}>
+          <LinkToStacked to={data.partOf.slug}>
             {data.partOf.title}
-          </MagicLink>
+          </LinkToStacked>
         </div>
       ) : null}
       <MDXProvider components={{ ...components, a: AnchorTag }}>
         <MDXRenderer>{data.mdx}</MDXRenderer>
       </MDXProvider>
-      <ReferencesBlock references={data.inboundReferences} index={index} />
+      <ReferencesBlock references={data.inboundReferences} />
     </React.Fragment>
   );
 };

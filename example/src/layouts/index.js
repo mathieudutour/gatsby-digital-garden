@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useCallback } from "react";
+import React, { useRef, useCallback } from "react";
 import { Link } from "gatsby";
 import * as PropTypes from "prop-types";
 import Note from "../components/Note";
 import { useWindowSize } from "../hooks/use-window-size";
-import { useStackedNotesProvider } from "../hooks/use-stacked-notes";
+import { useStackedPagesProvider } from "react-stacked-pages-hook";
 
 import "./layout.css";
 
@@ -12,15 +12,15 @@ const propTypes = {
 };
 
 const NoteWrapper = ({ note, i }) => (
-  <div className="note-container" style={{ left: 40 * (i + 1), right: -585 }}>
-    <Note index={i + 1} {...note} />
+  <div className="note-container" style={{ left: 40 * (i || 0), right: -585 }}>
+    <Note {...note} />
   </div>
 );
 
 const NotesLayout = ({ children, location }) => {
   const windowSize = useWindowSize();
   const scrollContainer = useRef();
-  const pageToNote = useCallback(
+  const processPageQuery = useCallback(
     (x) =>
       x.json.data.roamPage
         ? {
@@ -43,16 +43,18 @@ const NotesLayout = ({ children, location }) => {
         : null,
     []
   );
+
   const [
-    stackedNotes,
-    navigateToNote,
+    stackedPages,
+    navigateToStackedPage,
     ContextProvider,
-  ] = useStackedNotesProvider({
-    indexNote: "/About-these-notes",
+    PageIndexProvider,
+  ] = useStackedPagesProvider({
+    firstPageSlug: "/About-these-notes",
     location,
-    pageToNote,
+    processPageQuery,
     containerRef: scrollContainer,
-    noteWidth: 625,
+    pageWidth: 625,
   });
 
   return (
@@ -68,9 +70,9 @@ const NotesLayout = ({ children, location }) => {
       <div className="note-columns-scrolling-container" ref={scrollContainer}>
         <div
           className="note-columns-container"
-          style={{ width: 625 * (stackedNotes.length + 1) }}
+          style={{ width: 625 * (stackedPages.length + 1) }}
         >
-          <ContextProvider value={{ stackedNotes, navigateToNote }}>
+          <ContextProvider value={{ stackedPages, navigateToStackedPage }}>
             {windowSize.width > 800 ? (
               <React.Fragment>
                 <div
@@ -79,19 +81,22 @@ const NotesLayout = ({ children, location }) => {
                 >
                   {children}
                 </div>
-                {stackedNotes.map((note, i) => (
-                  <NoteWrapper note={note.data} i={i} key={note.slug} />
+                {stackedPages.map((page, i) => (
+                  <PageIndexProvider value={i + 1} key={page.slug}>
+                    <NoteWrapper i={i + 1} note={page.data} />
+                  </PageIndexProvider>
                 ))}
               </React.Fragment>
-            ) : !stackedNotes.length ? (
+            ) : !stackedPages.length ? (
               <div className="note-container" style={{ left: 0, right: -585 }}>
                 {children}
               </div>
             ) : (
-              <NoteWrapper
-                note={stackedNotes[stackedNotes.length - 1].data}
-                i={stackedNotes.length - 1}
-              />
+              <PageIndexProvider value={stackedPages.length - 1}>
+                <NoteWrapper
+                  note={stackedPages[stackedPages.length - 1].data}
+                />
+              </PageIndexProvider>
             )}
           </ContextProvider>
         </div>

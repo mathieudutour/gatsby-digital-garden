@@ -1,0 +1,38 @@
+{
+  "name": "react-stacked-pages-hook",
+  "version": "0.1.0",
+  "description": "Manage a stack of pages in Gatsby",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "npm run clean && ../../node_modules/.bin/tsc -p ./tsconfig.json",
+    "watch": "npm run build -- --watch",
+    "clean": "rm -rf lib",
+    "prepublishOnly": "npm run build",
+    "test": "jest"
+  },
+  "keywords": [
+    "react",
+    "hook",
+    "stacked notes"
+  ],
+  "files": [
+    "lib"
+  ],
+  "author": "Mathieu Dutour <mathieu@dutour.me>",
+  "repository": {
+    "url": "https://github.com/mathieudutour/gatsby-n-roamresearch",
+    "directory": "packages/react-stacked-pages-hook"
+  },
+  "license": "MIT",
+  "peerDependencies": {
+    "gatsby": "*",
+    "react": "*"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.35",
+    "@types/react-dom": "^16.9.8",
+    "gatsby": "*",
+    "react": "*",
+    "react-dom": "^16.13.1"
+  }
+}

@@ -1,26 +1,25 @@
 import React from "react";
-import { MagicLink } from "./MagicLink";
+import { LinkToStacked } from "react-stacked-pages-hook";
 
 import "./Reference.css";
 
-const Reference = ({ node, index }) => {
+const Reference = ({ node }) => {
   if (!node.fields.parentPage) {
     return (
       <div>
-        <MagicLink to={node.fields.slug} index={index} className="reference">
+        <LinkToStacked to={node.fields.slug} className="reference">
           <div>
             <h5>{node.title}</h5>
           </div>
-        </MagicLink>
+        </LinkToStacked>
       </div>
     );
   }
 
   return (
     <div>
-      <MagicLink
+      <LinkToStacked
         to={node.fields.parentPage.fields.slug}
-        index={index}
         className="reference"
       >
         <div>
@@ -29,7 +28,7 @@ const Reference = ({ node, index }) => {
             <li>{node.string}</li>
           </ul>
         </div>
-      </MagicLink>
+      </LinkToStacked>
     </div>
   );
 };
