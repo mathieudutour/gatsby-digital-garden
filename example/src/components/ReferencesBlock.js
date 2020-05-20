@@ -3,7 +3,7 @@ import Reference from "./Reference";
 
 import "./ReferencesBlock.css";
 
-const ReferencesBlock = ({ references }) => {
+const ReferencesBlock = ({ references, index }) => {
   if (!references.length) {
     return (
       <div className="references-block">
@@ -20,7 +20,7 @@ const ReferencesBlock = ({ references }) => {
       <h3>Referred in</h3>
       <div>
         {references.map((ref) => (
-          <Reference node={ref} key={ref.id} />
+          <Reference node={ref} index={index} key={ref.id} />
         ))}
       </div>
       <hr />

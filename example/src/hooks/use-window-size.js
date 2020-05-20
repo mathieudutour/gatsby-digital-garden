@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 
+const ONCE = []; // Empty array ensures that effect is only run on mount and unmount
+
 export function useWindowSize() {
   const isClient = typeof window === "object";
 
@@ -23,7 +25,7 @@ export function useWindowSize() {
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
-  }, []); // Empty array ensures that effect is only run on mount and unmount
+  }, ONCE); // eslint-disable-line
 
   return windowSize;
 }
