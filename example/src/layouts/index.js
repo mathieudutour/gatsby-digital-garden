@@ -1,6 +1,5 @@
-import React, { useRef, useCallback } from "react";
+import React, { useCallback } from "react";
 import { Link } from "gatsby";
-import * as PropTypes from "prop-types";
 import Note from "../components/Note";
 import { useWindowSize } from "../hooks/use-window-size";
 import {
