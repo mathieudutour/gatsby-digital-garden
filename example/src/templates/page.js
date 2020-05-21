@@ -12,7 +12,11 @@ const PageTemplate = ({ data, location }) => {
   const roamPage = data.roamPage;
 
   return (
-    <Layout location={location}>
+    <Layout
+      location={location}
+      slug={roamPage.fields.slug}
+      title={roamPage.title}
+    >
       <Note
         mdx={roamPage.fields.allMarkdown.childMdx.body}
         outboundReferences={roamPage.fields.allOutboundReferences}
@@ -29,7 +33,9 @@ export default PageTemplate;
 export const pageQuery = graphql`
   query($id: String!) {
     roamPage(id: { eq: $id }) {
+      title
       fields {
+        slug
         allMarkdown {
           childMdx {
             body

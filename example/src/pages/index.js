@@ -18,7 +18,9 @@ export default IndexPage;
 export const pageQuery = graphql`
   query {
     roamPage(title: { eq: "About these notes" }) {
+      title
       fields {
+        slug
         allMarkdown {
           childMdx {
             body

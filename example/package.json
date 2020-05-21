@@ -14,7 +14,7 @@
     "gatsby-plugin-mdx": "^1.2.7",
     "react": "^16.3.1",
     "react-dom": "^16.3.1",
-    "react-stacked-pages-hook": "^0.1.0",
+    "react-stacked-pages-hook": "^0.2.0",
     "react-vis-force": "^0.3.1",
     "slugify": "^1.4.0"
   },

@@ -127,6 +127,30 @@ header > a {
   border-left: none;
 }
 
+.note-container .note-content,
+.note-container .obstructed-label {
+  transition: opacity 75ms linear;
+}
+
+.note-container .obstructed-label {
+  display: block;
+  color: #1a202c;
+  text-decoration: none;
+  font-size: 17px;
+  line-height: 40px;
+  font-weight: 500;
+  writing-mode: vertical-lr;
+  margin-top: 36px;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  position: absolute;
+  background-color: transparent;
+  width: 40px;
+  overflow: hidden;
+  opacity: 0;
+}
+
 @media screen and (max-width: 800px) {
   .note-columns-container {
     width: unset !important;
@@ -151,6 +175,16 @@ header > a {
     overflow-y: auto;
     border-left: 1px solid rgba(0, 0, 0, 0.05);
     padding: 32px;
+  }
+
+  .note-container-overlay {
     box-shadow: 0px 0px 15px 3px rgba(0, 0, 0, 0.1);
+  }
+
+  .note-container-obstructed .note-content {
+    opacity: 0;
+  }
+  .note-container-obstructed .obstructed-label {
+    opacity: 1;
   }
 }

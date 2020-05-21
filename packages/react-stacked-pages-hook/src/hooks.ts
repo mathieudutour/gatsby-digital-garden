@@ -1,12 +1,15 @@
-import React, {
+import {
   useState,
   useEffect,
   useMemo,
   useContext,
   useCallback,
+  useRef,
 } from "react";
-import { navigate, withPrefix, GatsbyLinkProps, Link } from "gatsby";
+import { navigate, withPrefix } from "gatsby";
 import qs from "querystring";
+import throttle from "lodash.throttle";
+import { StackedPagesContext, StackedPagesIndexContext } from "./contexts";
 
 declare global {
   interface Window {
@@ -17,29 +20,64 @@ declare global {
   }
 }
 
-export const StackedPagesContext = React.createContext<{
-  stackedPages: { slug: string; data: any }[];
-  navigateToStackedPage: (to: string, index?: number) => void;
-}>({ stackedPages: [], navigateToStackedPage: () => {} });
+const throttleTime = 16;
+const obstructedOffset = 120;
 
-export const StackedPagesIndexContext = React.createContext<number>(0);
+function useScroll() {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const [scroll, setScroll] = useState(0);
+  const [width, setWidth] = useState(0);
+
+  const scrollObserver = useCallback(() => {
+    if (!containerRef.current) {
+      return;
+    }
+    setScroll(containerRef.current.scrollLeft);
+    setWidth(containerRef.current.getBoundingClientRect().width);
+  }, [setScroll, setWidth, containerRef]);
+
+  const throttledScrollObserver = throttle(scrollObserver, throttleTime);
+
+  const setRef = useCallback((node: HTMLDivElement) => {
+    if (node) {
+      // When the ref is first set (after mounting)
+      node.addEventListener("scroll", throttledScrollObserver);
+      containerRef.current = node;
+      window.addEventListener("resize", throttledScrollObserver);
+      throttledScrollObserver(); // initialization
+    } else if (containerRef.current) {
+      // When unmounting
+      containerRef.current.removeEventListener(
+        "scroll",
+        throttledScrollObserver
+      );
+      window.removeEventListener("resize", throttledScrollObserver);
+    }
+  }, []);
+
+  return [scroll, width, setRef, containerRef] as const;
+}
+
+type ScrollState = {
+  [slug: string]: { obstructed: boolean; overlay: boolean };
+};
 
 export function useStackedPagesProvider<T>({
   location,
   processPageQuery,
   firstPageSlug,
-  containerRef,
   pageWidth = 625,
 }: {
   location: Location;
   processPageQuery?: (queryResult: any) => T | null;
   firstPageSlug?: string;
-  containerRef?: React.MutableRefObject<HTMLDivElement | null>;
   pageWidth?: number;
 }) {
+  const [scroll, containerWidth, setRef, containerRef] = useScroll();
   const [stackedPages, setStackedPages] = useState<{ slug: string; data: T }[]>(
     []
   );
+  const [stackedPageStates, setStackedPageStates] = useState<ScrollState>({});
 
   const stackedPagesSlugs = useMemo(() => {
     const res = qs.parse(location.search.replace(/^\?/, "")).stackedPages || [];
@@ -73,7 +111,7 @@ export function useStackedPagesProvider<T>({
   }, [stackedPagesSlugs]);
 
   useEffect(() => {
-    if (containerRef && containerRef.current) {
+    if (containerRef.current) {
       containerRef.current.scrollTo({
         top: 0,
         left: pageWidth * (stackedPages.length + 1),
@@ -81,6 +119,44 @@ export function useStackedPagesProvider<T>({
       });
     }
   }, [stackedPages, containerRef]);
+
+  useEffect(() => {
+    const acc: ScrollState = firstPageSlug
+      ? {
+          [firstPageSlug]: {
+            overlay: false,
+            obstructed: scroll > pageWidth - obstructedOffset,
+          },
+        }
+      : {};
+
+    if (!containerRef.current) {
+      setStackedPageStates(
+        stackedPages.reduce((prev, x) => {
+          prev[x.slug] = {
+            overlay: true,
+            obstructed: false,
+          };
+          return prev;
+        }, acc)
+      );
+      return;
+    }
+
+    setStackedPageStates(
+      stackedPages.reduce((prev, x, i) => {
+        prev[x.slug] = {
+          overlay:
+            scroll > pageWidth * i - (40 * i - 1) ||
+            scroll < pageWidth * (i - 1),
+          obstructed:
+            scroll > pageWidth * (i + 2) - obstructedOffset ||
+            scroll + containerWidth < pageWidth * (i + 1) + obstructedOffset,
+        };
+        return prev;
+      }, acc)
+    );
+  }, [stackedPages, containerRef, scroll, setStackedPageStates]);
 
   const navigateToStackedPage = useCallback(
     (to, index) => {
@@ -116,9 +192,11 @@ export function useStackedPagesProvider<T>({
 
   return [
     stackedPages,
+    stackedPageStates,
     navigateToStackedPage,
     StackedPagesContext.Provider,
     StackedPagesIndexContext.Provider,
+    setRef,
   ];
 }
 
@@ -132,20 +210,5 @@ export function useStackedPages() {
     (to: string) => navigateToStackedPage(to, index),
     [navigateToStackedPage, index]
   );
-  return [stackedPages, hookedNavigateToStackedPage] as const;
+  return [stackedPages, hookedNavigateToStackedPage, index] as const;
 }
-
-export const LinkToStacked = React.forwardRef(
-  ({ to, ...restProps }: GatsbyLinkProps<any>, ref) => {
-    const [, navigateToStackedPage] = useStackedPages();
-    const onClick = useCallback(
-      (ev: React.MouseEvent<HTMLAnchorElement>) => {
-        ev.preventDefault();
-        navigateToStackedPage(to);
-      },
-      [navigateToStackedPage, to]
-    );
-    // @ts-ignore
-    return <Link {...restProps} to={to} ref={ref} onClick={onClick} />;
-  }
-);

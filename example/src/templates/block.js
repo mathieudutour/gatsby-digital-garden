@@ -12,7 +12,11 @@ const BlockTemplate = ({ data, location }) => {
   const roamBlock = data.roamBlock;
 
   return (
-    <Layout location={location}>
+    <Layout
+      location={location}
+      slug={roamBlock.fields.slug}
+      title={roamBlock.fields.parentPage.title}
+    >
       <Note
         partOf={{
           slug: roamBlock.fields.parentPage.fields.slug,
@@ -34,6 +38,7 @@ export const pageQuery = graphql`
   query($id: String!) {
     roamBlock(id: { eq: $id }) {
       fields {
+        slug
         parentPage {
           title
           fields {
