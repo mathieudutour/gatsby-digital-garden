@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { Link } from "gatsby";
 import Note from "../components/Note";
-import { useWindowSize } from "../hooks/use-window-size";
+import { useWindowWidth } from "@react-hook/window-size";
 import {
   useStackedPagesProvider,
   LinkToStacked,
@@ -38,7 +38,7 @@ const NoteWrapper = ({
 );
 
 const NotesLayout = ({ children, location, slug, title }) => {
-  const windowSize = useWindowSize();
+  const windowWidth = useWindowWidth();
   const processPageQuery = useCallback(
     (x) =>
       x.json.data.roamPage
@@ -95,7 +95,7 @@ const NotesLayout = ({ children, location, slug, title }) => {
           style={{ width: 625 * (stackedPages.length + 1) }}
         >
           <ContextProvider value={{ stackedPages, navigateToStackedPage }}>
-            {windowSize.width > 800 ? (
+            {windowWidth > 800 ? (
               <React.Fragment>
                 <NoteWrapper
                   PageIndexProvider={PageIndexProvider}
