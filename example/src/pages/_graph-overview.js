@@ -1,16 +1,11 @@
 import React from "react";
 import { graphql } from "gatsby";
-import * as PropTypes from "prop-types";
 import {
   InteractiveForceGraph,
   ForceGraphNode,
   ForceGraphLink,
 } from "react-vis-force";
 import Layout from "../layouts/index";
-
-const propTypes = {
-  data: PropTypes.object.isRequired,
-};
 
 const GraphOverview = ({ data, location }) => {
   return (
@@ -36,7 +31,7 @@ const GraphOverview = ({ data, location }) => {
         ))}
         {data.allRoamPage.nodes
           .reduce((prev, node) => {
-            node.fields.outboundReferences.forEach((ref) => {
+            node.childMdx.outboundReferences.forEach(({ parent: ref }) => {
               if (!ref.fields) {
                 if (
                   ref.id !== node.id &&
@@ -77,8 +72,6 @@ const GraphOverview = ({ data, location }) => {
     </Layout>
   );
 };
-
-GraphOverview.propTypes = propTypes;
 
 export default GraphOverview;
 
