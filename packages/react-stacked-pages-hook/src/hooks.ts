@@ -67,11 +67,13 @@ export function useStackedPagesProvider<T>({
   processPageQuery,
   firstPageSlug,
   pageWidth = 625,
+  obstructedPageWidth = 40,
 }: {
   location: Location;
   processPageQuery?: (queryResult: any) => T | null;
   firstPageSlug?: string;
   pageWidth?: number;
+  obstructedPageWidth?: number;
 }) {
   const [scroll, containerWidth, setRef, containerRef] = useScroll();
   const [stackedPages, setStackedPages] = useState<{ slug: string; data: T }[]>(
@@ -147,10 +149,13 @@ export function useStackedPagesProvider<T>({
       stackedPages.reduce((prev, x, i) => {
         prev[x.slug] = {
           overlay:
-            scroll > pageWidth * i - (40 * i - 1) ||
+            scroll > pageWidth * i - (obstructedPageWidth * i - 1) ||
             scroll < pageWidth * (i - 1),
           obstructed:
-            scroll > pageWidth * (i + 2) - obstructedOffset ||
+            scroll >
+              pageWidth * (i + 2) -
+                obstructedOffset -
+                obstructedPageWidth * i ||
             scroll + containerWidth < pageWidth * (i + 1) + obstructedOffset,
         };
         return prev;
