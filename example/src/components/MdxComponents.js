@@ -64,6 +64,7 @@ const AnchorTag = ({
                 </MDXProvider>
               </React.Fragment>
             )}
+            <div className="more-content-blind" />
           </div>
         }
         animation="shift-away"

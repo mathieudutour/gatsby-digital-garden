@@ -29,6 +29,21 @@
   padding-left: 1rem;
 }
 
+.popover .more-content-blind {
+  height: 4rem;
+  position: absolute;
+  background: transparent;
+  background: linear-gradient(
+    0,
+    rgba(247, 250, 252, 1) 0%,
+    rgba(247, 250, 252, 0.8) 50%,
+    rgba(247, 250, 252, 0) 100%
+  );
+  top: 12rem;
+  width: 100%;
+  left: 0;
+}
+
 /* copied from tippy.js/animations/shift-away.css */
 .tippy-box[data-animation="shift-away"][data-state="hidden"] {
   opacity: 0;
