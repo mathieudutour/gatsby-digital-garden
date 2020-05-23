@@ -11,14 +11,18 @@ jobs:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
 
-      - run: npm ci
-      - run: npm run build
+      - name: Install all plugins
+        run: npm ci
+      - name: Build all plugins
+        run: npm run build
 
       # - run: npm run test
 
-      - run: npm ci
+      - name: Install example
+        run: npm ci
         working-directory: example
-      - run: npm run build -- --prefix-paths
+      - name: Build example
+        run: npm run build -- --prefix-paths
         working-directory: example
         env:
           ROAM_URL: ${{ secrets.ROAM_URL }}
