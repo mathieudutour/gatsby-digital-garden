@@ -16,7 +16,11 @@ const AnchorTag = ({
   const ref = references.find(
     (x) =>
       x.parent.uid === (title || "").replace("__roam_block_", "") ||
-      (x.parent.title && x.parent.title === title)
+      (x.parent.title && x.parent.title === title) ||
+      (x.parent.childMdx &&
+        x.parent.childMdx.frontmatter &&
+        x.parent.childMdx.frontmatter &&
+        x.parent.childMdx.frontmatter.title === title)
   );
 
   if (ref) {
@@ -42,13 +46,7 @@ const AnchorTag = ({
       <Tippy
         content={
           <div id={ref.parent.id} className="popover with-markdown">
-            {ref.parent.title ? (
-              <React.Fragment>
-                <MDXProvider components={nestedComponents}>
-                  <MDXRenderer>{ref.body}</MDXRenderer>
-                </MDXProvider>
-              </React.Fragment>
-            ) : (
+            {ref.parent.fields.parentPage ? (
               <React.Fragment>
                 <h5>{ref.parent.fields.parentPage.title}</h5>
                 <ul>
@@ -58,6 +56,12 @@ const AnchorTag = ({
                     </MDXProvider>
                   </li>
                 </ul>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <MDXProvider components={nestedComponents}>
+                  <MDXRenderer>{ref.body}</MDXRenderer>
+                </MDXProvider>
               </React.Fragment>
             )}
           </div>

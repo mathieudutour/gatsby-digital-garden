@@ -92,11 +92,8 @@ export const pageQuery = graphql`
           outboundReferences {
             ... on Mdx {
               parent {
-                ... on RoamPage {
-                  id
-                }
+                id
                 ... on RoamBlock {
-                  id
                   fields {
                     parentPage {
                       id

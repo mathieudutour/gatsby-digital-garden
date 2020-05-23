@@ -16,63 +16,85 @@ IndexPage.propTypes = propTypes;
 export default IndexPage;
 
 export const pageQuery = graphql`
+  fragment References on Mdx {
+    outboundReferences {
+      ... on Mdx {
+        body
+        parent {
+          id
+          ... on RoamBlock {
+            uid
+            string
+            fields {
+              parentPage {
+                title
+              }
+              slug
+            }
+          }
+          ... on RoamPage {
+            title
+            fields {
+              slug
+            }
+          }
+          ... on File {
+            fields {
+              slug
+            }
+            childMdx {
+              frontmatter {
+                title
+              }
+            }
+          }
+        }
+      }
+    }
+    inboundReferences {
+      ... on Mdx {
+        body
+        parent {
+          id
+          ... on RoamBlock {
+            string
+            fields {
+              parentPage {
+                title
+                fields {
+                  slug
+                }
+              }
+              slug
+            }
+          }
+          ... on RoamPage {
+            title
+            fields {
+              slug
+            }
+          }
+          ... on File {
+            fields {
+              slug
+            }
+            childMdx {
+              frontmatter {
+                title
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
   query {
     roamPage(title: { eq: "About these notes" }) {
       title
       childMdx {
         body
-        outboundReferences {
-          ... on Mdx {
-            body
-            parent {
-              ... on RoamBlock {
-                id
-                uid
-                string
-                fields {
-                  parentPage {
-                    title
-                  }
-                  slug
-                }
-              }
-              ... on RoamPage {
-                id
-                title
-                fields {
-                  slug
-                }
-              }
-            }
-          }
-        }
-        inboundReferences {
-          ... on Mdx {
-            body
-            parent {
-              ... on RoamBlock {
-                id
-                string
-                fields {
-                  parentPage {
-                    title
-                    fields {
-                      slug
-                    }
-                  }
-                  slug
-                }
-              }
-              ... on RoamPage {
-                id
-                title
-                fields {
-                  slug
-                }
-              }
-            }
-          }
-        }
+        ...References
       }
       fields {
         slug

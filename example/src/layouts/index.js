@@ -61,6 +61,13 @@ const NotesLayout = ({ children, location, slug, title }) => {
               title: x.json.data.roamBlock.fields.parentPage.title,
             },
           }
+        : x.json.data.file
+        ? {
+            title: x.json.data.file.childMdx.frontmatter.title,
+            mdx: x.json.data.file.childMdx.body,
+            outboundReferences: x.json.data.file.childMdx.outboundReferences,
+            inboundReferences: x.json.data.file.childMdx.inboundReferences,
+          }
         : null,
     []
   );

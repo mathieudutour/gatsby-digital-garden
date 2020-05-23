@@ -1,12 +1,7 @@
 import React from "react";
 import { graphql } from "gatsby";
-import * as PropTypes from "prop-types";
 import Layout from "../layouts";
 import Note from "../components/Note";
-
-const propTypes = {
-  data: PropTypes.object.isRequired,
-};
 
 const PageTemplate = ({ data, location }) => {
   const roamPage = data.roamPage;
@@ -26,8 +21,6 @@ const PageTemplate = ({ data, location }) => {
   );
 };
 
-PageTemplate.propTypes = propTypes;
-
 export default PageTemplate;
 
 export const pageQuery = graphql`
@@ -36,58 +29,7 @@ export const pageQuery = graphql`
       title
       childMdx {
         body
-        outboundReferences {
-          ... on Mdx {
-            body
-            parent {
-              ... on RoamBlock {
-                id
-                uid
-                string
-                fields {
-                  parentPage {
-                    title
-                  }
-                  slug
-                }
-              }
-              ... on RoamPage {
-                id
-                title
-                fields {
-                  slug
-                }
-              }
-            }
-          }
-        }
-        inboundReferences {
-          ... on Mdx {
-            body
-            parent {
-              ... on RoamBlock {
-                id
-                string
-                fields {
-                  parentPage {
-                    title
-                    fields {
-                      slug
-                    }
-                  }
-                  slug
-                }
-              }
-              ... on RoamPage {
-                id
-                title
-                fields {
-                  slug
-                }
-              }
-            }
-          }
-        }
+        ...References
       }
       fields {
         slug

@@ -21,6 +21,13 @@ exports.onCreateNode = ({ node, actions }) => {
       value: `/${slugify(node.uid)}`,
     });
   }
+  if (node.internal.type === `File` && node.sourceInstanceName === `pages`) {
+    createNodeField({
+      node,
+      name: `slug`,
+      value: `/${node.relativePath.replace(`.${node.extension}`, "")}`,
+    });
+  }
 };
 
 exports.createPages = async ({ graphql, actions }) => {
@@ -45,6 +52,14 @@ exports.createPages = async ({ graphql, actions }) => {
             }
           }
         }
+        allFile(limit: 1000) {
+          nodes {
+            id
+            fields {
+              slug
+            }
+          }
+        }
       }
     `
   );
@@ -55,6 +70,7 @@ exports.createPages = async ({ graphql, actions }) => {
 
   const componentPage = path.join(__dirname, "./src/templates/page.js");
   const componentBlock = path.join(__dirname, "./src/templates/block.js");
+  const componentMarkdown = path.join(__dirname, "./src/templates/markdown.js");
 
   result.data.allRoamPage.nodes.forEach((node) => {
     createPage({
@@ -69,6 +85,15 @@ exports.createPages = async ({ graphql, actions }) => {
     createPage({
       path: node.fields.slug,
       component: componentBlock,
+      context: {
+        id: node.id,
+      },
+    });
+  });
+  result.data.allFile.nodes.forEach((node) => {
+    createPage({
+      path: node.fields.slug,
+      component: componentMarkdown,
       context: {
         id: node.id,
       },

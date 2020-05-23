@@ -12,6 +12,13 @@ module.exports = {
   },
   plugins: [
     {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `pages`,
+        path: `${__dirname}/notes`,
+      },
+    },
+    {
       resolve: path.join(__dirname, "../packages/gatsby-source-roamresearch"),
       options: {
         url: process.env.ROAM_URL,
