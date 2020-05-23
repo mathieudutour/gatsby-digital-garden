@@ -4,12 +4,12 @@ import { LinkToStacked } from "react-stacked-pages-hook";
 import "./Reference.css";
 
 const Reference = ({ node }) => {
-  if (!node.fields.parentPage) {
+  if (!node.parent.fields.parentPage) {
     return (
       <div>
-        <LinkToStacked to={node.fields.slug} className="reference">
+        <LinkToStacked to={node.parent.fields.slug} className="reference">
           <div>
-            <h5>{node.title}</h5>
+            <h5>{node.parent.title}</h5>
           </div>
         </LinkToStacked>
       </div>
@@ -19,13 +19,13 @@ const Reference = ({ node }) => {
   return (
     <div>
       <LinkToStacked
-        to={node.fields.parentPage.fields.slug}
+        to={node.parent.fields.parentPage.fields.slug}
         className="reference"
       >
         <div>
-          <h5>{node.fields.parentPage.title}</h5>
+          <h5>{node.parent.fields.parentPage.title}</h5>
           <ul>
-            <li>{node.string}</li>
+            <li>{node.parent.string}</li>
           </ul>
         </div>
       </LinkToStacked>

@@ -1,7 +1,7 @@
 {
-  "name": "gatsby-source-roamresearch",
-  "version": "0.4.0",
-  "description": "Source plugin for pulling data into Gatsby from Roam Research",
+  "name": "gatsby-transformer-markdown-references",
+  "version": "0.1.0",
+  "description": "Transform markdown nodes to add the necesserary references for bi-directional links",
   "main": "index.js",
   "scripts": {
     "build": "npm run clean && ../../node_modules/.bin/tsc -p ./tsconfig.json",
@@ -12,9 +12,10 @@
   },
   "keywords": [
     "gatsby",
-    "source",
-    "roam",
-    "roamresearch"
+    "transformer",
+    "markdown",
+    "references",
+    "bi-directional links"
   ],
   "files": [
     "index.js",
@@ -24,12 +25,10 @@
   "author": "Mathieu Dutour <mathieu@dutour.me>",
   "repository": {
     "url": "https://github.com/mathieudutour/gatsby-n-roamresearch",
-    "directory": "packages/gatsby-source-roamresearch"
+    "directory": "packages/gatsby-transformer-markdown-references"
   },
   "license": "MIT",
-  "dependencies": {
-    "fetch-roamresearch": "^0.1.2"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/react-dom": "^16.9.8",
     "gatsby": "^2.21.26"

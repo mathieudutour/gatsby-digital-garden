@@ -44,18 +44,18 @@ const NotesLayout = ({ children, location, slug, title }) => {
       x.json.data.roamPage
         ? {
             title: x.json.data.roamPage.title,
-            mdx: x.json.data.roamPage.fields.allMarkdown.childMdx.body,
+            mdx: x.json.data.roamPage.childMdx.body,
             outboundReferences:
-              x.json.data.roamPage.fields.allOutboundReferences,
-            inboundReferences: x.json.data.roamPage.fields.inboundReferences,
+              x.json.data.roamPage.childMdx.outboundReferences,
+            inboundReferences: x.json.data.roamPage.childMdx.inboundReferences,
           }
         : x.json.data.roamBlock
         ? {
             title: x.json.data.roamBlock.fields.parentPage.title,
-            mdx: x.json.data.roamBlock.fields.allMarkdown.childMdx.body,
+            mdx: x.json.data.roamBlock.childMdx.body,
             outboundReferences:
-              x.json.data.roamBlock.fields.allOutboundReferences,
-            inboundReferences: x.json.data.roamBlock.fields.inboundReferences,
+              x.json.data.roamBlock.childMdx.outboundReferences,
+            inboundReferences: x.json.data.roamBlock.childMdx.inboundReferences,
             partOf: {
               slug: x.json.data.roamBlock.fields.parentPage.fields.slug,
               title: x.json.data.roamBlock.fields.parentPage.title,

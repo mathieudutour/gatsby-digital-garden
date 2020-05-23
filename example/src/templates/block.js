@@ -22,9 +22,9 @@ const BlockTemplate = ({ data, location }) => {
           slug: roamBlock.fields.parentPage.fields.slug,
           title: roamBlock.fields.parentPage.title,
         }}
-        mdx={roamBlock.fields.allMarkdown.childMdx.body}
-        outboundReferences={roamBlock.fields.allOutboundReferences}
-        inboundReferences={roamBlock.fields.inboundReferences}
+        mdx={roamBlock.childMdx.body}
+        outboundReferences={roamBlock.childMdx.outboundReferences}
+        inboundReferences={roamBlock.childMdx.inboundReferences}
       />
     </Layout>
   );
@@ -37,79 +37,67 @@ export default BlockTemplate;
 export const pageQuery = graphql`
   query($id: String!) {
     roamBlock(id: { eq: $id }) {
-      fields {
-        slug
-        parentPage {
-          title
-          fields {
-            slug
-          }
-        }
-        allMarkdown {
-          childMdx {
+      childMdx {
+        body
+        outboundReferences {
+          ... on Mdx {
             body
-          }
-        }
-        allOutboundReferences {
-          ... on RoamBlock {
-            id
-            uid
-            string
-            fields {
-              parentPage {
-                title
-              }
-              slug
-              markdown {
-                childMdx {
-                  body
+            parent {
+              ... on RoamBlock {
+                id
+                uid
+                string
+                fields {
+                  parentPage {
+                    title
+                  }
+                  slug
                 }
               }
-            }
-          }
-          ... on RoamPage {
-            id
-            title
-            fields {
-              slug
-              markdown {
-                childMdx {
-                  body
+              ... on RoamPage {
+                id
+                title
+                fields {
+                  slug
                 }
               }
             }
           }
         }
         inboundReferences {
-          ... on RoamBlock {
-            id
-            string
-            fields {
-              parentPage {
+          ... on Mdx {
+            body
+            parent {
+              ... on RoamBlock {
+                id
+                string
+                fields {
+                  parentPage {
+                    title
+                    fields {
+                      slug
+                    }
+                  }
+                  slug
+                }
+              }
+              ... on RoamPage {
+                id
                 title
                 fields {
                   slug
                 }
               }
-              slug
-              markdown {
-                childMdx {
-                  body
-                }
-              }
             }
           }
-          ... on RoamPage {
-            id
-            title
-            fields {
-              slug
-              markdown {
-                childMdx {
-                  body
-                }
-              }
-            }
+        }
+      }
+      fields {
+        slug
+        parentPage {
+          title
+          fields {
+            slug
           }
         }
       }

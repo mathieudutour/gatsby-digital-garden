@@ -36,7 +36,7 @@ const GraphOverview = ({ data, location }) => {
         ))}
         {data.allRoamPage.nodes
           .reduce((prev, node) => {
-            node.fields.allOutboundReferences.forEach((ref) => {
+            node.fields.outboundReferences.forEach((ref) => {
               if (!ref.fields) {
                 if (
                   ref.id !== node.id &&
@@ -88,21 +88,27 @@ export const pageQuery = graphql`
       nodes {
         id
         title
-        fields {
-          slug
-          allOutboundReferences {
-            ... on RoamPage {
-              id
-            }
-            ... on RoamBlock {
-              id
-              fields {
-                parentPage {
+        childMdx {
+          outboundReferences {
+            ... on Mdx {
+              parent {
+                ... on RoamPage {
                   id
+                }
+                ... on RoamBlock {
+                  id
+                  fields {
+                    parentPage {
+                      id
+                    }
+                  }
                 }
               }
             }
           }
+        }
+        fields {
+          slug
         }
       }
     }

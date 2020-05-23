@@ -19,75 +19,63 @@ export const pageQuery = graphql`
   query {
     roamPage(title: { eq: "About these notes" }) {
       title
-      fields {
-        slug
-        allMarkdown {
-          childMdx {
+      childMdx {
+        body
+        outboundReferences {
+          ... on Mdx {
             body
-          }
-        }
-        allOutboundReferences {
-          ... on RoamBlock {
-            id
-            uid
-            string
-            fields {
-              parentPage {
-                title
-              }
-              slug
-              markdown {
-                childMdx {
-                  body
+            parent {
+              ... on RoamBlock {
+                id
+                uid
+                string
+                fields {
+                  parentPage {
+                    title
+                  }
+                  slug
                 }
               }
-            }
-          }
-          ... on RoamPage {
-            id
-            title
-            fields {
-              slug
-              markdown {
-                childMdx {
-                  body
+              ... on RoamPage {
+                id
+                title
+                fields {
+                  slug
                 }
               }
             }
           }
         }
         inboundReferences {
-          ... on RoamBlock {
-            id
-            string
-            fields {
-              parentPage {
+          ... on Mdx {
+            body
+            parent {
+              ... on RoamBlock {
+                id
+                string
+                fields {
+                  parentPage {
+                    title
+                    fields {
+                      slug
+                    }
+                  }
+                  slug
+                }
+              }
+              ... on RoamPage {
+                id
                 title
                 fields {
                   slug
                 }
               }
-              slug
-              markdown {
-                childMdx {
-                  body
-                }
-              }
-            }
-          }
-          ... on RoamPage {
-            id
-            title
-            fields {
-              slug
-              markdown {
-                childMdx {
-                  body
-                }
-              }
             }
           }
         }
+      }
+      fields {
+        slug
       }
     }
   }

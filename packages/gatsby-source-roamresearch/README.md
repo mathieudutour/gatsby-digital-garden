@@ -1,8 +1,6 @@
 # gatsby-source-roamresearch
 
-Source plugin for pulling data into Gatsby from
-Roam Research. It creates links between pages so they can be
-queried in Gatsby using GraphQL.
+Source plugin for pulling data into Gatsby from Roam Research. It creates links between pages so they can be queried in Gatsby using GraphQL.
 
 An example site for using this plugin is at https://mathieudutour.github.io/gatsby-n-roamresearch/
 
@@ -21,7 +19,7 @@ First, you need a way to pass environment variables to the build process, so sec
 module.exports = {
   plugins: [
     {
-      resolve: `gatsby-source-contentful`,
+      resolve: `gatsby-source-roamresearch`,
       options: {
         url: `https://roamresearch.com/#/app/YOUR_DATABASE_HERE`,
         // Learn about environment variables: https://gatsby.dev/env-vars
@@ -33,9 +31,9 @@ module.exports = {
 };
 ```
 
-### Offline
+<!-- ### Offline
 
-If you don't have internet connection you can add `export GATSBY_ROAM_RESEARCH_OFFLINE=true` to tell the plugin to fallback to the cached data, if there is any.
+If you don't have internet connection you can add `export GATSBY_ROAM_RESEARCH_OFFLINE=true` to tell the plugin to fallback to the cached data, if there is any. -->
 
 ### Configuration options
 
@@ -85,11 +83,6 @@ export const blockQuery = graphql`
   {
     roamBlock(id: "foo") {
       string
-      fields {
-        inboundReferences {
-          id
-        }
-      }
     }
   }
 `;
@@ -99,31 +92,15 @@ You might query for a **single** node inside a component in your `src/components
 
 #### A note about markdown fields
 
-Roam Research uses Markdown for its formatting. The content is exposed as a node under `fields.markdown` (in addition to `string` or `title`).
+Roam Research uses Markdown for its formatting.
+
+In order to handle the Markdown content, you must use a transformer plugin such as [gatsby-transformer-remark](https://www.gatsbyjs.org/packages/gatsby-transformer-remark/) or [gatsby-plugin-mdx](https://www.gatsbyjs.org/packages/gatsby-plugin-mdx/). The transformer will create a childMarkdownRemark field on the node and expose the generated html as a child node:
 
 ```graphql
 {
   roamBlock {
-    fields {
-      markdown {
-        id
-      }
-    }
-  }
-}
-```
-
-In order to handle the Markdown content, you must use a transformer plugin such as [gatsby-transformer-remark](https://www.gatsbyjs.org/packages/gatsby-transformer-remark/). The transformer will create a childMarkdownRemark on the "markdown" field and expose the generated html as a child node:
-
-```graphql
-{
-  roamBlock {
-    fields {
-      markdown {
-        childMarkdownRemark {
-          html
-        }
-      }
+    childMarkdownRemark {
+      html
     }
   }
 }
@@ -135,12 +112,14 @@ You can then insert the returned HTML inline in your JSX:
 <div
   className="body"
   dangerouslySetInnerHTML={{
-    __html: data.roamBlock.fields.markdown.childMarkdownRemark.html,
+    __html: data.roamBlock.childMarkdownRemark.html,
   }}
 />
 ```
 
-> Note that Roam Research uses some non-standard syntax for its internal links, so you will need some additional plugins to handle them.
+> Note that Roam Research uses some non-standard syntax for its internal links, so you will need some additional plugins to handle them (for example [gatsby-remark-double-brackets-link](../gatsby-remark-double-brackets-link) and [gatsby-remark-double-parenthesis-link](../gatsby-remark-double-parenthesis-link)).
+>
+> In order to extract the references between the nodes, you can use [gatsby-transformer-markdown-references](../gatsby-transformer-markdown-references).
 
 ## Sourcing From Multiple Roam Research databases
 

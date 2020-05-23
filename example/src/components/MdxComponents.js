@@ -15,8 +15,8 @@ const AnchorTag = ({
 }) => {
   const ref = references.find(
     (x) =>
-      x.uid === (title || "").replace("__roam_block_", "") ||
-      (x.title && x.title === title)
+      x.parent.uid === (title || "").replace("__roam_block_", "") ||
+      (x.parent.title && x.parent.title === title)
   );
 
   if (ref) {
@@ -28,11 +28,11 @@ const AnchorTag = ({
         return <span {...props} />;
       },
     };
-    const content = ref.title ? (
+    const content = ref.parent.title ? (
       restProps.children
     ) : (
       <MDXProvider components={nestedComponents}>
-        <MDXRenderer>{ref.fields.markdown.childMdx.body}</MDXRenderer>
+        <MDXRenderer>{ref.body}</MDXRenderer>
       </MDXProvider>
     );
     if (withoutLink) {
@@ -41,27 +41,20 @@ const AnchorTag = ({
     return (
       <Tippy
         content={
-          <div id={ref.id} className="popover">
-            {ref.title ? (
+          <div id={ref.parent.id} className="popover with-markdown">
+            {ref.parent.title ? (
               <React.Fragment>
-                <h5>{ref.title}</h5>
-                <p>
-                  <MDXProvider components={nestedComponents}>
-                    <MDXRenderer>
-                      {ref.fields.markdown.childMdx.body}
-                    </MDXRenderer>
-                  </MDXProvider>
-                </p>
+                <MDXProvider components={nestedComponents}>
+                  <MDXRenderer>{ref.body}</MDXRenderer>
+                </MDXProvider>
               </React.Fragment>
             ) : (
               <React.Fragment>
-                <h5>{ref.fields.parentPage.title}</h5>
+                <h5>{ref.parent.fields.parentPage.title}</h5>
                 <ul>
                   <li>
                     <MDXProvider components={nestedComponents}>
-                      <MDXRenderer>
-                        {ref.fields.markdown.childMdx.body}
-                      </MDXRenderer>
+                      <MDXRenderer>{ref.body}</MDXRenderer>
                     </MDXProvider>
                   </li>
                 </ul>

@@ -34,5 +34,11 @@ module.exports = {
         ],
       },
     },
+    {
+      resolve: path.join(
+        __dirname,
+        "../packages/gatsby-transformer-markdown-references"
+      ),
+    },
   ],
 };
