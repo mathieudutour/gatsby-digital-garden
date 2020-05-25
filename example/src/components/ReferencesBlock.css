@@ -35,3 +35,7 @@ body.light-mode {
   color: var(--references-text);
   transition: color 0.3s ease;
 }
+
+.references-block > p:last-child {
+  margin-bottom: 0;
+}
