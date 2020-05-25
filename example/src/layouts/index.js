@@ -1,11 +1,12 @@
-import React, { useCallback } from "react";
-import { Link } from "gatsby";
+import React from "react";
+import { Link, useStaticQuery, graphql } from "gatsby";
 import Note from "../components/Note";
 import { useWindowWidth } from "@react-hook/window-size";
 import {
   useStackedPagesProvider,
   LinkToStacked,
 } from "react-stacked-pages-hook";
+import { dataToNote } from "./data-to-note";
 
 import "./layout.css";
 
@@ -37,40 +38,20 @@ const NoteWrapper = ({
   </PageIndexProvider>
 );
 
+const processPageQuery = (x) => dataToNote(x.json.data);
+
 const NotesLayout = ({ children, location, slug, title }) => {
+  const gatsbyData = useStaticQuery(graphql`
+    query {
+      site {
+        siteMetadata {
+          title
+        }
+      }
+    }
+  `);
+
   const windowWidth = useWindowWidth();
-  const processPageQuery = useCallback(
-    (x) =>
-      x.json.data.roamPage
-        ? {
-            title: x.json.data.roamPage.title,
-            mdx: x.json.data.roamPage.childMdx.body,
-            outboundReferences:
-              x.json.data.roamPage.childMdx.outboundReferences,
-            inboundReferences: x.json.data.roamPage.childMdx.inboundReferences,
-          }
-        : x.json.data.roamBlock
-        ? {
-            title: x.json.data.roamBlock.fields.parentPage.title,
-            mdx: x.json.data.roamBlock.childMdx.body,
-            outboundReferences:
-              x.json.data.roamBlock.childMdx.outboundReferences,
-            inboundReferences: x.json.data.roamBlock.childMdx.inboundReferences,
-            partOf: {
-              slug: x.json.data.roamBlock.fields.parentPage.fields.slug,
-              title: x.json.data.roamBlock.fields.parentPage.title,
-            },
-          }
-        : x.json.data.file
-        ? {
-            title: x.json.data.file.childMdx.frontmatter.title,
-            mdx: x.json.data.file.childMdx.body,
-            outboundReferences: x.json.data.file.childMdx.outboundReferences,
-            inboundReferences: x.json.data.file.childMdx.inboundReferences,
-          }
-        : null,
-    []
-  );
 
   const [
     stackedPages,
@@ -90,9 +71,7 @@ const NotesLayout = ({ children, location, slug, title }) => {
     <div className="layout">
       <header>
         <Link to="/">
-          <h3>
-            Example of using Roam Research as a data source for a Gatsby site
-          </h3>
+          <h3>{gatsbyData.site.siteMetadata.title}</h3>
         </Link>
       </header>
 

@@ -2,6 +2,7 @@ import React from "react";
 import { graphql } from "gatsby";
 import Layout from "../layouts";
 import Note from "../components/Note";
+import { dataToNote } from "../layouts/data-to-note";
 
 const BlockTemplate = ({ data, location }) => {
   const roamBlock = data.roamBlock;
@@ -12,15 +13,7 @@ const BlockTemplate = ({ data, location }) => {
       slug={roamBlock.fields.slug}
       title={roamBlock.fields.parentPage.title}
     >
-      <Note
-        partOf={{
-          slug: roamBlock.fields.parentPage.fields.slug,
-          title: roamBlock.fields.parentPage.title,
-        }}
-        mdx={roamBlock.childMdx.body}
-        outboundReferences={roamBlock.childMdx.outboundReferences}
-        inboundReferences={roamBlock.childMdx.inboundReferences}
-      />
+      <Note {...dataToNote(data)} />
     </Layout>
   );
 };

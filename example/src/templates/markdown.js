@@ -2,6 +2,7 @@ import React from "react";
 import { graphql } from "gatsby";
 import Layout from "../layouts";
 import Note from "../components/Note";
+import { dataToNote } from "../layouts/data-to-note";
 
 const MarkdownTemplate = ({ data, location }) => {
   const file = data.file;
@@ -12,11 +13,7 @@ const MarkdownTemplate = ({ data, location }) => {
       slug={file.fields.slug}
       title={file.childMdx.frontmatter.title}
     >
-      <Note
-        mdx={file.childMdx.body}
-        outboundReferences={file.childMdx.outboundReferences}
-        inboundReferences={file.childMdx.inboundReferences}
-      />
+      <Note {...dataToNote(data)} />
     </Layout>
   );
 };

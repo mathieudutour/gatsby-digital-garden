@@ -2,6 +2,7 @@ import React from "react";
 import { graphql } from "gatsby";
 import Layout from "../layouts";
 import Note from "../components/Note";
+import { dataToNote } from "../layouts/data-to-note";
 
 const PageTemplate = ({ data, location }) => {
   const roamPage = data.roamPage;
@@ -12,11 +13,7 @@ const PageTemplate = ({ data, location }) => {
       slug={roamPage.fields.slug}
       title={roamPage.title}
     >
-      <Note
-        mdx={roamPage.childMdx.body}
-        outboundReferences={roamPage.childMdx.outboundReferences}
-        inboundReferences={roamPage.childMdx.inboundReferences}
-      />
+      <Note {...dataToNote(data)} />
     </Layout>
   );
 };
