@@ -47,5 +47,6 @@ module.exports = {
         "../packages/gatsby-transformer-markdown-references"
       ),
     },
+    "gatsby-plugin-use-dark-mode",
   ],
 };

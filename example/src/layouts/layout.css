@@ -5,11 +5,31 @@ html {
   line-height: 1.5;
 }
 
+body.dark-mode {
+  --main-bg: #000000;
+  --note-bg: #0a0d11;
+  --text: #fafafc;
+  --separator: #252525;
+  --shadow: rgba(255, 255, 255, 0.1);
+  --link: #3da1ff;
+}
+
+body.light-mode {
+  --main-bg: #fafafc;
+  --note-bg: #ffffff;
+  --text: #1a202c;
+  --separator: #e2e8f0;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --link: #3182ce;
+}
+
 body {
-  background-color: #fafafc;
+  background-color: var(--main-bg);
+  color: var(--text);
   margin: 0;
   padding: 0;
   height: 100vh;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 h1,
@@ -50,7 +70,7 @@ h3 {
 }
 
 hr {
-  border: 0 solid #e2e8f0;
+  border: 0 solid var(--separator);
   margin-top: 1rem;
   margin-bottom: 1rem;
   border-top-width: 1px;
@@ -60,8 +80,9 @@ hr {
 }
 
 a {
-  color: #3182ce;
+  color: var(--link);
   text-decoration: underline;
+  transition: color 0.3s ease;
 }
 
 a:hover {
@@ -79,7 +100,6 @@ p {
 }
 
 .layout {
-  color: #1a202c;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -91,19 +111,22 @@ header {
   width: 100%;
   min-height: 44px;
   z-index: 5;
-  background-color: white;
-  border-bottom: 1px solid #dadada;
+  background-color: var(--note-bg);
+  border-bottom: 1px solid var(--separator);
   display: flex;
+  justify-content: space-between;
   align-items: center;
   padding-top: 10px;
   padding-bottom: 10px;
   flex-wrap: wrap;
+  transition: background-color 0.3s ease;
 }
 
 header > a {
   font-weight: 700;
-  color: #1a202c;
+  color: var(--text);
   text-decoration: none;
+  transition: color 0.3s ease;
 }
 
 .note-columns-scrolling-container {
@@ -120,7 +143,8 @@ header > a {
 }
 
 .note-container {
-  background-color: white;
+  background-color: var(--note-bg);
+  transition: background-color 0.3s ease;
 }
 
 .note-container:first-child {
@@ -134,7 +158,7 @@ header > a {
 
 .note-container .obstructed-label {
   display: block;
-  color: #1a202c;
+  color: var(--text);
   text-decoration: none;
   font-size: 17px;
   line-height: 40px;
@@ -149,6 +173,7 @@ header > a {
   width: 40px;
   overflow: hidden;
   opacity: 0;
+  transition: color 0.3s ease;
 }
 
 @media screen and (max-width: 800px) {
@@ -173,12 +198,12 @@ header > a {
     position: sticky;
     flex-grow: 1;
     overflow-y: auto;
-    border-left: 1px solid rgba(0, 0, 0, 0.05);
+    border-left: 1px solid var(--separator);
     padding: 32px;
   }
 
   .note-container-overlay {
-    box-shadow: 0px 0px 15px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 15px 3px var(--shadow);
   }
 
   .note-container-obstructed .note-content {

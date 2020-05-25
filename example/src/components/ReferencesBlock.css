@@ -1,9 +1,24 @@
+body.dark-mode {
+  --references-bg: #17181a;
+  --references-bg-80: #17181acc;
+  --references-text: #8c9fbb;
+  --references-highlight: #b3cbf0;
+}
+
+body.light-mode {
+  --references-bg: #ebf4ff;
+  --references-bg-80: #ebf4ffcc;
+  --references-text: #718096;
+  --references-highlight: #4a5568;
+}
+
 .references-block {
-  color: #718096;
+  color: var(--references-text);
   padding: 1rem;
   margin: 1rem 0;
   border-radius: 0.5rem;
-  background-color: #ebf4ff;
+  background-color: var(--references-bg);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .references-block > div {
@@ -17,5 +32,6 @@
 }
 
 .references-block a {
-  color: #718096;
+  color: var(--references-text);
+  transition: color 0.3s ease;
 }
