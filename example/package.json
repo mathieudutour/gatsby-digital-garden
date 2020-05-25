@@ -17,7 +17,7 @@
     "gatsby-source-filesystem": "^2.3.8",
     "react": "^16.3.1",
     "react-dom": "^16.3.1",
-    "react-stacked-pages-hook": "^0.2.0",
+    "react-stacked-pages-hook": "^0.3.0",
     "react-vis-force": "^0.3.1",
     "slugify": "^1.4.0",
     "use-dark-mode": "^2.3.1"

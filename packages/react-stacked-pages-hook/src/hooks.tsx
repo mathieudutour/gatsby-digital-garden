@@ -1,4 +1,4 @@
-import {
+import React, {
   useState,
   useEffect,
   useMemo,
@@ -9,7 +9,11 @@ import {
 import { navigate, withPrefix } from "gatsby";
 import qs from "querystring";
 import throttle from "lodash.throttle";
-import { StackedPagesContext, StackedPagesIndexContext } from "./contexts";
+import {
+  StackedPagesContext,
+  StackedPagesIndexContext,
+  ScrollState,
+} from "./contexts";
 
 declare global {
   interface Window {
@@ -58,28 +62,50 @@ function useScroll() {
   return [scroll, width, setRef, containerRef] as const;
 }
 
-type ScrollState = {
-  [slug: string]: { obstructed: boolean; overlay: boolean };
-};
+function getRoot<T>(
+  firstPage?: { data: any; slug: string },
+  processPageQuery?: (queryResult: any, slug: string) => T | null
+): { slug: string; data: T }[] {
+  return firstPage
+    ? [
+        processPageQuery
+          ? {
+              data: processPageQuery(firstPage.data, firstPage.slug),
+              slug: firstPage.slug,
+            }
+          : firstPage,
+      ]
+    : [];
+}
 
 export function useStackedPagesProvider<T>({
   location,
   processPageQuery,
-  firstPageSlug,
+  firstPage,
   pageWidth = 625,
   obstructedPageWidth = 40,
 }: {
   location: Location;
-  processPageQuery?: (queryResult: any) => T | null;
-  firstPageSlug?: string;
+  processPageQuery?: (queryResult: any, slug: string) => T | null;
+  firstPage?: { data: any; slug: string };
   pageWidth?: number;
   obstructedPageWidth?: number;
 }) {
   const [scroll, containerWidth, setRef, containerRef] = useScroll();
   const [stackedPages, setStackedPages] = useState<{ slug: string; data: T }[]>(
-    []
+    getRoot(firstPage, processPageQuery)
   );
-  const [stackedPageStates, setStackedPageStates] = useState<ScrollState>({});
+  const [stackedPageStates, setStackedPageStates] = useState<ScrollState>(
+    firstPage
+      ? {
+          [firstPage.slug]: {
+            obstructed: false,
+            highlighted: false,
+            overlay: scroll > pageWidth - obstructedOffset,
+          },
+        }
+      : {}
+  );
 
   const stackedPagesSlugs = useMemo(() => {
     const res = qs.parse(location.search.replace(/^\?/, "")).stackedPages || [];
@@ -101,13 +127,17 @@ export function useStackedPagesProvider<T>({
       stackedPagesSlugs.map((slug) => window.___loader.loadPage(slug))
     ).then((data) =>
       setStackedPages(
-        // filter out 404s
-        data
-          .map((x, i) => ({
-            slug: stackedPagesSlugs[i],
-            data: processPageQuery ? processPageQuery(x) : x,
-          }))
-          .filter((x) => x.data)
+        getRoot(firstPage, processPageQuery).concat(
+          // filter out 404s
+          data
+            .map((x, i) => ({
+              slug: stackedPagesSlugs[i],
+              data: processPageQuery
+                ? processPageQuery(x.json.data, stackedPagesSlugs[i])
+                : x,
+            }))
+            .filter((x) => x.data)
+        )
       )
     );
   }, [stackedPagesSlugs]);
@@ -123,14 +153,7 @@ export function useStackedPagesProvider<T>({
   }, [stackedPages, containerRef]);
 
   useEffect(() => {
-    const acc: ScrollState = firstPageSlug
-      ? {
-          [firstPageSlug]: {
-            overlay: false,
-            obstructed: scroll > pageWidth - obstructedOffset,
-          },
-        }
-      : {};
+    const acc: ScrollState = {};
 
     if (!containerRef.current) {
       setStackedPageStates(
@@ -138,6 +161,7 @@ export function useStackedPagesProvider<T>({
           prev[x.slug] = {
             overlay: true,
             obstructed: false,
+            highlighted: false,
           };
           return prev;
         }, acc)
@@ -148,15 +172,16 @@ export function useStackedPagesProvider<T>({
     setStackedPageStates(
       stackedPages.reduce((prev, x, i) => {
         prev[x.slug] = {
+          highlighted: false,
           overlay:
-            scroll > pageWidth * i - (obstructedPageWidth * i - 1) ||
-            scroll < pageWidth * (i - 1),
+            scroll > pageWidth * (i - 1) - (obstructedPageWidth * i - 2) ||
+            scroll < pageWidth * (i - 2),
           obstructed:
             scroll >
-              pageWidth * (i + 2) -
+              pageWidth * (i + 1) -
                 obstructedOffset -
-                obstructedPageWidth * i ||
-            scroll + containerWidth < pageWidth * (i + 1) + obstructedOffset,
+                obstructedPageWidth * (i - 1) ||
+            scroll + containerWidth < pageWidth * i + obstructedOffset,
         };
         return prev;
       }, acc)
@@ -164,26 +189,20 @@ export function useStackedPagesProvider<T>({
   }, [stackedPages, containerRef, scroll, setStackedPageStates]);
 
   const navigateToStackedPage = useCallback(
-    (to, index) => {
-      let existingPage = stackedPages.findIndex((x) => x.slug === to);
-      if (existingPage === -1) {
-        if (to === firstPageSlug) {
-          existingPage = 0;
-        }
-      } else {
-        existingPage += 1;
-      }
+    (to: string, index: number = 0) => {
+      const existingPage = stackedPages.findIndex((x) => x.slug === to);
       if (existingPage !== -1 && containerRef && containerRef.current) {
         containerRef.current.scrollTo({
           top: 0,
-          left: pageWidth * existingPage,
+          left:
+            pageWidth * existingPage - (obstructedPageWidth * existingPage - 1),
           behavior: "smooth",
         });
         return;
       }
       const search = qs.parse(window.location.search.replace(/^\?/, ""));
       search.stackedPages = stackedPages
-        .slice(0, index)
+        .slice(1, index + 1)
         .map((x) => x.slug)
         .concat(to);
       navigate(
@@ -195,25 +214,74 @@ export function useStackedPagesProvider<T>({
     [stackedPages]
   );
 
+  const highlightStackedPage = useCallback(
+    (slug: string, highlighted?: boolean) => {
+      setStackedPageStates((stackedPageStates) => {
+        if (!stackedPageStates[slug]) {
+          return stackedPageStates;
+        }
+        return {
+          ...stackedPageStates,
+          [slug]: {
+            ...stackedPageStates[slug],
+            highlighted:
+              typeof highlighted !== "undefined"
+                ? highlighted
+                : !stackedPageStates[slug].highlighted,
+          },
+        };
+      });
+    },
+    [setStackedPageStates]
+  );
+
+  const Provider = useMemo(() => {
+    return ({ children }: { children: React.ReactNode }) => (
+      <StackedPagesContext.Provider
+        value={{
+          stackedPages,
+          navigateToStackedPage,
+          highlightStackedPage,
+          stackedPageStates,
+        }}
+      >
+        {children}
+      </StackedPagesContext.Provider>
+    );
+  }, [
+    stackedPages,
+    navigateToStackedPage,
+    highlightStackedPage,
+    stackedPageStates,
+  ]);
+
   return [
     stackedPages,
     stackedPageStates,
-    navigateToStackedPage,
-    StackedPagesContext.Provider,
+    Provider,
     StackedPagesIndexContext.Provider,
     setRef,
+    navigateToStackedPage,
+    highlightStackedPage,
   ];
 }
 
 export function useStackedPages() {
-  const { stackedPages, navigateToStackedPage } = useContext(
-    StackedPagesContext
-  );
+  const {
+    stackedPages,
+    navigateToStackedPage,
+    highlightStackedPage,
+  } = useContext(StackedPagesContext);
   const index = useContext(StackedPagesIndexContext);
 
   const hookedNavigateToStackedPage = useCallback(
     (to: string) => navigateToStackedPage(to, index),
     [navigateToStackedPage, index]
   );
-  return [stackedPages, hookedNavigateToStackedPage, index] as const;
+  return [
+    stackedPages,
+    hookedNavigateToStackedPage,
+    highlightStackedPage,
+    index,
+  ] as const;
 }

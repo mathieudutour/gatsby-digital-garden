@@ -1,21 +1,10 @@
 import React from "react";
 import { graphql } from "gatsby";
 import Layout from "../layouts";
-import Note from "../components/Note";
-import { dataToNote } from "../layouts/data-to-note";
 
 const PageTemplate = ({ data, location }) => {
   const roamPage = data.roamPage;
-
-  return (
-    <Layout
-      location={location}
-      slug={roamPage.fields.slug}
-      title={roamPage.title}
-    >
-      <Note {...dataToNote(data)} />
-    </Layout>
-  );
+  return <Layout location={location} slug={roamPage.fields.slug} data={data} />;
 };
 
 export default PageTemplate;

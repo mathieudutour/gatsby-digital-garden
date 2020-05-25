@@ -27,13 +27,14 @@ const StackedPageWrapper = ({
   slug,
   overlay,
   obstructed,
+  highlighted,
   i,
 }) => (
   <PageIndexProvider value={i}>
     <div
       className={`page-container ${overlay ? "page-container-overlay" : ""} ${
         obstructed ? "page-container-obstructed" : ""
-      }`}
+      }  ${highlighted ? "page-container-highlighted" : ""}`}
       style={{ left: 40 * i, right: -585 }}
     >
       <div className="page-content">{children}</div>
@@ -44,7 +45,7 @@ const StackedPageWrapper = ({
   </PageIndexProvider>
 );
 
-const StackedLayout = ({ children, location, slug }) => {
+const StackedLayout = ({ data, location, slug }) => {
   // Use this callback to update what you want to stack.
   // `pageQuery` will be similar to the props you get in a Page component.
   // You can return `null` to filter out the page
@@ -53,12 +54,13 @@ const StackedLayout = ({ children, location, slug }) => {
   const [
     stackedPages,
     stackedPageStates,
-    navigateToStackedPage,
     ContextProvider,
     PageIndexProvider,
     scrollContainer,
+    navigateToStackedPage,
+    highlightStackedPage,
   ] = useStackedNotesProvider({
-    firstPageSlug: slug,
+    firstPage: { data, slug },
     location,
     processPageQuery,
     containerRef: scrollContainer,
@@ -72,37 +74,15 @@ const StackedLayout = ({ children, location, slug }) => {
           className="page-columns-container"
           style={{ width: 625 * (stackedPages.length + 1) }}
         >
-          <ContextProvider value={{ stackedPages, navigateToStackedPage }}>
-            {/* Render the first page */}
-            <StackedPageWrapper
-              PageIndexProvider={PageIndexProvider}
-              i={0}
-              slug={slug}
-              overlay={
-                stackedPageStates[slug] && stackedPageStates[slug].overlay
-              }
-              obstructed={
-                stackedPageStates[slug] && stackedPageStates[slug].obstructed
-              }
-            >
-              {children}
-            </StackedPageWrapper>
-
+          <ContextProvider>
             {/* Render the stacked pages */}
             {stackedPages.map((page, i) => (
               <StackedPageWrapper
                 PageIndexProvider={PageIndexProvider}
-                i={i + 1}
+                i={i}
                 key={page.slug}
                 slug={page.slug}
-                overlay={
-                  stackedPageStates[page.slug] &&
-                  stackedPageStates[page.slug].overlay
-                }
-                obstructed={
-                  stackedPageStates[page.slug] &&
-                  stackedPageStates[page.slug].obstructed
-                }
+                {...stackedPageStates[page.slug]}
               >
                 <Page {...page} />
               </StackedPageWrapper>
@@ -123,7 +103,12 @@ Somewhere in your stacked page, you can use
 import { useStackedPages, LinkToStacked } from "react-stacked-pages-hook";
 
 const Component = () => {
-  const [stackedPages, navigateToStackedPage] = useStackedPages();
+  const [
+    stackedPages,
+    navigateToStackedPage,
+    highlightStackedPage,
+    stackedPageIndex,
+  ] = useStackedPages();
 
   return null;
 };
