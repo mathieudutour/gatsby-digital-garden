@@ -1,7 +1,7 @@
 {
   "name": "gatsby-theme-garden",
-  "version": "0.1.1",
-  "description": "Transform markdown nodes to add the necesserary references for bi-directional links",
+  "version": "0.1.2",
+  "description": "Gatsby theme to create a digital garden",
   "main": "index.js",
   "scripts": {
     "test": "jest"
