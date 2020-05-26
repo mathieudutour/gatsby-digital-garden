@@ -1,0 +1,28 @@
+name: Test react-stacked-pages-hook
+
+on:
+  pull_request:
+    paths:
+      - "packages/react-stacked-pages-hook/**"
+  push:
+    paths:
+      - "packages/react-stacked-pages-hook/**"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+
+      - name: Install root
+        run: npm ci
+
+      - name: Install plugin
+        run: npm ci
+        working-directory: packages/react-stacked-pages-hook
+
+      - name: Build plugin
+        run: npm run build
+        working-directory: packages/react-stacked-pages-hook
+      # - run: npm run test

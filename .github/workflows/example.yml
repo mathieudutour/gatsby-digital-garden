@@ -2,21 +2,18 @@ name: Deploy website example
 
 on:
   pull_request:
+    paths:
+      - "example/**"
   push:
+    paths:
+      - "example/**"
 
 jobs:
-  test-and-deploy-example:
+  deploy-example:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
-
-      - name: Install all plugins
-        run: npm ci
-      - name: Build all plugins
-        run: npm run build
-
-      # - run: npm run test
 
       - name: Install example
         run: npm ci

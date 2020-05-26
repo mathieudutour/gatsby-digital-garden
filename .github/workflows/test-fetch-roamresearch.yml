@@ -1,0 +1,28 @@
+name: Test fetch-roamresearch
+
+on:
+  pull_request:
+    paths:
+      - "packages/fetch-roamresearch/**"
+  push:
+    paths:
+      - "packages/fetch-roamresearch/**"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+
+      - name: Install root
+        run: npm ci
+
+      - name: Install plugin
+        run: npm ci
+        working-directory: packages/fetch-roamresearch
+
+      - name: Build plugin
+        run: npm run build
+        working-directory: packages/fetch-roamresearch
+      # - run: npm run test
