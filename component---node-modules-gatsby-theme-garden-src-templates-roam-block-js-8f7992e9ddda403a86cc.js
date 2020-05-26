@@ -1,2 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[4],{uzbm:function(n,r,u){"use strict";u.r(r),u.d(r,"pageQuery",(function(){return e}));var a=u("mQrI");r.default=a.a;var e="2481889627"}}]);
-//# sourceMappingURL=component---node-modules-gatsby-theme-garden-src-templates-roam-block-js-8f7992e9ddda403a86cc.js.map
