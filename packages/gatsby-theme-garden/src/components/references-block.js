@@ -1,7 +1,7 @@
 import React from "react";
-import Reference from "./Reference";
+import Reference from "./reference";
 
-import "./ReferencesBlock.css";
+import "./references-block.css";
 
 const ReferencesBlock = ({ references }) => {
   const footer = (

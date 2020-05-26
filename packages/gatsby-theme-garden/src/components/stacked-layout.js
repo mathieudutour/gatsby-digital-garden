@@ -1,25 +1,15 @@
 import React from "react";
-import { Link, useStaticQuery, graphql } from "gatsby";
 import { useWindowWidth } from "@react-hook/window-size";
 import { useStackedPagesProvider } from "react-stacked-pages-hook";
-import { dataToNote } from "./data-to-note";
-import Note from "../components/Note";
-import { DarkModeToggle } from "../components/DarkModeToggle";
-import { NoteWrapper } from "../components/NoteWrapper";
+import { dataToNote, dataToSlug } from "../utils/data-to-note";
+import Note from "./note";
+import NoteWrapper from "./note-wrapper";
+import Header from "./header";
 
-import "./layout.css";
+import "./theme.css";
+import "./stacked-layout.css";
 
 const NotesLayout = ({ location, slug, data }) => {
-  const gatsbyData = useStaticQuery(graphql`
-    query {
-      site {
-        siteMetadata {
-          title
-        }
-      }
-    }
-  `);
-
   const windowWidth = useWindowWidth();
 
   const [
@@ -29,7 +19,7 @@ const NotesLayout = ({ location, slug, data }) => {
     PageIndexProvider,
     scrollContainer,
   ] = useStackedPagesProvider({
-    firstPage: { slug, data },
+    firstPage: { slug: dataToSlug(data), data },
     location,
     processPageQuery: dataToNote,
     pageWidth: 625,
@@ -37,12 +27,7 @@ const NotesLayout = ({ location, slug, data }) => {
 
   return (
     <div className="layout">
-      <header>
-        <Link to="/">
-          <h3>{gatsbyData.site.siteMetadata.title}</h3>
-        </Link>
-        <DarkModeToggle />
-      </header>
+      <Header />
 
       <div className="note-columns-scrolling-container" ref={scrollContainer}>
         <div

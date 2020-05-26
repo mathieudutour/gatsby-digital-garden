@@ -1,8 +1,8 @@
 import React from "react";
 import { MDXRenderer } from "gatsby-plugin-mdx";
 import { MDXProvider } from "@mdx-js/react";
-import components from "./MdxComponents";
-import ReferencesBlock from "./ReferencesBlock";
+import components from "./mdx-components";
+import ReferencesBlock from "./references-block";
 import { LinkToStacked } from "react-stacked-pages-hook";
 
 const Note = (data) => {

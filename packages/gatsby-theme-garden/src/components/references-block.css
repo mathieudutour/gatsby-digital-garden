@@ -1,17 +1,3 @@
-body.dark-mode {
-  --references-bg: #17181a;
-  --references-bg-80: #17181acc;
-  --references-text: #8c9fbb;
-  --references-highlight: #b3cbf0;
-}
-
-body.light-mode {
-  --references-bg: #ebf4ff;
-  --references-bg-80: #ebf4ffcc;
-  --references-text: #718096;
-  --references-highlight: #4a5568;
-}
-
 .references-block {
   color: var(--references-text);
   padding: 1rem;

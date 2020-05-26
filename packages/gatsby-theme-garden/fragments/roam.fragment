@@ -1,0 +1,56 @@
+import { graphql } from "gatsby";
+
+export const references = graphql`
+  fragment GatsbyGardenReferences on Mdx {
+    outboundReferences {
+      ... on Mdx {
+        body
+        parent {
+          id
+          ... on RoamBlock {
+            uid
+            string
+            fields {
+              parentPage {
+                title
+              }
+              slug
+            }
+          }
+          ... on RoamPage {
+            title
+            fields {
+              slug
+            }
+          }
+        }
+      }
+    }
+    inboundReferences {
+      ... on Mdx {
+        body
+        parent {
+          id
+          ... on RoamBlock {
+            string
+            fields {
+              parentPage {
+                title
+                fields {
+                  slug
+                }
+              }
+              slug
+            }
+          }
+          ... on RoamPage {
+            title
+            fields {
+              slug
+            }
+          }
+        }
+      }
+    }
+  }
+`;

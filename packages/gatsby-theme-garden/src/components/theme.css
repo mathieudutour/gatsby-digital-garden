@@ -1,0 +1,33 @@
+body.light-mode {
+  --main-bg: #fafafc;
+  --note-bg: #ffffff;
+  --text: #1a202c;
+  --separator: #e2e8f0;
+  --shadow: rgba(0, 0, 0, 0.1);
+  --link: #3182ce;
+}
+
+body.light-mode {
+  --references-bg: #ebf4ff;
+  --references-bg-80: #ebf4ffcc;
+  --references-text: #718096;
+  --references-highlight: #4a5568;
+}
+
+/*********** DARK MODE **************/
+
+body.dark-mode {
+  --main-bg: #000000;
+  --note-bg: #0a0d11;
+  --text: #fafafc;
+  --separator: #252525;
+  --shadow: rgba(255, 255, 255, 0.1);
+  --link: #3da1ff;
+}
+
+body.dark-mode {
+  --references-bg: #17181a;
+  --references-bg-80: #17181acc;
+  --references-text: #8c9fbb;
+  --references-highlight: #b3cbf0;
+}

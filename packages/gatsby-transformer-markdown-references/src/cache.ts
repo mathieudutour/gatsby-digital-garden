@@ -99,3 +99,9 @@ export const getInboundReferences = async (
     return undefined;
   }
 };
+
+export const clearInboundReferences = async (cache: any) => {
+  try {
+    return fs.promises.unlink(path.join(cacheDirectory(cache), inboundFile));
+  } catch (e) {}
+};

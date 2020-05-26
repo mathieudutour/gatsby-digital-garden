@@ -4,7 +4,7 @@ import { MDXProvider } from "@mdx-js/react";
 import { MDXRenderer } from "gatsby-plugin-mdx";
 import { LinkToStacked } from "react-stacked-pages-hook";
 
-import "./MdxComponents.css";
+import "./mdx-components.css";
 
 const AnchorTag = ({
   title,
@@ -61,7 +61,7 @@ const AnchorTag = ({
       </div>
     );
     child = (
-      <LinkToStacked {...restProps} to={href} title={title}>
+      <LinkToStacked {...restProps} to={ref.slug} title={title}>
         {content}
       </LinkToStacked>
     );

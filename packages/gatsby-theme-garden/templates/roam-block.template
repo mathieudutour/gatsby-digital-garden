@@ -1,22 +1,15 @@
-import React from "react";
 import { graphql } from "gatsby";
-import Layout from "../layouts";
 
-const BlockTemplate = ({ data, location }) => {
-  const roamBlock = data.roamBlock;
-  return (
-    <Layout location={location} slug={roamBlock.fields.slug} data={data} />
-  );
-};
+import StackedLayout from "../components/stacked-layout";
 
-export default BlockTemplate;
+export default StackedLayout;
 
 export const pageQuery = graphql`
   query($id: String!) {
     roamBlock(id: { eq: $id }) {
       childMdx {
         body
-        ...References
+        ...GatsbyGardenReferences
       }
       fields {
         slug

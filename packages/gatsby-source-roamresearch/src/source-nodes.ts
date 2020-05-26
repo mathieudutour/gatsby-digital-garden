@@ -33,6 +33,7 @@ export const sourceNodes = async (
   const dbMeta = {
     id: createNodeId(`roam-db-${url}`),
     parent: undefined,
+    sourceUrl: url,
     children: [],
     internal: {
       type: `RoamDatabase`,
@@ -50,6 +51,7 @@ export const sourceNodes = async (
     const nodeMeta = {
       id: createNodeId(`roam-block-${block.uid || Math.random()}`),
       parent: parent.id,
+      sourceUrl: url,
       children: [],
       internal: {
         type: `RoamBlock`,
@@ -81,6 +83,7 @@ export const sourceNodes = async (
     const nodeMeta = {
       id: createNodeId(`roam-page-${page.title}`),
       parent: dbMeta.id,
+      sourceUrl: url,
       children: [],
       internal: {
         type: `RoamPage`,

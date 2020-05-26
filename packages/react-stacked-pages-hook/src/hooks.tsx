@@ -175,7 +175,7 @@ export function useStackedPagesProvider<T>({
           highlighted: false,
           overlay:
             scroll > pageWidth * (i - 1) - (obstructedPageWidth * i - 2) ||
-            scroll < pageWidth * (i - 2),
+            scroll < Math.max(0, pageWidth * (i - 2)),
           obstructed:
             scroll >
               pageWidth * (i + 1) -

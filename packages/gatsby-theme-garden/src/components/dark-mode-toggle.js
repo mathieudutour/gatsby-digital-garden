@@ -1,14 +1,14 @@
 import React from "react";
 import useDarkMode from "use-dark-mode";
 
-import "./DarkModeToggle.css";
+import "./dark-mode-toggle.css";
 
-export const DarkModeToggle = () => {
+const DarkModeToggle = () => {
   const { value: isDark, toggle: toggleDarkMode } = useDarkMode(false);
 
   return (
     <label
-      className="dayNight"
+      className="dark-mode-toggle"
       aria-label={isDark ? "Activate light mode" : "Activate dark mode"}
       title={isDark ? "Activate light mode" : "Activate dark mode"}
     >
@@ -17,3 +17,5 @@ export const DarkModeToggle = () => {
     </label>
   );
 };
+
+export default DarkModeToggle;

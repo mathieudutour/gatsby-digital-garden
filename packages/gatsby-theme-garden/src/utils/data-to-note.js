@@ -58,3 +58,12 @@ export const dataToNote = (data) =>
         inboundReferences: data.file.childMdx.inboundReferences,
       }
     : null;
+
+export const dataToSlug = (data) =>
+  data.roamPage
+    ? data.roamPage.fields.slug
+    : data.roamBlock
+    ? data.roamBlock.fields.slug
+    : data.file
+    ? data.file.fields.slug
+    : null;

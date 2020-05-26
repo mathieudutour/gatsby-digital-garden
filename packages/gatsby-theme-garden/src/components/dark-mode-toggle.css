@@ -1,12 +1,12 @@
 /* This is based off a codepen! Much appreciated to: https://codepen.io/aaroniker/pen/KGpXZo */
-.dayNight {
+.dark-mode-toggle {
   cursor: pointer;
   transform: scale(0.6);
 }
-.dayNight input {
+.dark-mode-toggle input {
   display: none;
 }
-.dayNight input + div {
+.dark-mode-toggle input + div {
   border-radius: 50%;
   width: 36px;
   height: 36px;
@@ -15,7 +15,7 @@
   transform: scale(1) rotate(-2deg);
   transition: box-shadow 0.5s ease 0s, transform 0.4s ease 0.1s;
 }
-.dayNight input + div:before {
+.dark-mode-toggle input + div:before {
   content: "";
   width: inherit;
   height: inherit;
@@ -25,7 +25,7 @@
   top: 0;
   transition: background 0.3s ease;
 }
-.dayNight input + div:after {
+.dark-mode-toggle input + div:after {
   content: "";
   width: 8px;
   height: 8px;
@@ -34,23 +34,23 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  box-shadow: 0 -23px 0 #3182ce, 0 23px 0 #3182ce, 23px 0 0 #3182ce,
-    -23px 0 0 #3182ce, 15px 15px 0 #3182ce, -15px 15px 0 #3182ce,
-    15px -15px 0 #3182ce, -15px -15px 0 #3182ce;
+  box-shadow: 0 -23px 0 var(--link), 0 23px 0 var(--link), 23px 0 0 var(--link),
+    -23px 0 0 var(--link), 15px 15px 0 var(--link), -15px 15px 0 var(--link),
+    15px -15px 0 var(--link), -15px -15px 0 var(--link);
   transform: scale(0);
   transition: all 0.3s ease;
 }
 
-.dayNight input:checked + div {
+.dark-mode-toggle input:checked + div {
   box-shadow: inset 32px -32px 0 0 #fff;
   transform: scale(0.5) rotate(0deg);
   transition: transform 0.3s ease 0.1s, box-shadow 0.2s ease 0s;
 }
-.dayNight input:checked + :before {
-  background: #3182ce;
+.dark-mode-toggle input:checked + :before {
+  background: var(--link);
   transition: background 0.3s ease 0.1s;
 }
-.dayNight input:checked + :after {
+.dark-mode-toggle input:checked + :after {
   transform: scale(1.5);
   transition: transform 0.5s ease 0.15s;
 }

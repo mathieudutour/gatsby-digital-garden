@@ -1,5 +1,4 @@
 const path = require("path");
-const slugify = require("slugify");
 
 require("dotenv").config({
   path: `.env`,
@@ -12,41 +11,14 @@ module.exports = {
   },
   plugins: [
     {
-      resolve: `gatsby-source-filesystem`,
+      resolve: `gatsby-theme-garden`,
       options: {
-        name: `pages`,
-        path: `${__dirname}/notes`,
+        rootNote: "/About-these-notes",
+        // contentPath: `${__dirname}/notes`,
+        roamUrl: process.env.ROAM_URL,
+        roamEmail: process.env.ROAM_EMAIL,
+        roamPassword: process.env.ROAM_PASSWORD,
       },
     },
-    {
-      resolve: path.join(__dirname, "../packages/gatsby-source-roamresearch"),
-      options: {
-        url: process.env.ROAM_URL,
-        email: process.env.ROAM_EMAIL,
-        password: process.env.ROAM_PASSWORD,
-      },
-    },
-    {
-      resolve: `gatsby-plugin-mdx`,
-      options: {
-        gatsbyRemarkPlugins: [
-          path.join(
-            __dirname,
-            "../packages/gatsby-remark-double-brackets-link"
-          ),
-          path.join(
-            __dirname,
-            "../packages/gatsby-remark-double-parenthesis-link"
-          ),
-        ],
-      },
-    },
-    {
-      resolve: path.join(
-        __dirname,
-        "../packages/gatsby-transformer-markdown-references"
-      ),
-    },
-    "gatsby-plugin-use-dark-mode",
   ],
 };

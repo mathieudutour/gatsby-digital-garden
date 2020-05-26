@@ -1,7 +1,7 @@
 import React from "react";
 import { LinkToStacked } from "react-stacked-pages-hook";
 
-import "./Reference.css";
+import "./reference.css";
 
 const Reference = ({ node }) => {
   if (node.parent.fields.parentPage) {

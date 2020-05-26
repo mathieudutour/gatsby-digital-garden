@@ -1,22 +1,7 @@
-import React from "react";
 import { graphql } from "gatsby";
-import * as PropTypes from "prop-types";
-import Page from "../templates/page";
 
-const propTypes = {
-  data: PropTypes.object.isRequired,
-};
-
-const IndexPage = ({ data, location }) => {
-  return <Page data={data} location={location} />;
-};
-
-IndexPage.propTypes = propTypes;
-
-export default IndexPage;
-
-export const pageQuery = graphql`
-  fragment References on Mdx {
+export const references = graphql`
+  fragment GatsbyGardenReferences on Mdx {
     outboundReferences {
       ... on Mdx {
         body
@@ -85,19 +70,6 @@ export const pageQuery = graphql`
             }
           }
         }
-      }
-    }
-  }
-
-  query {
-    roamPage(title: { eq: "About these notes" }) {
-      title
-      childMdx {
-        body
-        ...References
-      }
-      fields {
-        slug
       }
     }
   }

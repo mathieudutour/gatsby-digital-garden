@@ -1,7 +1,7 @@
 import React from "react";
 import { LinkToStacked } from "react-stacked-pages-hook";
 
-import "./NoteWrapper.css";
+import "./note-wrapper.css";
 
 function noteContainerClassName(overlay, obstructed, highlighted) {
   return `note-container ${overlay ? "note-container-overlay" : ""} ${
@@ -9,7 +9,7 @@ function noteContainerClassName(overlay, obstructed, highlighted) {
   } ${highlighted ? "note-container-highlighted" : ""}`;
 }
 
-export const NoteWrapper = ({
+const NoteWrapper = ({
   PageIndexProvider,
   children,
   slug,
@@ -31,3 +31,5 @@ export const NoteWrapper = ({
     </div>
   </PageIndexProvider>
 );
+
+export default NoteWrapper;

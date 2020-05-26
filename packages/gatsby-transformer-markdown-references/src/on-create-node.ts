@@ -1,13 +1,12 @@
 import { CreateNodeArgs, Node } from "gatsby";
-import * as fs from "fs";
-import * as path from "path";
 import { getReferences } from "./get-references";
 import { PluginOptions, resolveOptions } from "./options";
+import { clearInboundReferences, setCachedNode } from "./cache";
 
 function getTitle(node: Node, content: string) {
   if (
-    node.frontmatter &&
     typeof node.frontmatter === "object" &&
+    node.frontmatter &&
     "title" in node.frontmatter &&
     // @ts-ignore
     node.frontmatter["title"]
@@ -20,8 +19,8 @@ function getTitle(node: Node, content: string) {
 
 function getAliases(node: Node) {
   if (
-    node.frontmatter &&
     typeof node.frontmatter === "object" &&
+    node.frontmatter &&
     "aliases" in node.frontmatter &&
     // @ts-ignore
     Array.isArray(node.frontmatter["aliases"])
@@ -50,16 +49,11 @@ export const onCreateNode = async (
   const title = getTitle(node, content);
   const aliases = getAliases(node);
 
-  // @ts-ignore
-  const cacheDirectory: string = cache.directory;
-  try {
-    // invalidate the previous cache
-    await fs.promises.unlink(
-      path.join(cacheDirectory, "___inboundReferences.json")
-    );
-  } catch (err) {}
-  await fs.promises.writeFile(
-    path.join(cacheDirectory, `${encodeURIComponent(node.id)}.json`),
-    JSON.stringify({ outboundReferences, title, aliases })
-  );
+  await clearInboundReferences(cache);
+  await setCachedNode(cache, node.id, {
+    node,
+    outboundReferences,
+    title,
+    aliases,
+  });
 };
