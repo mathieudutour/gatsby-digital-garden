@@ -174,14 +174,19 @@ export function useStackedPagesProvider<T>({
         prev[x.slug] = {
           highlighted: false,
           overlay:
-            scroll > pageWidth * (i - 1) - (obstructedPageWidth * i - 2) ||
-            scroll < Math.max(0, pageWidth * (i - 2)),
+            scroll >
+              Math.max(
+                pageWidth * (i - 1) - (obstructedPageWidth * i - 2),
+                0
+              ) || scroll < Math.max(0, pageWidth * (i - 2)),
           obstructed:
             scroll >
-              pageWidth * (i + 1) -
-                obstructedOffset -
-                obstructedPageWidth * (i - 1) ||
-            scroll + containerWidth < pageWidth * i + obstructedOffset,
+              Math.max(
+                pageWidth * (i + 1) -
+                  obstructedOffset -
+                  obstructedPageWidth * (i - 1),
+                0
+              ) || scroll + containerWidth < pageWidth * i + obstructedOffset,
         };
         return prev;
       }, acc)
