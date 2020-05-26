@@ -2,7 +2,7 @@
 
 Source plugin for pulling data into Gatsby from Roam Research. It creates links between pages so they can be queried in Gatsby using GraphQL.
 
-An example site for using this plugin is at https://mathieudutour.github.io/gatsby-n-roamresearch/
+An example site for using this plugin is at [https://mathieudutour.github.io/gatsby-digital-garden/](https://mathieudutour.github.io/gatsby-digital-garden/)
 
 ## Install
 

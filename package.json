@@ -1,5 +1,5 @@
 {
-  "name": "gatsby-n-roamresearch",
+  "name": "gatsby-digital-garden",
   "private": true,
   "scripts": {
     "postinstall": "cd packages/gatsby-source-roamresearch && npm install && cd ../fetch-roamresearch && npm install && cd ../gatsby-remark-double-brackets-link && npm install && cd ../gatsby-remark-double-parenthesis-link && npm install && cd ../react-stacked-pages-hook && npm install && cd ../gatsby-transformer-markdown-references && npm install",

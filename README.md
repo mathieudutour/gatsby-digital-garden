@@ -10,7 +10,7 @@ A set of packages to create a digital garden with Gatsby.
 - [gatsby-transformer-markdown-references](./packages/gatsby-transformer-markdown-references): Extract references between markdown nodes.
 - [gatsby-theme-garden](./packages/gatsby-theme-garden): A Gatsby theme bundling all of the above packages.
 
-An example site for leveraging all of them is at https://mathieudutour.github.io/gatsby-n-roamresearch/
+An example site for leveraging all of them is at [https://mathieudutour.github.io/gatsby-digital-garden/](https://mathieudutour.github.io/gatsby-digital-garden/).
 
 ## 🚀 Quick start
 

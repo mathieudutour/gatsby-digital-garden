@@ -2,7 +2,7 @@
 
 Transform `[[Link to page]]` into `[Link to page](titleToURL('Link to page'))`.
 
-An example site for using this plugin is at https://mathieudutour.github.io/gatsby-n-roamresearch/
+An example site for using this plugin is at [https://mathieudutour.github.io/gatsby-digital-garden/](https://mathieudutour.github.io/gatsby-digital-garden/)
 
 ## Installation
 

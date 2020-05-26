@@ -2,7 +2,7 @@
 
 Transformer plugin to extract references between markdown nodes. You can then use them to create bi-directional links.
 
-An example site for using this plugin is at https://mathieudutour.github.io/gatsby-n-roamresearch/
+An example site for using this plugin is at [https://mathieudutour.github.io/gatsby-digital-garden/](https://mathieudutour.github.io/gatsby-digital-garden/)
 
 ## Install
 

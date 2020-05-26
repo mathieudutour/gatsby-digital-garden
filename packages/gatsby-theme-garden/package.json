@@ -17,7 +17,7 @@
   ],
   "author": "Mathieu Dutour <mathieu@dutour.me>",
   "repository": {
-    "url": "https://github.com/mathieudutour/gatsby-n-roamresearch",
+    "url": "https://github.com/mathieudutour/gatsby-digital-garden",
     "directory": "packages/gatsby-theme-garden"
   },
   "license": "MIT",
