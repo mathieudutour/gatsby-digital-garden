@@ -47,7 +47,7 @@ const StackedPageWrapper = ({
 
 const StackedLayout = ({ data, location, slug }) => {
   // Use this callback to update what you want to stack.
-  // `pageQuery` will be similar to the props you get in a Page component.
+  // `pageQuery` will be similar to the data prop you get in a Page component.
   // You can return `null` to filter out the page
   const processPageQuery = useCallback((pageQuery) => pageQuery, []);
 
@@ -63,7 +63,6 @@ const StackedLayout = ({ data, location, slug }) => {
     firstPage: { data, slug },
     location,
     processPageQuery,
-    containerRef: scrollContainer,
     pageWidth: 625,
   });
 
