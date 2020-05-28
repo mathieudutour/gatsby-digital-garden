@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+                            http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd
+                            http://www.example.com/schemas/example_schema/0.1
+                            http://www.example.com/schemas/example_schema/0.1/sitemap.xsd"
+        xmlns:mentions="http://www.example.com/schemas/example_schema/0.1">
+
+  <url>
+    <loc>http://www.mysite.com/about/blog/post-1</loc>
+    <blog:title>This is the title of the blog post</blog:title>
+    <blog:description>This is the description of the blog post</blog:description>
+    <blog:author>Some person</blog:author>
+    <blog:authorUrl>https://www.mysite.com/people/some-person</blog:authorUrl>
+  </url>
+
+  <url>
+    <loc>http://www.mysite.com/about/blog/post-1</loc>
+    <mentions:mention>https://example.com</mentions:mention>
+    <mentions:mention>https://example.com/2</mentions:mention>
+  </url>
+
+</urlset>
