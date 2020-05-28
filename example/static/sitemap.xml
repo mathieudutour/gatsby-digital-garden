@@ -10,14 +10,12 @@
 
   <url>
     <loc>http://www.mysite.com/about/blog/post-1</loc>
-    <blog:title>This is the title of the blog post</blog:title>
-    <blog:description>This is the description of the blog post</blog:description>
-    <blog:author>Some person</blog:author>
-    <blog:authorUrl>https://www.mysite.com/people/some-person</blog:authorUrl>
+    <mentions:mention>https://example.com/3</mentions:mention>
+    <mentions:mention>https://example.com/4</mentions:mention>
   </url>
 
   <url>
-    <loc>http://www.mysite.com/about/blog/post-1</loc>
+    <loc>http://www.mysite.com/about/blog/post-2</loc>
     <mentions:mention>https://example.com</mentions:mention>
     <mentions:mention>https://example.com/2</mentions:mention>
   </url>
