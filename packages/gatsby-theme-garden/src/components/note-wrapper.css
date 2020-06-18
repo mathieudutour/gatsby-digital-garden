@@ -55,8 +55,13 @@
     top: 0px;
     position: sticky;
     flex-grow: 1;
-    overflow-y: auto;
     border-left: 1px solid var(--separator);
+    padding: 0;
+  }
+
+  .note-content {
+    overflow-y: auto;
+    height: 100%;
     padding: 32px;
   }
 

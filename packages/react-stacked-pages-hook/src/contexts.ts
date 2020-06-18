@@ -21,3 +21,6 @@ export const StackedPagesContext = React.createContext<{
 });
 
 export const StackedPagesIndexContext = React.createContext<number>(0);
+
+export const StackedPagesProvider = StackedPagesContext.Provider;
+export const PageIndexProvider = StackedPagesIndexContext.Provider;

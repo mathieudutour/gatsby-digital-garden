@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { GatsbyLinkProps, Link } from "gatsby";
-import { useStackedPages } from "./hooks";
+import { useStackedPage } from "./hooks";
 
 export const LinkToStacked = React.forwardRef(
   (
@@ -13,7 +13,13 @@ export const LinkToStacked = React.forwardRef(
     }: GatsbyLinkProps<any>,
     ref
   ) => {
-    const [, navigateToStackedPage, highlightStackedPage] = useStackedPages();
+    const [
+      ,
+      ,
+      ,
+      navigateToStackedPage,
+      highlightStackedPage,
+    ] = useStackedPage();
     const onClickHandler = useCallback(
       (ev: React.MouseEvent<HTMLAnchorElement>) => {
         ev.preventDefault();

@@ -240,6 +240,21 @@ export function useStackedPagesProvider<T>({
     [setStackedPageStates]
   );
 
+  const contextValue = useMemo(
+    () => ({
+      stackedPages,
+      navigateToStackedPage,
+      highlightStackedPage,
+      stackedPageStates,
+    }),
+    [
+      stackedPages,
+      navigateToStackedPage,
+      highlightStackedPage,
+      stackedPageStates,
+    ]
+  );
+
   const Provider = useMemo(() => {
     return ({ children }: { children: React.ReactNode }) => (
       <StackedPagesContext.Provider
@@ -260,20 +275,13 @@ export function useStackedPagesProvider<T>({
     stackedPageStates,
   ]);
 
-  return [
-    stackedPages,
-    stackedPageStates,
-    Provider,
-    StackedPagesIndexContext.Provider,
-    setRef,
-    navigateToStackedPage,
-    highlightStackedPage,
-  ];
+  return [contextValue, setRef];
 }
 
 export function useStackedPages() {
   const {
     stackedPages,
+    stackedPageStates,
     navigateToStackedPage,
     highlightStackedPage,
   } = useContext(StackedPagesContext);
@@ -283,10 +291,36 @@ export function useStackedPages() {
     (to: string) => navigateToStackedPage(to, index),
     [navigateToStackedPage, index]
   );
+
   return [
     stackedPages,
+    stackedPageStates,
     hookedNavigateToStackedPage,
     highlightStackedPage,
+  ] as const;
+}
+
+export function useStackedPage() {
+  const {
+    stackedPages,
+    stackedPageStates,
+    navigateToStackedPage,
+    highlightStackedPage,
+  } = useContext(StackedPagesContext);
+  const index = useContext(StackedPagesIndexContext);
+
+  const hookedNavigateToStackedPage = useCallback(
+    (to: string) => navigateToStackedPage(to, index),
+    [navigateToStackedPage, index]
+  );
+
+  const currentPage = stackedPages[index];
+
+  return [
+    currentPage,
+    currentPage ? stackedPageStates[currentPage.slug] : {},
     index,
+    hookedNavigateToStackedPage,
+    highlightStackedPage,
   ] as const;
 }
