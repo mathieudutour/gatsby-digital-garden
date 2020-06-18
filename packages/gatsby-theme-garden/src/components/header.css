@@ -2,7 +2,7 @@ header {
   padding-left: 32px;
   padding-right: 32px;
   width: 100%;
-  min-height: 44px;
+  min-height: 57px;
   z-index: 5;
   background-color: var(--note-bg);
   border-bottom: 1px solid var(--separator);
