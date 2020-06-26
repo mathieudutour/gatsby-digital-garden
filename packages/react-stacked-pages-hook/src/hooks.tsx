@@ -211,9 +211,10 @@ export function useStackedPagesProvider<T>({
         .map((x) => x.slug)
         .concat(to);
       navigate(
-        `${window.location.pathname.replace(withPrefix(""), "")}?${qs.stringify(
-          search
-        )}`
+        `${window.location.pathname.replace(
+          withPrefix(""),
+          "/"
+        )}?${qs.stringify(search)}`
       );
     },
     [stackedPages]
@@ -254,26 +255,6 @@ export function useStackedPagesProvider<T>({
       stackedPageStates,
     ]
   );
-
-  const Provider = useMemo(() => {
-    return ({ children }: { children: React.ReactNode }) => (
-      <StackedPagesContext.Provider
-        value={{
-          stackedPages,
-          navigateToStackedPage,
-          highlightStackedPage,
-          stackedPageStates,
-        }}
-      >
-        {children}
-      </StackedPagesContext.Provider>
-    );
-  }, [
-    stackedPages,
-    navigateToStackedPage,
-    highlightStackedPage,
-    stackedPageStates,
-  ]);
 
   return [contextValue, setRef];
 }
