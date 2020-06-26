@@ -9,7 +9,8 @@ body.light-mode {
 
 body.light-mode {
   --references-bg: #ebf4ff;
-  --references-bg-80: #ebf4ffcc;
+  --references-bg-80: rgb(235, 244, 255, 0.8);
+  --references-bg-0: rgb(235, 244, 255, 0);
   --references-text: #718096;
   --references-highlight: #4a5568;
 }
@@ -27,7 +28,8 @@ body.dark-mode {
 
 body.dark-mode {
   --references-bg: #17181a;
-  --references-bg-80: #17181acc;
+  --references-bg-80: rgba(23, 24, 26, 0.8);
+  --references-bg-0: rgba(23, 24, 26, 0);
   --references-text: #8c9fbb;
   --references-highlight: #b3cbf0;
 }

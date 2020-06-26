@@ -36,7 +36,7 @@
     0,
     var(--references-bg) 0%,
     var(--references-bg-80) 50%,
-    transparent 100%
+    var(--references-bg-0) 100%
   );
   top: 12rem;
   width: 100%;
