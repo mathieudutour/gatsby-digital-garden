@@ -212,9 +212,9 @@ export function useStackedPagesProvider<T>({
         .concat(to);
       navigate(
         `${window.location.pathname.replace(
-          withPrefix(""),
+          withPrefix("/"),
           "/"
-        )}?${qs.stringify(search)}`
+        )}?${qs.stringify(search)}`.replace(/^\/\//, "/")
       );
     },
     [stackedPages]
