@@ -9,13 +9,11 @@ export const pageQuery = graphql`
     file(id: { eq: $id }) {
       childMdx {
         body
-        frontmatter {
-          title
-        }
         ...GatsbyGardenReferences
       }
       fields {
         slug
+        title
       }
     }
   }

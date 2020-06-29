@@ -4,9 +4,9 @@ import { MDXProvider } from "@mdx-js/react";
 import { MDXRenderer } from "gatsby-plugin-mdx";
 import { LinkToStacked } from "react-stacked-pages-hook";
 
-import "./mdx-components.css";
+import "./anchor-tag.css";
 
-const AnchorTag = ({
+export const AnchorTag = ({
   title,
   href,
   references = [],
@@ -84,8 +84,4 @@ const AnchorTag = ({
       {child}
     </Tippy>
   );
-};
-
-export default {
-  a: AnchorTag,
 };

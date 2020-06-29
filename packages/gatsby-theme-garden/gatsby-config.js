@@ -5,6 +5,7 @@ module.exports = (options) => {
     roamUrl,
     roamEmail,
     roamPassword,
+    ignore,
   } = options;
 
   return {
@@ -14,6 +15,8 @@ module.exports = (options) => {
       siteUrl: `http://example.com/`,
     },
     plugins: [
+      !mdxOtherwiseConfigured && `gatsby-plugin-sharp`,
+      !mdxOtherwiseConfigured && `gatsby-remark-images`,
       !mdxOtherwiseConfigured && {
         resolve: `gatsby-plugin-mdx`,
         options: {
@@ -21,6 +24,19 @@ module.exports = (options) => {
           gatsbyRemarkPlugins: [
             "gatsby-remark-double-brackets-link",
             "gatsby-remark-double-parenthesis-link",
+            {
+              resolve: `gatsby-remark-images`,
+              options: {
+                maxWidth: 561,
+              },
+            },
+            `gatsby-remark-copy-linked-files`,
+            {
+              resolve: `gatsby-remark-autolink-headers`,
+              options: {
+                icon: false,
+              },
+            },
           ],
         },
       },
@@ -37,6 +53,7 @@ module.exports = (options) => {
         options: {
           path: contentPath,
           name: contentPath,
+          ignore: ignore,
         },
       },
       `gatsby-transformer-markdown-references`,

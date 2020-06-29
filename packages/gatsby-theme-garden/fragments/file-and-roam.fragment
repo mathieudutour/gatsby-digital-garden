@@ -26,11 +26,7 @@ export const references = graphql`
           ... on File {
             fields {
               slug
-            }
-            childMdx {
-              frontmatter {
-                title
-              }
+              title
             }
           }
         }
@@ -62,11 +58,7 @@ export const references = graphql`
           ... on File {
             fields {
               slug
-            }
-            childMdx {
-              frontmatter {
-                title
-              }
+              title
             }
           }
         }

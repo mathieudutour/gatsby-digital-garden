@@ -2,6 +2,7 @@ import { CreateNodeArgs, Node } from "gatsby";
 import { getReferences } from "./get-references";
 import { PluginOptions, resolveOptions } from "./options";
 import { clearInboundReferences, setCachedNode } from "./cache";
+import { findTopLevelHeading } from "./markdown-utils";
 
 function getTitle(node: Node, content: string) {
   if (
@@ -14,7 +15,7 @@ function getTitle(node: Node, content: string) {
     // @ts-ignore
     return node.frontmatter["title"] as string;
   }
-  return content.split("\n")[0].replace(/^# /, "");
+  return findTopLevelHeading(content) || "";
 }
 
 function getAliases(node: Node) {

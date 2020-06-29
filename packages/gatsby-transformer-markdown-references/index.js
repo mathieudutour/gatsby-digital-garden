@@ -1,1 +1,1 @@
-// no op
+module.exports = require("./lib/markdown-utils");

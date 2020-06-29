@@ -1,37 +1,31 @@
+import { findInMarkdown, cleanupMarkdown } from "./markdown-utils";
+
 export type References = { blocks: string[]; pages: string[] };
 
-// Find matches for content between double brackets
-// e.g. [[Example]] -> Example
-const bracketRegexExclusive = /(?<=\[\[).*?(?=\]\])/g;
+export function rxWikiLink(): RegExp {
+  const pattern = "\\[\\[([^\\]]+)\\]\\]"; // [[wiki-link-regex]]
+  return new RegExp(pattern, "ig");
+}
 
-// Find matches for content between double parenthesis
-// e.g. ((Example)) -> Example
-const parenthesisRegexExclusive = /(?<=\(\().*?(?=\)\))/g;
+export function rxBlockLink(): RegExp {
+  const pattern = "\\(\\(([^\\]]+)\\)\\)"; // ((block-link-regex))
+  return new RegExp(pattern, "ig");
+}
 
-// Find matches for content after hashtag
-// e.g. #Example -> Example
-const hashtagRegexExclusive = /(?<=(^|\s)#)\w*\b/g;
+export function rxHashtagLink(): RegExp {
+  const pattern = "(?:^|\\s)#([^\\s]+)"; // #hashtag
+  return new RegExp(pattern, "ig");
+}
 
 export const getReferences = (string: string) => {
+  const md = cleanupMarkdown(string);
+
   const references: References = {
-    blocks: [],
-    pages: [],
+    blocks: findInMarkdown(md, rxBlockLink()),
+    pages: findInMarkdown(md, rxHashtagLink()).concat(
+      findInMarkdown(md, rxWikiLink())
+    ),
   };
-
-  const bracketMatches = string.match(bracketRegexExclusive);
-  if (bracketMatches !== null) {
-    references.pages.push(...bracketMatches);
-  }
-
-  const parenthesisMatches = string.match(parenthesisRegexExclusive);
-  if (parenthesisMatches !== null) {
-    references.blocks.push(...parenthesisMatches);
-  }
-
-  const hashtagMatches = string.match(hashtagRegexExclusive);
-  if (hashtagMatches !== null) {
-    references.pages.push(...hashtagMatches);
-  }
 
   return references;
 };

@@ -1,3 +1,4 @@
+import { basename, extname } from "path";
 import { Node } from "gatsby";
 import { nonNullable } from "./non-nullable";
 import {
@@ -43,7 +44,14 @@ export async function generateData(cache: any, getNode: Function) {
 
     function getRef(title: string) {
       return nodes.find(
-        (x) => x.title === title || x.aliases.some((alias) => alias === title)
+        (x) =>
+          x.title === title ||
+          x.aliases.some((alias) => alias === title) ||
+          (typeof x.node.fileAbsolutePath === "string" &&
+            basename(
+              x.node.fileAbsolutePath,
+              extname(x.node.fileAbsolutePath)
+            ) === title)
       );
     }
 

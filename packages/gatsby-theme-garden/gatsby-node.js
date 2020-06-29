@@ -2,6 +2,9 @@ const fs = require(`fs`);
 const path = require(`path`);
 const { urlResolve, createContentDigest } = require(`gatsby-core-utils`);
 const slugify = require(`slugify`);
+const {
+  findTopLevelHeading,
+} = require(`gatsby-transformer-markdown-references`);
 
 // These are customizable theme options we only need to check once
 let basePath;
@@ -27,7 +30,18 @@ exports.onPreBootstrap = ({ store }, themeOptions) => {
   }
 };
 
-exports.onCreateNode = ({ node, actions }) => {
+function getTitle(node, content) {
+  if (
+    typeof node.frontmatter === "object" &&
+    node.frontmatter &&
+    node.frontmatter["title"]
+  ) {
+    return node.frontmatter["title"];
+  }
+  return findTopLevelHeading(content) || "";
+}
+
+exports.onCreateNode = async ({ node, actions, loadNodeContent }) => {
   const { createNodeField } = actions;
 
   if (node.internal.type === `RoamPage` && node.sourceUrl === roamUrl) {
@@ -55,6 +69,11 @@ exports.onCreateNode = ({ node, actions }) => {
       node,
       name: `slug`,
       value: urlResolve(basePath, path.parse(node.relativePath).dir, node.name),
+    });
+    createNodeField({
+      node,
+      name: `title`,
+      value: getTitle(node, await loadNodeContent(node)),
     });
   }
 };

@@ -22,7 +22,7 @@ const ReferencesBlock = ({ references }) => {
       <h3>Referred in</h3>
       <div>
         {references.map((ref) => (
-          <Reference node={ref} key={ref.parent.id} />
+          <Reference node={ref} key={ref.id} />
         ))}
       </div>
       <hr />

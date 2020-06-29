@@ -38,10 +38,15 @@
   transition: background 0.3s ease;
 }
 
+.note-content img {
+  max-width: 100%;
+}
+
 @media screen and (max-width: 800px) {
   .note-container {
     padding: 16px;
     width: 100%;
+    overflow-y: auto;
   }
 }
 

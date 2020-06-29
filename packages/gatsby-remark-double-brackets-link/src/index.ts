@@ -9,8 +9,20 @@ const addDoubleBracketsLinks = (
   const titleToURL =
     options?.titleToURL || ((title: string) => `/${slugify(title)}`);
 
+  const definitions: { [identifier: string]: boolean } = {};
+
+  visit(markdownAST, `definition`, (node) => {
+    if (!node.identifier || typeof node.identifier !== "string") {
+      return;
+    }
+    definitions[node.identifier] = true;
+  });
+
   visit(markdownAST, `linkReference`, (node, index, parent) => {
-    if (node.referenceType !== "shortcut") {
+    if (
+      node.referenceType !== "shortcut" ||
+      (typeof node.identifier === "string" && definitions[node.identifier])
+    ) {
       return;
     }
     const siblings = parent.children;

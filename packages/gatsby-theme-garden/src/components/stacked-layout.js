@@ -12,6 +12,7 @@ import Header from "./header";
 
 import "./theme.css";
 import "./stacked-layout.css";
+import "./custom.css";
 
 const Content = ({ windowWidth, scrollContainer, stackedPages }) => {
   return (

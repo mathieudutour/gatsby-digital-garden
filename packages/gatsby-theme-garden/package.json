@@ -1,6 +1,6 @@
 {
   "name": "gatsby-theme-garden",
-  "version": "0.1.8",
+  "version": "0.1.28",
   "description": "Gatsby theme to create a digital garden",
   "main": "index.js",
   "scripts": {
@@ -34,12 +34,16 @@
     "gatsby-core-utils": "^1.2.1",
     "gatsby-plugin-compile-es6-packages": "^2.1.0",
     "gatsby-plugin-mdx": "^1.2.12",
+    "gatsby-plugin-sharp": "^2.6.14",
     "gatsby-plugin-use-dark-mode": "^1.1.2",
-    "gatsby-remark-double-brackets-link": "^0.1.5",
+    "gatsby-remark-autolink-headers": "^2.3.7",
+    "gatsby-remark-copy-linked-files": "^2.3.7",
+    "gatsby-remark-double-brackets-link": "^0.1.6",
     "gatsby-remark-double-parenthesis-link": "^0.1.2",
+    "gatsby-remark-images": "^3.3.13",
     "gatsby-source-filesystem": "^2.3.8",
     "gatsby-source-roamresearch": "^0.4.1",
-    "gatsby-transformer-markdown-references": "^0.1.0",
+    "gatsby-transformer-markdown-references": "^0.1.4",
     "react-stacked-pages-hook": "^0.4.2",
     "slugify": "^1.4.0",
     "use-dark-mode": "^2.3.1"
