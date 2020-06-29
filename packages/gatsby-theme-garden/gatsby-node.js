@@ -11,6 +11,8 @@ let basePath;
 let contentPath;
 let roamUrl;
 let rootNote;
+let extensions;
+let mediaTypes;
 
 exports.onPreBootstrap = ({ store }, themeOptions) => {
   const { program } = store.getState();
@@ -19,6 +21,8 @@ exports.onPreBootstrap = ({ store }, themeOptions) => {
   contentPath = themeOptions.contentPath;
   roamUrl = themeOptions.roamUrl;
   rootNote = themeOptions.rootNote;
+  extensions = themeOptions.extensions || [".md", ".mdx"];
+  mediaTypes = themeOptions.mediaTypes || ["text/markdown", "text/x-markdown"];
 
   if (contentPath) {
     const dir = path.isAbsolute(contentPath)
@@ -41,7 +45,15 @@ function getTitle(node, content) {
   return findTopLevelHeading(content) || "";
 }
 
-exports.onCreateNode = async ({ node, actions, loadNodeContent }) => {
+function shouldHandleFile(node, options) {
+  return (
+    (extensions.includes(node.ext) ||
+      mediaTypes.includes(node.internal.mediaType)) &&
+    node.sourceInstanceName === contentPath
+  );
+}
+
+exports.onCreateNode = async ({ node, actions, loadNodeContent }, options) => {
   const { createNodeField } = actions;
 
   if (node.internal.type === `RoamPage` && node.sourceUrl === roamUrl) {
@@ -61,10 +73,7 @@ exports.onCreateNode = async ({ node, actions, loadNodeContent }) => {
       value: urlResolve(basePath, slugify(node.uid)),
     });
   }
-  if (
-    node.internal.type === `File` &&
-    node.sourceInstanceName === contentPath
-  ) {
+  if (node.internal.type === `File` && shouldHandleFile(node)) {
     createNodeField({
       node,
       name: `slug`,
@@ -93,6 +102,10 @@ exports.createPages = async ({ graphql, actions }) => {
             nodes {
               id
               sourceInstanceName
+              ext
+              internal {
+                mediaType
+              }
               fields {
                 slug
               }
@@ -114,9 +127,7 @@ exports.createPages = async ({ graphql, actions }) => {
 
     const LocalFileTemplate = require.resolve(`./src/templates/local-file`);
 
-    const localFiles = result.data.allFile.nodes.filter(
-      (node) => node.sourceInstanceName === contentPath
-    );
+    const localFiles = result.data.allFile.nodes.filter(shouldHandleFile);
 
     localFiles.forEach((node) => {
       createPage({
