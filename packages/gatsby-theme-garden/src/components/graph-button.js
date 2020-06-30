@@ -34,7 +34,7 @@ const GraphButton = () => {
           </g>
         </svg>
       </button>
-      {typeof window === "undefined" ? (
+      {typeof window !== "undefined" ? (
         <Suspense fallback={null}>
           <Graph graphState={graphState} setGraphState={setGraphState} />
         </Suspense>
