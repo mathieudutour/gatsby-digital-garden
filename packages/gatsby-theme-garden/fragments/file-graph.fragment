@@ -1,0 +1,28 @@
+import { useStaticQuery, graphql } from "gatsby";
+
+export const useGraphData = () => {
+  const data = useStaticQuery(graphql`
+    {
+      allFile {
+        nodes {
+          id
+          fields {
+            title
+            slug
+          }
+          childMdx {
+            outboundReferences {
+              ... on Mdx {
+                parent {
+                  id
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  `);
+
+  return data;
+};

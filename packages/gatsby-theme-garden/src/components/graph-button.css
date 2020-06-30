@@ -1,0 +1,9 @@
+.graph-button {
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.graph-button svg g {
+  stroke: var(--link);
+}

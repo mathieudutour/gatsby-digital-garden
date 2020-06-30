@@ -1,0 +1,59 @@
+.overlay {
+  z-index: 98;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  background-color: var(--shadow);
+  backdrop-filter: blur(4px);
+}
+
+.modal {
+  z-index: 99;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: calc(100% - 40px);
+  max-width: 900px;
+  height: calc(100% - 40px);
+  max-height: 800px;
+  transform: translate(-50%, -50%);
+}
+
+.modal-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px;
+  border: 0;
+  background: none;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.modal-close svg {
+  width: 20px;
+  height: 20px;
+}
+
+.modal-close path {
+  fill: currentColor;
+}
+
+.modal-body {
+  height: 100%;
+  width: 100%;
+  border-radius: 4px;
+  background-color: var(--main-bg);
+}
+
+.modal-body .node,
+.modal-body .text {
+  cursor: pointer;
+}

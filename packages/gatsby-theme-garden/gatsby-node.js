@@ -14,7 +14,7 @@ let rootNote;
 let extensions;
 let mediaTypes;
 
-exports.onPreBootstrap = ({ store }, themeOptions) => {
+exports.onPreBootstrap = async ({ store }, themeOptions) => {
   const { program } = store.getState();
 
   basePath = themeOptions.basePath || `/`;
@@ -31,6 +31,35 @@ exports.onPreBootstrap = ({ store }, themeOptions) => {
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
+  }
+
+  if (contentPath && roamUrl) {
+    await copyFile(
+      path.join(__dirname, "./fragments/file-and-roam.fragment"),
+      `${program.directory}/.cache/fragments/garden-fragments.js`
+    );
+    await copyFile(
+      path.join(__dirname, "./fragments/file-and-roam-graph.fragment"),
+      path.join(__dirname, "./src/use-graph-data.js")
+    );
+  } else if (contentPath) {
+    await copyFile(
+      path.join(__dirname, "./fragments/file.fragment"),
+      `${program.directory}/.cache/fragments/garden-fragments.js`
+    );
+    await copyFile(
+      path.join(__dirname, "./fragments/file-graph.fragment"),
+      path.join(__dirname, "./src/use-graph-data.js")
+    );
+  } else if (roamUrl) {
+    await copyFile(
+      path.join(__dirname, "./fragments/roam.fragment"),
+      `${program.directory}/.cache/fragments/garden-fragments.js`
+    );
+    await copyFile(
+      path.join(__dirname, "./fragments/roam-graph.fragment"),
+      path.join(__dirname, "./src/use-graph-data.js")
+    );
   }
 };
 
@@ -280,25 +309,4 @@ basePath: String!
       description: `Garden Config`,
     },
   });
-};
-
-exports.onPreExtractQueries = async ({ store }) => {
-  const program = store.getState().program;
-
-  if (contentPath && roamUrl) {
-    await copyFile(
-      path.join(__dirname, "./fragments/file-and-roam.fragment"),
-      `${program.directory}/.cache/fragments/garden-fragments.js`
-    );
-  } else if (contentPath) {
-    await copyFile(
-      path.join(__dirname, "./fragments/file.fragment"),
-      `${program.directory}/.cache/fragments/garden-fragments.js`
-    );
-  } else if (roamUrl) {
-    await copyFile(
-      path.join(__dirname, "./fragments/roam.fragment"),
-      `${program.directory}/.cache/fragments/garden-fragments.js`
-    );
-  }
 };

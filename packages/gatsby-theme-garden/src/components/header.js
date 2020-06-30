@@ -2,7 +2,8 @@ import React from "react";
 import { Link } from "gatsby";
 
 import useSiteMetadata from "../use-site-metadata";
-import DarkModeToggle from "../components/dark-mode-toggle";
+import DarkModeToggle from "./dark-mode-toggle";
+import GraphButton from "./graph-button";
 
 import "./header.css";
 
@@ -14,7 +15,10 @@ const Header = () => {
       <Link to="/">
         <h3>{siteMetadata.title}</h3>
       </Link>
-      <DarkModeToggle />
+      <div className="controls">
+        <GraphButton />
+        <DarkModeToggle />
+      </div>
     </header>
   );
 };
