@@ -5,6 +5,7 @@ export type ScrollState = {
     obstructed: boolean;
     overlay: boolean;
     highlighted: boolean;
+    active: boolean;
   };
 };
 

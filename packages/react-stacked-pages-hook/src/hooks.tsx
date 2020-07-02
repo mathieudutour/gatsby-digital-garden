@@ -102,6 +102,7 @@ export function useStackedPagesProvider<T>({
             obstructed: false,
             highlighted: false,
             overlay: scroll > pageWidth - obstructedOffset,
+            active: true,
           },
         }
       : {}
@@ -152,16 +153,18 @@ export function useStackedPagesProvider<T>({
     }
   }, [stackedPages, containerRef]);
 
+  // on scroll or on new page
   useEffect(() => {
     const acc: ScrollState = {};
 
     if (!containerRef.current) {
       setStackedPageStates(
-        stackedPages.reduce((prev, x) => {
+        stackedPages.reduce((prev, x, i, a) => {
           prev[x.slug] = {
             overlay: true,
             obstructed: false,
             highlighted: false,
+            active: i === a.length - 1,
           };
           return prev;
         }, acc)
@@ -170,7 +173,7 @@ export function useStackedPagesProvider<T>({
     }
 
     setStackedPageStates(
-      stackedPages.reduce((prev, x, i) => {
+      stackedPages.reduce((prev, x, i, a) => {
         prev[x.slug] = {
           highlighted: false,
           overlay:
@@ -187,6 +190,7 @@ export function useStackedPagesProvider<T>({
                   obstructedPageWidth * (i - 1),
                 0
               ) || scroll + containerWidth < pageWidth * i + obstructedOffset,
+          active: i === a.length - 1,
         };
         return prev;
       }, acc)
@@ -197,6 +201,18 @@ export function useStackedPagesProvider<T>({
     (to: string, index: number = 0) => {
       const existingPage = stackedPages.findIndex((x) => x.slug === to);
       if (existingPage !== -1 && containerRef && containerRef.current) {
+        setStackedPageStates((stackedPageStates) => {
+          if (!stackedPageStates[to]) {
+            return stackedPageStates;
+          }
+          return Object.keys(stackedPageStates).reduce((prev, slug) => {
+            prev[slug] = {
+              ...stackedPageStates[slug],
+              active: slug === to,
+            };
+            return prev;
+          }, {} as ScrollState);
+        });
         containerRef.current.scrollTo({
           top: 0,
           left:
@@ -217,7 +233,7 @@ export function useStackedPagesProvider<T>({
         )}?${qs.stringify(search)}`.replace(/^\/\//, "/")
       );
     },
-    [stackedPages]
+    [stackedPages, setStackedPageStates]
   );
 
   const highlightStackedPage = useCallback(
