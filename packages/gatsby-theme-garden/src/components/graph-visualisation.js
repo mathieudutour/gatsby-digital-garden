@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  useMemo,
-  useCallback,
-} from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { animated, useSpring } from "react-spring";
 import * as d3 from "d3";
@@ -28,7 +22,6 @@ const GraphVisualisation = ({ setGraphState, graphState }) => {
   const windowSize = useWindowSize();
   const d3Container = useRef(null);
   const [zoom, setZoom] = useState(1);
-  const data = useGraphData();
 
   const modalSize = {
     width: Math.min(windowSize.width - 40, 900),
@@ -68,7 +61,6 @@ const GraphVisualisation = ({ setGraphState, graphState }) => {
     const font = Math.max(Math.round(zoomOrKeep(FONT_SIZE)), 1);
 
     text.attr("font-size", `${font}px`);
-    text.attr("y", (d) => d.y - zoomOrKeep(FONT_BASELINE));
     link.attr("stroke-width", zoomOrKeep(STROKE));
     node.attr("r", zoomOrKeep(RADIUS));
   }, [zoom]);
@@ -113,6 +105,9 @@ const GraphVisualisation = ({ setGraphState, graphState }) => {
 
     zoomHandler.current(svg);
 
+    const zoomOrKeep = (value) => (zoom >= 1 ? value / zoom : value);
+    const font = Math.max(Math.round(zoomOrKeep(FONT_SIZE)), 1);
+
     let link = g.select(".links").selectAll(".link");
     let node = g.select(".nodes").selectAll(".node");
     let text = g.select(".text").selectAll(".text");
@@ -120,7 +115,11 @@ const GraphVisualisation = ({ setGraphState, graphState }) => {
     node = node.data(nodesData, (d) => d.id);
     node.exit().remove();
     node = hookNode(
-      node.enter().append("circle").attr("class", "node").attr("r", RADIUS)
+      node
+        .enter()
+        .append("circle")
+        .attr("class", "node")
+        .attr("r", zoomOrKeep(RADIUS))
     ).merge(node);
 
     link = link.data(linksData, (d) => `${d.source.id}-${d.target.id}`);
@@ -129,7 +128,7 @@ const GraphVisualisation = ({ setGraphState, graphState }) => {
       .enter()
       .append("line")
       .attr("class", "link")
-      .attr("stroke-width", STROKE)
+      .attr("stroke-width", zoomOrKeep(STROKE))
       .attr("stroke", "grey")
       .merge(link);
 
@@ -141,7 +140,7 @@ const GraphVisualisation = ({ setGraphState, graphState }) => {
         .append("text")
         .text((d) => d.label.replace(/_*/g, ""))
         .attr("class", "text")
-        .attr("font-size", `${FONT_SIZE}px`)
+        .attr("font-size", `${font}px`)
         .attr("text-anchor", "middle")
         .attr("alignment-baseline", "central")
     ).merge(text);
@@ -156,7 +155,7 @@ const GraphVisualisation = ({ setGraphState, graphState }) => {
     }
 
     node.attr("cx", (d) => d.x).attr("cy", (d) => d.y);
-    text.attr("x", (d) => d.x).attr("y", (d) => d.y - FONT_BASELINE / zoom);
+    text.attr("x", (d) => d.x).attr("y", (d) => d.y - FONT_BASELINE);
     link
       .attr("x1", (d) => d.source.x)
       .attr("y1", (d) => d.source.y)
@@ -178,7 +177,7 @@ const GraphVisualisation = ({ setGraphState, graphState }) => {
     const text = g
       .select(".text")
       .selectAll(".text")
-      .data(nodesData, (d) => d.label);
+      .data(nodesData, (d) => d.id);
     g.select(".links")
       .selectAll(".link")
       .data(linksData, (d) => `${d.source.id}-${d.target.id}`);

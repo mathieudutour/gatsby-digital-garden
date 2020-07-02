@@ -1,6 +1,6 @@
 {
   "name": "gatsby-theme-garden",
-  "version": "0.1.40",
+  "version": "0.1.41",
   "description": "Gatsby theme to create a digital garden",
   "main": "index.js",
   "scripts": {
