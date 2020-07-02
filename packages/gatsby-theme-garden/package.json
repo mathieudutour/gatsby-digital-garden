@@ -1,6 +1,6 @@
 {
   "name": "gatsby-theme-garden",
-  "version": "0.1.32",
+  "version": "0.1.40",
   "description": "Gatsby theme to create a digital garden",
   "main": "index.js",
   "scripts": {
@@ -45,7 +45,8 @@
     "gatsby-source-filesystem": "^2.3.8",
     "gatsby-source-roamresearch": "^0.4.1",
     "gatsby-transformer-markdown-references": "^0.1.4",
-    "react-stacked-pages-hook": "^0.4.2",
+    "react-spring": "^8.0.27",
+    "react-stacked-pages-hook": "^0.4.4",
     "slugify": "^1.4.0",
     "use-dark-mode": "^2.3.1"
   },

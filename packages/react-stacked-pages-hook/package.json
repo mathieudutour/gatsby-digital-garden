@@ -1,6 +1,6 @@
 {
   "name": "react-stacked-pages-hook",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "Manage a stack of pages in Gatsby",
   "main": "lib/index.js",
   "scripts": {

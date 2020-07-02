@@ -17,16 +17,14 @@
 .modal {
   z-index: 99;
   position: fixed;
-  top: 50%;
-  left: 50%;
-  width: calc(100% - 40px);
-  max-width: 900px;
-  height: calc(100% - 40px);
-  max-height: 800px;
-  transform: translate(-50%, -50%);
+  border-radius: 8px;
+  background-color: var(--main-bg);
+  box-shadow: -5px -5px 15px -3px var(--shadow),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-.modal-close {
+.modal-close,
+.modal-scale {
   position: absolute;
   top: 0;
   right: 0;
@@ -37,20 +35,34 @@
   cursor: pointer;
 }
 
-.modal-close svg {
+.modal-close svg,
+.modal-scale svg {
   width: 20px;
   height: 20px;
 }
 
-.modal-close path {
+.modal-close path,
+.modal-scale path {
   fill: currentColor;
+}
+
+.modal-scale {
+  right: 30px;
+}
+
+.modal-minimized .modal-scale svg,
+.modal-minimized .modal-close svg {
+  width: 15px;
+  height: 15px;
+}
+
+.modal-minimized .modal-scale {
+  right: 25px;
 }
 
 .modal-body {
   height: 100%;
   width: 100%;
-  border-radius: 4px;
-  background-color: var(--main-bg);
 }
 
 .modal-body .node,

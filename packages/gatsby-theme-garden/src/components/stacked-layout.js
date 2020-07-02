@@ -14,39 +14,25 @@ import "./theme.css";
 import "./stacked-layout.css";
 import "./custom.css";
 
-const Content = ({ windowWidth, scrollContainer, stackedPages }) => {
+const Content = ({ windowWidth, scrollContainer, stackedPages, index }) => {
   return (
     <div className="layout">
       <Header />
-
       <div className="note-columns-scrolling-container" ref={scrollContainer}>
         <div
           className="note-columns-container"
           style={{ width: 625 * (stackedPages.length + 1) }}
         >
-          {windowWidth > 800 ? (
-            <React.Fragment>
-              {stackedPages.map((page, i) => (
-                <NoteWrapper
-                  key={page.slug}
-                  i={i}
-                  slug={page.slug}
-                  title={page.data.title}
-                >
-                  <Note {...page.data} />
-                </NoteWrapper>
-              ))}
-            </React.Fragment>
-          ) : (
+          {stackedPages.map((page, i) => (
             <NoteWrapper
-              PageIndexProvider={PageIndexProvider}
-              i={stackedPages.length - 1}
-              slug={stackedPages[stackedPages.length - 1].slug}
-              title={stackedPages[stackedPages.length - 1].data.title}
+              key={page.slug}
+              i={typeof index !== "undefined" ? index : i}
+              slug={page.slug}
+              title={page.data.title}
             >
-              <Note {...stackedPages[stackedPages.length - 1].data} />
+              <Note {...page.data} />
             </NoteWrapper>
-          )}
+          ))}
         </div>
       </div>
     </div>
@@ -64,12 +50,29 @@ const NotesLayout = ({ location, slug, data }) => {
     pageWidth: 625,
   });
 
+  let pages = state.stackedPages;
+  let activeIndex;
+  if (windowWidth <= 800) {
+    const activeSlug = Object.keys(state.stackedPageStates).find(
+      (slug) => state.stackedPageStates[slug].active
+    );
+    activeIndex = state.stackedPages.findIndex(
+      (page) => page.slug === activeSlug
+    );
+    if (activeIndex === -1) {
+      activeIndex = state.stackedPages.length - 1;
+    }
+
+    pages = [state.stackedPages[activeIndex]];
+  }
+
   return (
     <StackedPagesProvider value={state}>
       <MemoContent
         windowWidth={windowWidth}
         scrollContainer={scrollContainer}
-        stackedPages={state.stackedPages}
+        stackedPages={pages}
+        index={activeIndex}
       />
     </StackedPagesProvider>
   );

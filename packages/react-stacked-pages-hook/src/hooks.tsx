@@ -208,6 +208,7 @@ export function useStackedPagesProvider<T>({
           return Object.keys(stackedPageStates).reduce((prev, slug) => {
             prev[slug] = {
               ...stackedPageStates[slug],
+              highlighted: false,
               active: slug === to,
             };
             return prev;
