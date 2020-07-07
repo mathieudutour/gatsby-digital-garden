@@ -71,7 +71,18 @@ function getTitle(node, content) {
   ) {
     return node.frontmatter["title"];
   }
-  return findTopLevelHeading(content) || "";
+  return (
+    findTopLevelHeading(content) ||
+    (typeof node.fileAbsolutePath === "string"
+      ? path.basename(
+          node.fileAbsolutePath,
+          path.extname(node.fileAbsolutePath)
+        )
+      : "") ||
+    (typeof node.absolutePath === "string"
+      ? path.basename(node.absolutePath, path.extname(node.absolutePath))
+      : "")
+  );
 }
 
 function shouldHandleFile(node, options) {

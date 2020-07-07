@@ -17,7 +17,7 @@ const mapOutboundRefs = (ref) =>
         displayTitle: ref.parent.title,
         slug: ref.parent.fields.slug,
       }
-    : ref.parent.fields && ref.parent.fields.title // File
+    : ref.parent.fields && typeof ref.parent.fields.title !== "undefined" // File
     ? {
         mdx: ref.body,
         title: ref.parent.fields.title,
@@ -25,7 +25,7 @@ const mapOutboundRefs = (ref) =>
         displayTitle: ref.parent.fields.title,
         slug: ref.parent.fields.slug,
       }
-    : console.warn(`Cannot map outbourd ref`, ref) || null;
+    : console.warn(`Cannot map outbound ref`, ref) || null;
 
 const mapInboundRefs = (ref) =>
   ref.parent.fields.parentPage // roamBlock
@@ -53,7 +53,7 @@ const mapInboundRefs = (ref) =>
         id: ref.parent.id,
         slug: ref.parent.fields.slug,
       }
-    : console.warn(`Cannot map inbourd ref`, ref) || null;
+    : console.warn(`Cannot map inbound ref`, ref) || null;
 
 export const dataToNote = (data) =>
   data.roamPage
