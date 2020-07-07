@@ -51,7 +51,10 @@ export async function generateData(cache: any, getNode: Function) {
             basename(
               x.node.fileAbsolutePath,
               extname(x.node.fileAbsolutePath)
-            ) === title)
+            ) === title) ||
+          (typeof x.node.absolutePath === "string" &&
+            basename(x.node.absolutePath, extname(x.node.absolutePath)) ===
+              title)
       );
     }
 
