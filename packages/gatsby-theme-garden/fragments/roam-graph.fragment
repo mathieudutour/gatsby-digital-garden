@@ -48,6 +48,10 @@ export const useGraphData = () => {
     );
 
     data.allRoamPage.nodes.forEach((node) => {
+      if (!node.fields || !node.fields.slug) {
+        return
+      }
+
       const nodeIndex = stackedPages.findIndex(
         (x) => x.slug === node.fields.slug
       );
