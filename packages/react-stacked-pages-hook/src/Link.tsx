@@ -26,7 +26,11 @@ export const LinkToStacked = React.forwardRef(
         if (onClick) {
           onClick(ev);
         }
-        navigateToStackedPage(to);
+        if (ev.metaKey || ev.ctrlKey) {
+          window.open(to, "_blank");
+        } else {
+          navigateToStackedPage(to);
+        }
       },
       [navigateToStackedPage, to, onClick]
     );
