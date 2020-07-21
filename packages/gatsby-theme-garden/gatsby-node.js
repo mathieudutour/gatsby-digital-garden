@@ -293,31 +293,3 @@ exports.createPages = async ({ graphql, actions }) => {
     } catch (err) {}
   }
 };
-
-exports.sourceNodes = (
-  { actions: { createTypes, createNode }, schema },
-  { basePath = `/`, homeText = `~`, breadcrumbSeparator = `/` }
-) => {
-  // Create the Garden type to solidify the field data types
-  createTypes(`type GardenConfig implements Node {
-basePath: String!
-}`);
-
-  // create garden data from plugin config
-  const gardenConfig = {
-    basePath,
-  };
-
-  createNode({
-    ...gardenConfig,
-    id: `gatsby-theme-garden-config`,
-    parent: null,
-    children: [],
-    internal: {
-      type: `GardenConfig`,
-      contentDigest: createContentDigest(gardenConfig),
-      content: JSON.stringify(gardenConfig),
-      description: `Garden Config`,
-    },
-  });
-};
