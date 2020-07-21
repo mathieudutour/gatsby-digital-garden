@@ -17,6 +17,7 @@ module.exports = (options) => {
     plugins: [
       !mdxOtherwiseConfigured && `gatsby-plugin-sharp`,
       !mdxOtherwiseConfigured && `gatsby-remark-images`,
+      !mdxOtherwiseConfigured && `@pauliescanlon/gatsby-mdx-embed`,
       !mdxOtherwiseConfigured && {
         resolve: `gatsby-plugin-mdx`,
         options: {

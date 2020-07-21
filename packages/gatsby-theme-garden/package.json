@@ -27,6 +27,7 @@
     "react-dom": "^16.8.6"
   },
   "dependencies": {
+    "@pauliescanlon/gatsby-mdx-embed": "^0.0.21",
     "@mdx-js/mdx": "^1.6.1",
     "@mdx-js/react": "^1.6.1",
     "@react-hook/window-size": "~2.0.5",
