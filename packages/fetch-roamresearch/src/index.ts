@@ -28,6 +28,48 @@ async function click(page: puppeteer.Page, xpath: string) {
   await button.click();
 }
 
+function sleep(time: number = 1000) {
+  return new Promise((resolve) => setTimeout(resolve, time));
+}
+
+async function checkLogin(
+  page: puppeteer.Page,
+  auth: {
+    email: string;
+    password: string;
+  },
+  options?: {
+    reporter?: Reporter;
+    debug?: boolean;
+  }
+) {
+  const state = await Promise.race([
+    page
+      .waitForSelector('input[name="email"]')
+      .then(() => LOGIN_STATE.NEED)
+      .catch(() => LOGIN_STATE.NEED),
+    page
+      .waitForSelector(topBarMoreSelector)
+      .then(() => LOGIN_STATE.IN)
+      .catch(() => LOGIN_STATE.NEED),
+  ]);
+
+  if (state === LOGIN_STATE.NEED) {
+    options?.reporter?.info("Login into Roam Research...");
+    await page.type('input[name="email"]', auth.email);
+    await page.type('input[name="password"]', auth.password);
+    const [loginButton] = await page.$x("//button[text()='Sign In']");
+    if (!loginButton) {
+      throw new Error("Login Button not found");
+    }
+    await loginButton.click();
+    await sleep();
+
+    // check for login until we are fine
+    await checkLogin(page, auth);
+  }
+}
+
 const downloadRoam = async (
   url: string,
   auth: {
@@ -37,10 +79,15 @@ const downloadRoam = async (
   options?: {
     reporter?: Reporter;
     puppeteer?: puppeteer.LaunchOptions;
+    debug?: boolean;
   }
 ): Promise<RoamPage[] | undefined> => {
   const downloadPath = path.join(__dirname, `${Date.now()}`);
   await fs.promises.mkdir(downloadPath, { recursive: true });
+
+  if (options?.debug) {
+    options.reporter?.info(`created cache dir ${downloadPath}`);
+  }
 
   const zipCreationPromise = new Promise<string>((resolve, reject) => {
     const watcher = watch(
@@ -71,28 +118,11 @@ const downloadRoam = async (
 
     await page.goto(url);
 
-    const state = await Promise.race([
-      page
-        .waitForSelector('input[name="email"]')
-        .then(() => LOGIN_STATE.NEED)
-        .catch(() => LOGIN_STATE.NEED),
-      page
-        .waitForSelector(topBarMoreSelector)
-        .then(() => LOGIN_STATE.IN)
-        .catch(() => LOGIN_STATE.NEED),
-    ]);
-
-    if (state === LOGIN_STATE.NEED) {
-      options?.reporter?.info("Login into Roam Research...");
-      await page.type('input[name="email"]', auth.email);
-      await page.type('input[name="password"]', auth.password);
-      const [loginButton] = await page.$x("//button[text()='Sign In']");
-      if (!loginButton) {
-        throw new Error("Login Button not found");
-      }
-      await loginButton.click();
-      await page.waitForSelector(topBarMoreSelector);
+    if (options?.debug) {
+      options.reporter?.info(`opening ${url}`);
     }
+
+    await checkLogin(page, auth, options);
 
     await page.click(topBarMoreSelector);
 
