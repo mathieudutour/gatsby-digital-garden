@@ -1,4 +1,5 @@
 import React from "react";
+import { withPrefix } from "gatsby";
 import Tippy from "@tippyjs/react";
 import { MDXProvider } from "@mdx-js/react";
 import { MDXRenderer } from "gatsby-plugin-mdx";
@@ -14,7 +15,7 @@ export const AnchorTag = ({
   withoutPopup,
   ...restProps
 }) => {
-  const ref = references.find((x) => x.title === title);
+  const ref = references.find((x) => withPrefix(x.slug) === withPrefix(href));
 
   let content;
   let popupContent;
