@@ -127,6 +127,17 @@ exports.onCreateNode = async ({ node, actions, loadNodeContent }, options) => {
   }
 };
 
+exports.createSchemaCustomization = ({ actions }) => {
+  const { createTypes } = actions;
+  const typeDefs = `
+  type MdxFrontmatter {
+    title: String!
+    private: Boolean
+  }
+  `;
+  createTypes(typeDefs);
+};
+
 async function copyFile(from, to) {
   return fs.promises.writeFile(to, await fs.promises.readFile(from));
 }
@@ -149,6 +160,11 @@ exports.createPages = async ({ graphql, actions }) => {
               fields {
                 slug
               }
+              childMdx {
+                frontmatter {
+                  private
+                }
+              }
             }
           }
         }
@@ -167,7 +183,9 @@ exports.createPages = async ({ graphql, actions }) => {
 
     const LocalFileTemplate = require.resolve(`./src/templates/local-file`);
 
-    const localFiles = result.data.allFile.nodes.filter(shouldHandleFile);
+    const localFiles = result.data.allFile.nodes
+      .filter(shouldHandleFile)
+      .filter((x) => x.childMdx.frontmatter.private !== false);
 
     localFiles.forEach((node) => {
       createPage({
