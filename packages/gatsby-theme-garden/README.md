@@ -56,3 +56,17 @@ module.exports = {
 | `roamEmail`              |               | Email used to sign into Roam Research                                            |
 | `roamPassword`           |               | Password used to sign into Roam Research                                         |
 | `mdxOtherwiseConfigured` | `false`       | Set this flag `true` if `gatsby-plugin-mdx` is already configured for your site. |
+
+### How to add syntax highlighting support?
+1. Create a custom `CodeBlock` component as mentioned in the [MDX Guides](https://mdxjs.com/guides/syntax-highlighting#build-a-codeblock-component)
+
+2. Create a file named `./src/gatsby-theme-garden/components/mdx-components/index.js` with the following content.
+```js
+// the components provided by the theme
+export { AnchorTag as a } from "gatsby-theme-garden/src/components/mdx-components/anchor-tag";
+
+// your own component to inject into mdx
+ export code from "./your-component"; // any code block with use this component
+```
+Refer to [gatsby shadowing](https://www.gatsbyjs.org/docs/themes/shadowing/) to understand how it works.
+    
