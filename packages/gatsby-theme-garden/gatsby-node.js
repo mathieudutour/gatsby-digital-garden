@@ -185,7 +185,7 @@ exports.createPages = async ({ graphql, actions }) => {
 
     const localFiles = result.data.allFile.nodes
       .filter(shouldHandleFile)
-      .filter((x) => x.childMdx.frontmatter.private !== false);
+      .filter((x) => x.childMdx.frontmatter.private !== true);
 
     localFiles.forEach((node) => {
       createPage({
