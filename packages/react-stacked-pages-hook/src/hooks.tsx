@@ -9,6 +9,7 @@ import React, {
 import { navigate, withPrefix } from "gatsby";
 import qs from "querystring";
 import throttle from "lodash.throttle";
+import equal from "lodash.isequal";
 import {
   StackedPagesContext,
   StackedPagesIndexContext,
@@ -91,6 +92,7 @@ export function useStackedPagesProvider<T>({
   pageWidth?: number;
   obstructedPageWidth?: number;
 }) {
+  const previousFirstPage = useRef(firstPage);
   const [scroll, containerWidth, setRef, containerRef] = useScroll();
   const [stackedPages, setStackedPages] = useState<{ slug: string; data: T }[]>(
     getRoot(firstPage, processPageQuery)
@@ -115,6 +117,18 @@ export function useStackedPagesProvider<T>({
     }
     return res;
   }, [location]);
+
+  useEffect(() => {
+    if (equal(firstPage, previousFirstPage.current)) {
+      return;
+    }
+    setStackedPages((pages) => {
+      return getRoot(firstPage, processPageQuery).concat(
+        previousFirstPage.current ? pages.slice(1) : pages
+      );
+    });
+    previousFirstPage.current = firstPage;
+  }, [firstPage, processPageQuery, setStackedPages]);
 
   useEffect(() => {
     if (!window.___loader) {
