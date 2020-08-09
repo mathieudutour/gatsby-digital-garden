@@ -3,7 +3,6 @@ import { useWindowWidth } from "@react-hook/window-size";
 import {
   useStackedPagesProvider,
   StackedPagesProvider,
-  PageIndexProvider,
 } from "react-stacked-pages-hook";
 import { dataToNote, dataToSlug } from "../utils/data-to-note";
 import Note from "./note";

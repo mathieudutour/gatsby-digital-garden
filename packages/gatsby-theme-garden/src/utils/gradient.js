@@ -1,7 +1,7 @@
 function hex(c) {
   var s = "0123456789abcdef";
   var i = parseInt(c);
-  if (i == 0 || isNaN(c)) return "00";
+  if (i === 0 || isNaN(c)) return "00";
   i = Math.round(Math.min(Math.max(0, i), 255));
   return s.charAt((i - (i % 16)) / 16) + s.charAt(i % 16);
 }
@@ -13,7 +13,7 @@ function convertToHex(rgb) {
 
 /* Remove '#' in color hex string */
 function trim(s) {
-  return s.charAt(0) == "#" ? s.substring(1, 7) : s;
+  return s.charAt(0) === "#" ? s.substring(1, 7) : s;
 }
 
 /* Convert a hex string to an RGB triplet */

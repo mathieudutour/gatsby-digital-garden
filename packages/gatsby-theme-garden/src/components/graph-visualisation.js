@@ -63,7 +63,7 @@ const GraphVisualisation = ({ setGraphState, graphState }) => {
     text.attr("font-size", `${font}px`);
     link.attr("stroke-width", zoomOrKeep(STROKE));
     node.attr("r", zoomOrKeep(RADIUS));
-  }, [zoom]);
+  }, [zoom]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const hookNode = useCallback(
     (node) => {
@@ -161,7 +161,7 @@ const GraphVisualisation = ({ setGraphState, graphState }) => {
       .attr("y1", (d) => d.source.y)
       .attr("x2", (d) => d.target.x)
       .attr("y2", (d) => d.target.y);
-  }, [graphState, d3Container]);
+  }, [graphState, d3Container]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!d3Container.current || graphState === "hidden") {
@@ -240,7 +240,7 @@ const GraphVisualisation = ({ setGraphState, graphState }) => {
             transform: "translate(0%, 100%)",
           }
     );
-  }, [graphState, setModalSpring]);
+  }, [graphState, setModalSpring]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const overlaySpring = useSpring(
     graphState === "maximized"

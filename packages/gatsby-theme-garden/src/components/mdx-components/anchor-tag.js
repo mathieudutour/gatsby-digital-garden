@@ -69,6 +69,7 @@ export const AnchorTag = ({
   } else {
     content = restProps.children;
     popupContent = <div className="popover no-max-width">{href}</div>;
+    // eslint-disable-next-line jsx-a11y/anchor-has-content
     child = <a {...restProps} href={href} title={title} />;
   }
 
