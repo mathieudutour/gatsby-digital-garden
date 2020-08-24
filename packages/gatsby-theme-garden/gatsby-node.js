@@ -127,15 +127,22 @@ exports.onCreateNode = async ({ node, actions, loadNodeContent }, options) => {
   }
 };
 
-exports.createSchemaCustomization = ({ actions }) => {
-  const { createTypes } = actions;
-  const typeDefs = `
-  type MdxFrontmatter {
-    title: String!
-    private: Boolean
-  }
-  `;
-  createTypes(typeDefs);
+exports.createResolvers = ({ createResolvers }) => {
+  const resolvers = {
+    MdxFrontmatter: {
+      private: {
+        type: `Boolean`,
+        resolve(source, args, context, info) {
+          const { private } = source;
+          if (private == null) {
+            return false;
+          }
+          return private;
+        },
+      },
+    },
+  };
+  createResolvers(resolvers);
 };
 
 async function copyFile(from, to) {
