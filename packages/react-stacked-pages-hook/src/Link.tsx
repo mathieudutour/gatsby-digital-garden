@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { GatsbyLinkProps, Link } from "gatsby";
+import { GatsbyLinkProps, Link, withPrefix } from "gatsby";
 import { useStackedPage } from "./hooks";
 
 export const LinkToStacked = React.forwardRef(
@@ -27,7 +27,7 @@ export const LinkToStacked = React.forwardRef(
           onClick(ev);
         }
         if (ev.metaKey || ev.ctrlKey) {
-          window.open(to, "_blank");
+          window.open(withPrefix(to), "_blank");
         } else {
           navigateToStackedPage(to);
         }
