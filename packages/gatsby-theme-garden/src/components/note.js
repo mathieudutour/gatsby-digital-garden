@@ -1,7 +1,7 @@
 import React from "react";
-import { MDXRenderer } from "gatsby-plugin-mdx";
 import { MDXProvider } from "@mdx-js/react";
 import * as components from "./mdx-components";
+import MDXRenderer from "./mdx-components/mdx-renderer";
 import ReferencesBlock from "./references-block";
 import { LinkToStacked } from "react-stacked-pages-hook";
 

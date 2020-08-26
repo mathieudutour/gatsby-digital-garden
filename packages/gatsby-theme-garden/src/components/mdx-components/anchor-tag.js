@@ -2,7 +2,7 @@ import React from "react";
 import { withPrefix } from "gatsby";
 import Tippy from "@tippyjs/react";
 import { MDXProvider } from "@mdx-js/react";
-import { MDXRenderer } from "gatsby-plugin-mdx";
+import MDXRenderer from "./mdx-renderer";
 import { LinkToStacked } from "react-stacked-pages-hook";
 
 import "./anchor-tag.css";
@@ -70,7 +70,7 @@ export const AnchorTag = ({
     content = restProps.children;
     popupContent = <div className="popover no-max-width">{href}</div>;
     // eslint-disable-next-line jsx-a11y/anchor-has-content
-    child = <a {...restProps} href={href} title={title} />;
+    child = <a {...restProps} href={withPrefix(href)} title={title} />;
   }
 
   if (withoutLink) {
