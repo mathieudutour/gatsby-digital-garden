@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import FlexSearch from "flexsearch";
 import { graphql, useStaticQuery } from "gatsby";
 
