@@ -1,3 +1,5 @@
+const searchIndexes = require("./search-indexes");
+
 module.exports = (options) => {
   const {
     mdxOtherwiseConfigured = false,
@@ -57,6 +59,7 @@ module.exports = (options) => {
         },
       },
       `gatsby-transformer-markdown-references`,
+      ...searchIndexes(options),
       {
         resolve: `gatsby-plugin-compile-es6-packages`,
         options: {

@@ -6,7 +6,7 @@
   "author": "Mathieu Dutour <mathieu@dutour.me>",
   "dependencies": {
     "gatsby": "^2.21.22",
-    "gatsby-theme-garden": "^0.1.50",
+    "gatsby-theme-garden": "^0.1.51",
     "react": "^16.3.1",
     "react-dom": "^16.3.1"
   },

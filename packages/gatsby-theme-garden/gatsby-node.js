@@ -5,6 +5,7 @@ const slugify = require(`slugify`);
 const {
   findTopLevelHeading,
 } = require(`gatsby-transformer-markdown-references`);
+const shouldHandleFile = require("./should-handle-file");
 
 // These are customizable theme options we only need to check once
 let basePath;
@@ -85,14 +86,6 @@ function getTitle(node, content) {
   );
 }
 
-function shouldHandleFile(node, options) {
-  return (
-    (extensions.includes(node.ext) ||
-      mediaTypes.includes(node.internal.mediaType)) &&
-    node.sourceInstanceName === contentPath
-  );
-}
-
 exports.onCreateNode = async ({ node, actions, loadNodeContent }, options) => {
   const { createNodeField } = actions;
 
@@ -113,7 +106,7 @@ exports.onCreateNode = async ({ node, actions, loadNodeContent }, options) => {
       value: urlResolve(basePath, slugify(node.uid)),
     });
   }
-  if (node.internal.type === `File` && shouldHandleFile(node)) {
+  if (node.internal.type === `File` && shouldHandleFile(node, options)) {
     createNodeField({
       node,
       name: `slug`,
@@ -149,7 +142,7 @@ async function copyFile(from, to) {
   return fs.promises.writeFile(to, await fs.promises.readFile(from));
 }
 
-exports.createPages = async ({ graphql, actions }) => {
+exports.createPages = async ({ graphql, actions }, options) => {
   const { createPage } = actions;
 
   if (contentPath) {
@@ -191,7 +184,7 @@ exports.createPages = async ({ graphql, actions }) => {
     const LocalFileTemplate = require.resolve(`./src/templates/local-file`);
 
     const localFiles = result.data.allFile.nodes
-      .filter(shouldHandleFile)
+      .filter((node) => shouldHandleFile(node, options))
       .filter((x) => x.childMdx.frontmatter.private !== true);
 
     localFiles.forEach((node) => {

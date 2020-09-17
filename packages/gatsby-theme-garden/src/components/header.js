@@ -4,6 +4,7 @@ import { Link } from "gatsby";
 import useSiteMetadata from "../use-site-metadata";
 import DarkModeToggle from "./dark-mode-toggle";
 import GraphButton from "./graph-button";
+import { Search } from "./search";
 
 import "./header.css";
 
@@ -16,6 +17,7 @@ const Header = () => {
         <h3>{siteMetadata.title}</h3>
       </Link>
       <div className="controls">
+        <Search />
         <GraphButton />
         <DarkModeToggle />
       </div>
