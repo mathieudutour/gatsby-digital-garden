@@ -27,12 +27,41 @@ Add the plugin to your Gatsby config:
 }
 ```
 
+### Resolving the URL
+
 By default, the plugin will resolve the url with:
 
 ```js
 (title: string) => `/${slugify(title)}`;
 ```
 
-You can override this behavior by passing a `titleToURL` option.
+You can override this behavior by passing a `titleToURLPath` option pointing to a JavaScript exporting a function receiving the title as argument and returning a string.
+
+For example:
+
+```js
+// resolve-url.js
+const slugify = require('slugify')
+module.exports = (title) => `/${slugify(title)}`
+
+// gatsby-config.js
+{
+  ...
+  {
+    resolve: `gatsby-plugin-mdx`,
+    options: {
+      gatsbyRemarkPlugins: [
+        {
+          resolve: `gatsby-remark-double-brackets-link`,
+          options: {
+            titleToUrlPath: `${__dirname}/resolve-url.js`
+          },
+        }
+      ],
+    },
+  }
+  ...
+}
+```
 
 By default, the plugin will keep the brackets in the link name. You can change this behavior by passing a `stripBrackets` options.

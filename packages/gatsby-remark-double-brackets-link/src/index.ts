@@ -4,10 +4,11 @@ import slugify from "slugify";
 
 const addDoubleBracketsLinks = (
   { markdownAST }: { markdownAST: Node },
-  options?: { titleToURL?: (title: string) => string; stripBrackets?: boolean }
+  options?: { titleToURLPath?: string; stripBrackets?: boolean }
 ) => {
-  const titleToURL =
-    options?.titleToURL || ((title: string) => `/${slugify(title)}`);
+  const titleToURL = options?.titleToURLPath
+    ? require(options.titleToURLPath)
+    : (title: string) => `/${slugify(title)}`;
 
   const definitions: { [identifier: string]: boolean } = {};
 
