@@ -8,6 +8,7 @@ import { dataToNote, dataToSlug } from "../utils/data-to-note";
 import Note from "./note";
 import NoteWrapper from "./note-wrapper";
 import Header from "./header";
+import SEO from "./seo";
 
 import "./theme.css";
 import "./stacked-layout.css";
@@ -16,6 +17,7 @@ import "./custom.css";
 const Content = ({ windowWidth, scrollContainer, stackedPages, index }) => {
   return (
     <div className="layout">
+      <SEO title={stackedPages[stackedPages.length - 1].data.title} />
       <Header />
       <div className="note-columns-scrolling-container" ref={scrollContainer}>
         <div

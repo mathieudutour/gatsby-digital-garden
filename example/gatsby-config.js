@@ -7,7 +7,8 @@ require("dotenv").config({
 module.exports = {
   pathPrefix: `/gatsby-digital-garden`,
   siteMetadata: {
-    title: `Example of using Roam Research as a data source for a Gatsby site`,
+    title: `Digital Garden`,
+    description: `Example of using Roam Research as a data source for a Gatsby site`,
   },
   plugins: [
     {
