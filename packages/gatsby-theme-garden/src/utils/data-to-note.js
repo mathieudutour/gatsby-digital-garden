@@ -28,7 +28,7 @@ const mapOutboundRefs = (ref) =>
     : console.warn(`Cannot map outbound ref`, ref) || null;
 
 const mapInboundRefs = (ref) =>
-  ref.parent.fields.parentPage // roamBlock
+  ref.parent.fields && ref.parent.fields.parentPage // roamBlock
     ? {
         content: (
           <ul>
