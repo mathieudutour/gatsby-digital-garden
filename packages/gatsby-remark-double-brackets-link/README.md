@@ -54,7 +54,7 @@ module.exports = (title) => `/${slugify(title)}`
         {
           resolve: `gatsby-remark-double-brackets-link`,
           options: {
-            titleToUrlPath: `${__dirname}/resolve-url.js`
+            titleToURLPath: `${__dirname}/resolve-url.js`
           },
         }
       ],
