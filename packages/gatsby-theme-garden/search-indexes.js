@@ -12,6 +12,7 @@ module.exports = (options) => {
       nodes {
         id
         ext
+        sourceInstanceName
         fields {
           title
           slug
