@@ -21,6 +21,9 @@ module.exports = (options) => {
           excerpt
           rawBody
         }
+        internal {
+          mediaType
+        }
       }
     }
   `;
