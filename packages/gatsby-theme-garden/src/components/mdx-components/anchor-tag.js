@@ -73,7 +73,7 @@ export const AnchorTag = ({
     child = (
       <a
         {...restProps}
-        href={href.indexOf && href.indexOf("#") === 0 ? href : withPrefix(href)}
+        href={(!href || (href.indexOf && href.indexOf("#") === 0)) ? href : withPrefix(href)}
         title={title}
       />
     );
