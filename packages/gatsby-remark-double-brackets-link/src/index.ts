@@ -2,13 +2,23 @@ import visit from "unist-util-visit";
 import { Node } from "unist";
 import slugify from "slugify";
 
+/**
+ * if title is something like `folder1/folder2/name`,
+ * will slugify the name, while keeping the folder names
+ */
+const defaultTitleToURLPath = (title: string) => {
+  const segments = title.split('/')
+  const slugifiedTitle = slugify(segments.pop() as string)
+  return `${segments.join('/')}/${slugifiedTitle}`
+}
+
 const addDoubleBracketsLinks = (
   { markdownAST }: { markdownAST: Node },
   options?: { titleToURLPath?: string; stripBrackets?: boolean }
 ) => {
   const titleToURL = options?.titleToURLPath
     ? require(options.titleToURLPath)
-    : (title: string) => `/${slugify(title)}`;
+    : defaultTitleToURLPath;
 
   const definitions: { [identifier: string]: boolean } = {};
 
