@@ -1,0 +1,2 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[4],{Ib3J:function(n,w,a){"use strict";a.r(w);var o=a("mQrI");w.default=o.a}}]);
+//# sourceMappingURL=component---node-modules-gatsby-theme-garden-src-templates-local-file-js-62ab424ade88a375b422.js.map
