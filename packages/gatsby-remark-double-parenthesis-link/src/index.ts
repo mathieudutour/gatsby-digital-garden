@@ -2,6 +2,16 @@ import visit from "unist-util-visit";
 import { Node } from "unist";
 import slugify from "slugify";
 
+/**
+ * if title is something like `folder1/folder2/name`,
+ * will slugify the name, while keeping the folder names
+ */
+const defaultTitleToURLPath = (title: string) => {
+  const segments = title.split("/");
+  const slugifiedTitle = slugify(segments.pop() as string);
+  return `${segments.join("/")}/${slugifiedTitle}`;
+};
+
 // Find matches for content between double parenthesis
 // e.g. ((Example)) -> Example
 const parenthesisRegexExclusive = /(?<=\(\().*?(?=\)\))/g;
@@ -10,7 +20,7 @@ const addDoubleParenthesisLinks = (
   { markdownAST }: { markdownAST: Node },
   options?: { idToURL?: (title: string) => string }
 ) => {
-  const idToURL = options?.idToURL || ((title: string) => `/${slugify(title)}`);
+  const idToURL = options?.idToURL || defaultTitleToURLPath;
 
   visit(markdownAST, `text`, (node, index, parent) => {
     const value = node.value;
