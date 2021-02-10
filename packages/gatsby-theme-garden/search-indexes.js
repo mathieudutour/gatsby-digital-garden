@@ -20,6 +20,9 @@ module.exports = (options) => {
         childMdx {
           excerpt
           rawBody
+          frontmatter {
+            private
+          }
         }
         internal {
           mediaType
@@ -75,6 +78,7 @@ module.exports = (options) => {
             result = result.concat(
               data.allFile.nodes
                 .filter((node) => shouldHandleFile(node, options))
+                .filter((x) => x.childMdx.frontmatter.private !== true)
                 .map((node) => ({
                   id: node.id,
                   path: node.fields.slug,
@@ -122,6 +126,7 @@ module.exports = (options) => {
             result = result.concat(
               data.allFile.nodes
                 .filter((node) => shouldHandleFile(node, options))
+                .filter((x) => x.childMdx.frontmatter.private !== true)
                 .map((node) => ({
                   id: node.id,
                   title: node.fields.title,
@@ -157,6 +162,7 @@ module.exports = (options) => {
             result = result.concat(
               data.allFile.nodes
                 .filter((node) => shouldHandleFile(node, options))
+                .filter((x) => x.childMdx.frontmatter.private !== true)
                 .map((node) => ({
                   id: node.id,
                   body: node.childMdx.rawBody,
