@@ -1,6 +1,6 @@
 {
   "name": "gatsby-remark-double-parenthesis-link",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Parse double parenthesis link in markdown",
   "main": "lib/index.js",
   "scripts": {

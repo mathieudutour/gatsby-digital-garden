@@ -1,6 +1,6 @@
 {
   "name": "gatsby-remark-double-brackets-link",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Parse double brackets link in markdown",
   "main": "lib/index.js",
   "scripts": {
