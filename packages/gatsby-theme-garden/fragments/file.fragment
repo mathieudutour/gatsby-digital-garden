@@ -11,6 +11,7 @@ export const references = graphql`
             fields {
               slug
               title
+              aliases
             }
           }
         }

@@ -1,4 +1,5 @@
 import React from "react";
+import { basename } from "path";
 import { withPrefix } from "gatsby";
 import Tippy from "@tippyjs/react";
 import { MDXProvider } from "@mdx-js/react";
@@ -15,7 +16,14 @@ export const AnchorTag = ({
   withoutPopup,
   ...restProps
 }) => {
-  const ref = references.find((x) => withPrefix(x.slug) === withPrefix(href));
+  // same as in gatsby-transformer-markdown-references/src/compute-inbounds.ts#getRef
+  const ref = references.find(
+    (x) =>
+      withPrefix(x.slug) === withPrefix(href) ||
+      x.title === title ||
+      (x.aliases || []).some((alias) => alias === title) ||
+      basename(x.slug) === title
+  );
 
   let content;
   let popupContent;
@@ -73,7 +81,11 @@ export const AnchorTag = ({
     child = (
       <a
         {...restProps}
-        href={(!href || (href.indexOf && href.indexOf("#") === 0)) ? href : withPrefix(href)}
+        href={
+          !href || (href.indexOf && href.indexOf("#") === 0)
+            ? href
+            : withPrefix(href)
+        }
         title={title}
       />
     );
