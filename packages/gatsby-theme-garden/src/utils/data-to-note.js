@@ -8,6 +8,7 @@ const mapOutboundRefs = (ref) =>
         id: ref.parent.id,
         displayTitle: ref.parent.fields.parentPage.title,
         slug: ref.parent.fields.slug,
+        aliases: [],
       }
     : ref.parent.title // roamPage
     ? {
@@ -16,6 +17,7 @@ const mapOutboundRefs = (ref) =>
         id: ref.parent.id,
         displayTitle: ref.parent.title,
         slug: ref.parent.fields.slug,
+        aliases: [],
       }
     : ref.parent.fields && typeof ref.parent.fields.title !== "undefined" // File
     ? {
@@ -24,6 +26,7 @@ const mapOutboundRefs = (ref) =>
         id: ref.parent.id,
         displayTitle: ref.parent.fields.title,
         slug: ref.parent.fields.slug,
+        aliases: (ref.frontmatter || {}).aliases || [],
       }
     : console.warn(`Cannot map outbound ref`, ref) || null;
 
@@ -38,6 +41,7 @@ const mapInboundRefs = (ref) =>
         title: ref.parent.fields.parentPage.title,
         id: ref.parent.id,
         slug: ref.parent.fields.parentPage.fields.slug,
+        aliases: [],
       }
     : ref.parent.title // roamPage
     ? {
@@ -45,6 +49,7 @@ const mapInboundRefs = (ref) =>
         title: ref.parent.title,
         id: ref.parent.id,
         slug: ref.parent.fields.slug,
+        aliases: [],
       }
     : ref.parent.fields && ref.parent.fields.title // File
     ? {
@@ -52,6 +57,7 @@ const mapInboundRefs = (ref) =>
         title: ref.parent.fields.title,
         id: ref.parent.id,
         slug: ref.parent.fields.slug,
+        aliases: (ref.frontmatter || {}).aliases || [],
       }
     : console.warn(`Cannot map inbound ref`, ref) || null;
 

@@ -5,13 +5,15 @@ export const references = graphql`
     outboundReferences {
       ... on Mdx {
         body
+        frontmatter {
+          aliases
+        }
         parent {
           id
           ... on File {
             fields {
               slug
               title
-              aliases
             }
           }
         }

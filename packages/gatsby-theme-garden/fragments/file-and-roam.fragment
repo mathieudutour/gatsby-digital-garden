@@ -5,6 +5,9 @@ export const references = graphql`
     outboundReferences {
       ... on Mdx {
         body
+        frontmatter {
+          aliases
+        }
         parent {
           id
           ... on RoamBlock {
@@ -27,7 +30,6 @@ export const references = graphql`
             fields {
               slug
               title
-              aliases
             }
           }
         }

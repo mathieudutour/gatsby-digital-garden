@@ -133,6 +133,16 @@ exports.createResolvers = ({ createResolvers }) => {
           return private;
         },
       },
+      aliases: {
+        type: `[String!]`,
+        resolve(source, args, context, info) {
+          const { aliases } = source;
+          if (aliases == null) {
+            return [];
+          }
+          return aliases;
+        },
+      },
     },
   };
   createResolvers(resolvers);
