@@ -59,6 +59,10 @@ const addDoubleBracketsLinks = (
     previous.value = previous.value.replace(/\[$/, "");
     next.value = next.value.replace(/^\]/, "");
 
+    if (node.label.match(/\|/)) {
+        [node.label, node.children[0].value] = node.label.split('|');
+    }
+
     node.type = "link";
     node.url = titleToURL(node.label as string);
     node.title = node.label;
