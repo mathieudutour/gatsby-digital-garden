@@ -16,7 +16,7 @@ type Reporter = {
   info(log: string): void;
 };
 
-const topBarMoreSelector = `.roam-topbar .bp3-icon-more`;
+const topBarMoreSelector = `.rm-topbar .bp3-icon-more`;
 
 async function click(page: puppeteer.Page, xpath: string) {
   await page.waitForXPath(xpath);
