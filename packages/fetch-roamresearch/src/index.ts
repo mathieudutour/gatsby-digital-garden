@@ -56,6 +56,9 @@ async function checkLogin(
 
   if (state === LOGIN_STATE.NEED) {
     options?.reporter?.info("Login into Roam Research...");
+    // clear input
+    await page.type('input[name="email"]','');
+    await page.type('input[name="password"]', '');
     await page.type('input[name="email"]', auth.email);
     await page.type('input[name="password"]', auth.password);
     const [loginButton] = await page.$x("//button[text()='Sign In']");
