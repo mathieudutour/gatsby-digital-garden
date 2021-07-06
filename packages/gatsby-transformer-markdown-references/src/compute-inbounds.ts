@@ -43,6 +43,8 @@ export async function generateData(cache: any, getNode: Function) {
     const inboundReferences: { [id: string]: Node[] } = {};
 
     function getRef(title: string) {
+      title =
+        title.indexOf("|") > -1 ? title.substr(0, title.indexOf("|")) : title;
       return nodes.find(
         (x) =>
           x.title === title ||
