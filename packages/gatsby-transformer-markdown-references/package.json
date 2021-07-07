@@ -1,6 +1,6 @@
 {
   "name": "gatsby-transformer-markdown-references",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Transform markdown nodes to add the necesserary references for bi-directional links",
   "main": "index.js",
   "types": "index.d.ts",
@@ -28,9 +28,7 @@
     "directory": "packages/gatsby-transformer-markdown-references"
   },
   "license": "MIT",
-  "dependencies": {},
   "devDependencies": {
-    "@types/react-dom": "^16.9.8",
-    "gatsby": "^2.21.26"
+    "gatsby": "^3.9.0"
   }
 }
