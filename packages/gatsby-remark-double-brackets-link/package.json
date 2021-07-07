@@ -28,5 +28,7 @@
     "slugify": "^1.4.0",
     "unist-util-visit": "^2.0.2"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/mdast": "^3.0.4"
+  }
 }

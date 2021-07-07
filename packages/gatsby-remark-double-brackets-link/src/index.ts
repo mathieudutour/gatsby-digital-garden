@@ -1,6 +1,7 @@
 import visit from "unist-util-visit";
 import { Node } from "unist";
 import slugify from "slugify";
+import type { Definition, LinkReference } from "mdast";
 
 /**
  * if title is something like `folder1/folder2/name`,
@@ -26,26 +27,26 @@ const addDoubleBracketsLinks = (
 
   const definitions: { [identifier: string]: boolean } = {};
 
-  visit(markdownAST, `definition`, (node) => {
+  visit<Definition>(markdownAST, `definition`, (node) => {
     if (!node.identifier || typeof node.identifier !== "string") {
       return;
     }
     definitions[node.identifier] = true;
   });
 
-  visit(markdownAST, `linkReference`, (node, index, parent) => {
+  visit<LinkReference>(markdownAST, `linkReference`, (node, index, parent) => {
     if (
       node.referenceType !== "shortcut" ||
       (typeof node.identifier === "string" && definitions[node.identifier])
     ) {
       return;
     }
-    const siblings = parent.children;
+    const siblings = parent?.children;
     if (!siblings || !Array.isArray(siblings)) {
       return;
     }
-    const previous = siblings[index - 1];
-    const next = siblings[index + 1];
+    const previous: any = siblings[index - 1];
+    const next: any = siblings[index + 1];
 
     if (!previous || !next) {
       return;
@@ -53,6 +54,7 @@ const addDoubleBracketsLinks = (
 
     if (
       previous.type !== "text" ||
+      !previous.value ||
       previous.value[previous.value.length - 1] !== "[" ||
       next.type !== "text" ||
       next.value[0] !== "]"
@@ -63,13 +65,12 @@ const addDoubleBracketsLinks = (
     previous.value = previous.value.replace(/\[$/, "");
     next.value = next.value.replace(/^\]/, "");
 
-    node.type = "link";
-
     let heading = "";
 
     if (options?.parseWikiLinks && Array.isArray(node.children)) {
       let label = node.label as string;
       if (label.match(/#/) && Array.isArray(node.children)) {
+        // @ts-ignore
         [node.children[0].value, heading] = label.split("#");
         [heading] = heading.split("|");
         node.label = label.replace(`#${heading}`, "");
@@ -77,20 +78,33 @@ const addDoubleBracketsLinks = (
 
       label = node.label as string;
       if (label.match(/\|/)) {
+        // @ts-ignore
         [node.label, node.children[0].value] = label.split("|");
       }
     }
 
-    node.url = `${titleToURL(node.label as string)}${
-      heading ? `#${slugify(heading, { lower: true })}` : ""
-    }`;
-    node.title = node.label;
-
     if (!options?.stripBrackets && Array.isArray(node.children)) {
+      // @ts-ignore
       node.children[0].value = `[[${node.children[0].value}]]`;
     }
+
+    // @ts-ignore
+    node.type = "link";
+    // @ts-ignore
+    node.url = `${titleToURL(node.label as string)}${
+      heading
+        ? `#${slugify(heading, {
+            lower: true,
+          })}`
+        : ""
+    }`;
+    // @ts-ignore
+    node.title = node.label;
+
     delete node.label;
+    // @ts-ignore
     delete node.referenceType;
+    // @ts-ignore
     delete node.identifier;
   });
 };
