@@ -28,7 +28,7 @@ async function click(page: puppeteer.Page, xpath: string) {
   await button.click();
 }
 
-function sleep(time: number = 1000) {
+function sleep(time: number = 3000) {
   return new Promise((resolve) => setTimeout(resolve, time));
 }
 
@@ -135,6 +135,7 @@ const downloadRoam = async (
     await click(page, "//button[text()='Export All']");
     const zipPath = await zipCreationPromise;
 
+    cdp.detach();
     await browser.close();
 
     const data = await fs.promises.readFile(zipPath);
