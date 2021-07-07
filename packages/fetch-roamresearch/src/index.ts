@@ -78,7 +78,9 @@ const downloadRoam = async (
   },
   options?: {
     reporter?: Reporter;
-    puppeteer?: puppeteer.LaunchOptions;
+    puppeteer?: puppeteer.LaunchOptions &
+      puppeteer.BrowserLaunchArgumentOptions &
+      puppeteer.BrowserConnectOptions;
     debug?: boolean;
   }
 ): Promise<RoamPage[] | undefined> => {

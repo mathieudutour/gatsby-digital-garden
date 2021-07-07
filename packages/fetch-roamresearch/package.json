@@ -1,6 +1,6 @@
 {
   "name": "fetch-roamresearch",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Download a Roam Research database",
   "main": "lib/index.js",
   "scripts": {
