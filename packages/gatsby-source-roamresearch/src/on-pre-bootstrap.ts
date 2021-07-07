@@ -17,7 +17,7 @@ export const onPreBoostrap = (
   }
 
   if (errors.length) {
-    reporter.panic(`Problems with gatsby-source-contentful plugin options:
+    reporter.panic(`Problems with gatsby-source-roamresearch plugin options:
 ${errors.join("\n")}`);
   }
 };
