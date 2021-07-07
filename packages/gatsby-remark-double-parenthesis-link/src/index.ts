@@ -1,6 +1,7 @@
-import visit from "unist-util-visit";
+import { visit } from "unist-util-visit";
 import { Node } from "unist";
 import slugify from "slugify";
+import type { Text } from "mdast";
 
 /**
  * if title is something like `folder1/folder2/name`,
@@ -22,9 +23,14 @@ const addDoubleParenthesisLinks = (
 ) => {
   const idToURL = options?.idToURL || defaultTitleToURLPath;
 
-  visit(markdownAST, `text`, (node, index, parent) => {
+  visit<Text>(markdownAST, `text`, (node, index, parent) => {
     const value = node.value;
-    if (typeof value !== "string" || !Array.isArray(parent.children)) {
+    if (
+      typeof value !== "string" ||
+      !parent ||
+      !index ||
+      !Array.isArray(parent.children)
+    ) {
       return;
     }
     const matches = value.match(parenthesisRegexExclusive);
