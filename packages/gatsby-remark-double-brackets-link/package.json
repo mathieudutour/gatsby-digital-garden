@@ -7,13 +7,13 @@
     "build": "npm run clean && ../../node_modules/.bin/tsc -p ./tsconfig.json",
     "watch": "npm run build -- --watch",
     "clean": "rm -rf lib",
-    "prepublishOnly": "npm run build",
-    "test": "jest"
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "gatsby",
     "remark",
-    "double brackets"
+    "double brackets",
+    "wikilinks"
   ],
   "files": [
     "lib"
@@ -25,8 +25,8 @@
   },
   "license": "MIT",
   "dependencies": {
-    "slugify": "^1.4.0",
-    "unist-util-visit": "^2.0.2"
+    "slugify": "^1.5.3",
+    "unist-util-visit": "^3.1.0"
   },
   "devDependencies": {
     "@types/mdast": "^3.0.4"

@@ -7,8 +7,7 @@
     "build": "npm run clean && ../../node_modules/.bin/tsc -p ./tsconfig.json",
     "watch": "npm run build -- --watch",
     "clean": "rm -rf lib",
-    "prepublishOnly": "npm run build",
-    "test": "jest"
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "gatsby",

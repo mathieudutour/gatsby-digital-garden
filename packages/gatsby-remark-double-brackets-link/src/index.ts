@@ -1,4 +1,4 @@
-import visit from "unist-util-visit";
+import { visit } from "unist-util-visit";
 import { Node } from "unist";
 import slugify from "slugify";
 import type { Definition, LinkReference } from "mdast";
@@ -42,7 +42,7 @@ const addDoubleBracketsLinks = (
       return;
     }
     const siblings = parent?.children;
-    if (!siblings || !Array.isArray(siblings)) {
+    if (!index || !siblings || !Array.isArray(siblings)) {
       return;
     }
     const previous: any = siblings[index - 1];

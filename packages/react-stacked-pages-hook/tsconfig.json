@@ -12,7 +12,7 @@
     "strict": true /* Enable all strict type-checking options. */,
 
     "lib": ["es5", "dom"],
-    "types": ["jest", "node"],
+    "types": ["node"],
     "typeRoots": ["node_modules/@types"],
     "jsx": "react"
   },

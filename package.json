@@ -1,18 +1,13 @@
 {
   "name": "gatsby-digital-garden",
   "private": true,
-  "scripts": {
-    "test": "jest"
-  },
+  "scripts": {},
   "author": "Mathieu Dutour <mathieu@dutour.me>",
   "license": "MIT",
   "devDependencies": {
-    "@types/jest": "^25.2.2",
-    "@types/node": "^14.0.1",
-    "jest": "^26.0.1",
-    "jest-cli": "^26.0.1",
-    "prettier": "^2.0.5",
-    "ts-node": "^8.10.1",
-    "typescript": "^3.9.2"
+    "@types/node": "^16.0.1",
+    "prettier": "^2.3.2",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.3.5"
   }
 }
