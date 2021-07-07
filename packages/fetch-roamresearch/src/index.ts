@@ -2,7 +2,7 @@ import puppeteer from "puppeteer";
 import * as path from "path";
 import * as fs from "fs";
 import watch from "node-watch";
-import * as JSZip from "jszip";
+import JSZip from "jszip";
 import { RoamPage, RoamBlock } from "./roam-schema";
 
 export { RoamPage, RoamBlock };
@@ -93,8 +93,8 @@ const downloadRoam = async (
     const watcher = watch(
       downloadPath,
       { filter: /\.zip$/ },
-      (eventType: "update" | "remove", filename: string) => {
-        if (eventType == "update") {
+      (eventType, filename) => {
+        if (eventType == "update" && filename) {
           watcher.close();
           resolve(filename);
         }
