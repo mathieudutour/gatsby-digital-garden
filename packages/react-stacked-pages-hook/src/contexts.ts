@@ -1,4 +1,4 @@
-import React from "react";
+import { createContext } from "react";
 
 export type ScrollState = {
   [slug: string]: {
@@ -9,7 +9,7 @@ export type ScrollState = {
   };
 };
 
-export const StackedPagesContext = React.createContext<{
+export const StackedPagesContext = createContext<{
   stackedPages: { slug: string; data: any }[];
   stackedPageStates: ScrollState;
   navigateToStackedPage: (to: string, index?: number) => void;
@@ -21,7 +21,7 @@ export const StackedPagesContext = React.createContext<{
   highlightStackedPage: () => {},
 });
 
-export const StackedPagesIndexContext = React.createContext<number>(0);
+export const StackedPagesIndexContext = createContext<number>(0);
 
 export const StackedPagesProvider = StackedPagesContext.Provider;
 export const PageIndexProvider = StackedPagesIndexContext.Provider;

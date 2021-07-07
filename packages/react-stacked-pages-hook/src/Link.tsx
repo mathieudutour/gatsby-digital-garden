@@ -11,7 +11,7 @@ export const LinkToStacked = React.forwardRef(
       onMouseEnter,
       ...restProps
     }: GatsbyLinkProps<any>,
-    ref
+    ref: React.Ref<Link<any>>
   ) => {
     const [
       ,
