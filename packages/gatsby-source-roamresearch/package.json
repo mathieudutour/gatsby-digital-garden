@@ -1,6 +1,6 @@
 {
   "name": "gatsby-source-roamresearch",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Source plugin for pulling data into Gatsby from Roam Research",
   "main": "index.js",
   "scripts": {
@@ -28,7 +28,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "fetch-roamresearch": "^0.1.2"
+    "fetch-roamresearch": "^0.1.4"
   },
   "devDependencies": {
     "@types/react-dom": "^16.9.8",
