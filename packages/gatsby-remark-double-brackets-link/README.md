@@ -32,7 +32,11 @@ Add the plugin to your Gatsby config:
 By default, the plugin will resolve the url with:
 
 ```js
-(title: string) => `/${slugify(title)}`;
+(title: string) => {
+  const segments = title.split('/')
+  const slugifiedTitle = slugify(segments.pop() as string)
+  return `${segments.join('/')}/${slugifiedTitle}`
+};
 ```
 
 You can override this behavior by passing a `titleToURLPath` option pointing to a JavaScript exporting a function receiving the title as argument and returning a string.
@@ -65,3 +69,9 @@ module.exports = (title) => `/${slugify(title)}`
 ```
 
 By default, the plugin will keep the brackets in the link name. You can change this behavior by passing a `stripBrackets` options.
+
+### WikiLinks
+
+By default, the plugin will ignore Wiki style links (eg. `[[Internal link|With custom text]]`).
+
+To parse them, pass `parseWikiLinks` as an option.

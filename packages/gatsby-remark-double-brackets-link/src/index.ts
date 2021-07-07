@@ -7,14 +7,18 @@ import slugify from "slugify";
  * will slugify the name, while keeping the folder names
  */
 const defaultTitleToURLPath = (title: string) => {
-  const segments = title.split('/')
-  const slugifiedTitle = slugify(segments.pop() as string)
-  return `${segments.join('/')}/${slugifiedTitle}`
-}
+  const segments = title.split("/");
+  const slugifiedTitle = slugify(segments.pop() as string);
+  return `${segments.join("/")}/${slugifiedTitle}`;
+};
 
 const addDoubleBracketsLinks = (
   { markdownAST }: { markdownAST: Node },
-  options?: { titleToURLPath?: string; stripBrackets?: boolean }
+  options?: {
+    titleToURLPath?: string;
+    stripBrackets?: boolean;
+    parseWikiLinks?: boolean;
+  }
 ) => {
   const titleToURL = options?.titleToURLPath
     ? require(options.titleToURLPath)
@@ -60,8 +64,28 @@ const addDoubleBracketsLinks = (
     next.value = next.value.replace(/^\]/, "");
 
     node.type = "link";
-    node.url = titleToURL(node.label as string);
+
+    let heading = "";
+
+    if (options?.parseWikiLinks && Array.isArray(node.children)) {
+      let label = node.label as string;
+      if (label.match(/#/) && Array.isArray(node.children)) {
+        [node.children[0].value, heading] = label.split("#");
+        [heading] = heading.split("|");
+        node.label = label.replace(`#${heading}`, "");
+      }
+
+      label = node.label as string;
+      if (label.match(/\|/)) {
+        [node.label, node.children[0].value] = label.split("|");
+      }
+    }
+
+    node.url = `${titleToURL(node.label as string)}${
+      heading ? `#${slugify(heading, { lower: true })}` : ""
+    }`;
     node.title = node.label;
+
     if (!options?.stripBrackets && Array.isArray(node.children)) {
       node.children[0].value = `[[${node.children[0].value}]]`;
     }
