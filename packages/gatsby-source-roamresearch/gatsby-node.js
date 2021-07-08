@@ -14,7 +14,7 @@ exports.pluginOptionsSchema = ({ Joi }) => {
       .required()
       .description("Password used to sign into Roam Research"),
     headless: Joi.boolean()
-      .default(false)
+      .default(true)
       .description(
         "Whether to use Puppeteer in headless mode to fetch the Roam Research data or not"
       ),
