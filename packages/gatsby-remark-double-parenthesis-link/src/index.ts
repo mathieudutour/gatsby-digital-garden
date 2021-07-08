@@ -1,4 +1,4 @@
-import { visit } from "unist-util-visit";
+import visit from "unist-util-visit";
 import { Node } from "unist";
 import slugify from "slugify";
 import type { Text } from "mdast";
