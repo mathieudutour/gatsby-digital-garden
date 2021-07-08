@@ -56,6 +56,7 @@ gatsby new my-digital-garden https://github.com/mathieudutour/gatsby-starter-dig
 | `roamEmail`              |               | Email used to sign into Roam Research                                            |
 | `roamPassword`           |               | Password used to sign into Roam Research                                         |
 | `mdxOtherwiseConfigured` | `false`       | Set this flag `true` if `gatsby-plugin-mdx` is already configured for your site. |
+| `parseWikiLinks`         | `false`       | Whether to parse the wikilinks (`[[Internal link|With custom text]]`) or not     |
 
 ### How to inject custom MDX Components?
 

@@ -8,7 +8,8 @@ module.exports = (options) => {
     roamEmail,
     roamPassword,
     ignore,
-  } = options;
+    parseWikiLinks,
+  } = options || {};
 
   return {
     siteMetadata: {
@@ -24,7 +25,10 @@ module.exports = (options) => {
         options: {
           extensions: [`.md`, `.mdx`],
           gatsbyRemarkPlugins: [
-            "gatsby-remark-double-brackets-link",
+            {
+              resolve: "gatsby-remark-double-brackets-link",
+              options: { parseWikiLinks },
+            },
             "gatsby-remark-double-parenthesis-link",
             {
               resolve: `gatsby-remark-images`,
