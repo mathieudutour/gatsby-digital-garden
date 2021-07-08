@@ -133,6 +133,16 @@ exports.createResolvers = ({ createResolvers }) => {
           return private;
         },
       },
+      draft: {
+        type: `Boolean`,
+        resolve(source, args, context, info) {
+          const { draft } = source;
+          if (draft == null) {
+            return false;
+          }
+          return draft;
+        },
+      },
       aliases: {
         type: `[String!]`,
         resolve(source, args, context, info) {
@@ -173,6 +183,7 @@ exports.createPages = async ({ graphql, actions }, options) => {
               childMdx {
                 frontmatter {
                   private
+                  draft
                 }
               }
             }
@@ -195,7 +206,11 @@ exports.createPages = async ({ graphql, actions }, options) => {
 
     const localFiles = result.data.allFile.nodes
       .filter((node) => shouldHandleFile(node, options))
-      .filter((x) => x.childMdx.frontmatter.private !== true);
+      .filter(
+        (x) =>
+          x.childMdx.frontmatter.private !== true &&
+          x.childMdx.frontmatter.draft !== true
+      );
 
     localFiles.forEach((node) => {
       createPage({
@@ -320,4 +335,31 @@ exports.createPages = async ({ graphql, actions }, options) => {
       );
     } catch (err) {}
   }
+};
+
+exports.pluginOptionsSchema = ({ Joi }) => {
+  return Joi.object({
+    mdxOtherwiseConfigured: Joi.boolean()
+      .default(false)
+      .description(
+        "Set this flag `true` if `gatsby-plugin-mdx` is already configured for your site."
+      ),
+    basePath: Joi.string().default("/").description("Root url for the garden"),
+    rootNote: Joi.string().description(
+      "The URL of the note to use as the root"
+    ),
+    contentPath: Joi.string().description("Location of local content"),
+    roamUrl: Joi.string().description("The URL of your Roam Research database"),
+    roamEmail: Joi.string().description(
+      "Email used to sign into Roam Research"
+    ),
+    roamPassword: Joi.string().description(
+      "Password used to sign into Roam Research"
+    ),
+    parseWikiLinks: Joi.boolean()
+      .default(false)
+      .description(
+        "Whether to parse the wikilinks (`[[Internal link|With custom text]]`) or not"
+      ),
+  });
 };
