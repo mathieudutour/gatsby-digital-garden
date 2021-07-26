@@ -54,7 +54,7 @@ const StackedLayout = ({ data, location, slug }) => {
   // You can return `null` to filter out the page
   const processPageQuery = useCallback((pageQuery) => pageQuery, []);
 
-  const [state, scrollContainer] = useStackedNotesProvider({
+  const [state, scrollContainer] = useStackedPagesProvider({
     firstPage: { data, slug },
     location,
     processPageQuery,
