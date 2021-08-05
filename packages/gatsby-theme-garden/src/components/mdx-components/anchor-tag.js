@@ -79,13 +79,13 @@ export const AnchorTag = ({
     content = restProps.children;
     popupContent = <div className="popover no-max-width">{href}</div>;
     // eslint-disable-next-line jsx-a11y/anchor-has-content
-    const onPage = href.startsWith('#');
+    const externalLink = /^(http(s?)):\/\//i.test(href);
     child = (
       <a
         {...restProps}
-        target={onPage ? null : '_blank'}
+        target={externalLink ? '_blank' : null}
         // Add noopener and noreferrer for security reasons
-        rel={onPage ? null : 'noopener noreferrer'}
+        rel={externalLink ? 'noopener noreferrer' : null}
         href={
           !href || (href.indexOf && href.indexOf("#") === 0)
             ? href
